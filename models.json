@@ -1,0 +1,133 @@
+{
+  "models": [
+    {
+      "id": "openai/gpt-5",
+      "label": "OpenAI GPT 5",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "openai/gpt-5-mini",
+      "label": "OpenAI GPT 5 Mini",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "openai/gpt-5-nano",
+      "label": "OpenAI GPT 5 Nano",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "label": "OpenAI GPT OSS 120B",
+      "supports_vision": false,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "label": "Google Gemini 2.5 Flash",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "google/gemini-2.5-pro",
+      "label": "Google Gemini 2.5 Pro",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "qwen/qwen3-next-80b-a3b-thinking",
+      "label": "Qwen 3 Next 80B A3B Thinking",
+      "supports_vision": false,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "z-ai/glm-4.5v",
+      "label": "Z-AI GLM 4.5V",
+      "supports_vision": true,
+      "supports_json_response_format": false,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "anthropic/claude-sonnet-4",
+      "label": "Anthropic Claude Sonnet 4",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "anthropic/claude-opus-4.1",
+      "label": "Anthropic Claude Opus 4.1",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.5",
+      "label": "Anthropic Claude Sonnet 4.5",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "x-ai/grok-4",
+      "label": "X-AI Grok 4",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "x-ai/grok-4-fast",
+      "label": "X-AI Grok 4 Fast",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": true
+    },
+    {
+      "id": "qwen/qwen3-vl-235b-a22b-instruct",
+      "label": "Qwen 3 VL 235B A22B Instruct",
+      "supports_vision": true,
+      "supports_json_response_format": false,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "label": "Qwen 3 VL 235B A22B Thinking",
+      "supports_vision": true,
+      "supports_json_response_format": false,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "mistralai/mistral-medium-3.1",
+      "label": "Mistral Medium 3.1",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
+    }
+  ]
+}
+

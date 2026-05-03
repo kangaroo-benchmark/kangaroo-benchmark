@@ -1,0 +1,148 @@
+<section class="section" id="overview-root">
+  <header class="section__header">
+    <div>
+      <h1>Runs</h1>
+      <p>Browse benchmark runs and drill down with filters to find what you need.</p>
+    </div>
+    <div class="section__meta">
+      <span class="badge">{{ run_count }} of {{ total_runs }} run{% if total_runs != 1 %}s{% endif %}</span>
+    </div>
+  </header>
+  <form
+    id="overview-filters"
+    class="filters-panel"
+    method="get"
+    hx-get="/"
+    hx-target="#overview-root"
+    hx-push-url="true"
+    hx-swap="outerHTML"
+  >
+    <div class="filters-panel__row">
+      <label class="filters-panel__field">
+        <span class="filters-panel__label">Search</span>
+        <input type="search" name="q" value="{{ filters.q or '' }}" placeholder="Run id, model, dataset" />
+      </label>
+      <label class="filters-panel__field">
+        <span class="filters-panel__label">Date from</span>
+        <input type="date" name="date_from" value="{{ filters.date_from.strftime('%Y-%m-%d') if filters.date_from else '' }}" />
+      </label>
+      <label class="filters-panel__field">
+        <span class="filters-panel__label">Date to</span>
+        <input type="date" name="date_to" value="{{ filters.date_to.strftime('%Y-%m-%d') if filters.date_to else '' }}" />
+      </label>
+      <label class="filters-panel__field">
+        <span class="filters-panel__label">Sort by</span>
+        <select name="sort_by">
+          {% set sort_options = {
+            'timestamp': 'Most recent',
+            'accuracy': 'Accuracy',
+            'answered': 'Answered count',
+            'failed': 'Failed count'
+          } %}
+          {% for key, label in sort_options.items() %}
+            <option value="{{ key }}" {% if filters.sort_by == key %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label class="filters-panel__field">
+        <span class="filters-panel__label">Direction</span>
+        <select name="sort_dir">
+          <option value="desc" {% if filters.sort_dir == 'desc' %}selected{% endif %}>Descending</option>
+          <option value="asc" {% if filters.sort_dir == 'asc' %}selected{% endif %}>Ascending</option>
+        </select>
+      </label>
+    </div>
+    <div class="filters-panel__toggle">
+      <button type="button" class="pill pill--ghost" data-action="toggle-filters" aria-expanded="true">
+        Hide advanced filters
+      </button>
+    </div>
+    <div class="filters-panel__body">
+      <div class="filters-panel__groups">
+        <fieldset class="filters-panel__group">
+          <legend>Model</legend>
+          <div class="filters-panel__options">
+            {% for option in facets.models %}
+              <label class="filters-panel__option">
+                <input type="checkbox" name="model" value="{{ option.value }}" {% if option.value in filters.model %}checked{% endif %} />
+                <span class="filters-panel__text">{{ option.label }}</span>
+                <span class="filters-panel__count" data-facet-field="models" data-facet-value="{{ option.value }}">{{ option.active }}/{{ option.total }}</span>
+              </label>
+            {% else %}
+              <p class="filters-panel__empty">No model information.</p>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="filters-panel__group">
+          <legend>Dataset</legend>
+          <div class="filters-panel__options">
+            {% for option in facets.datasets %}
+              <label class="filters-panel__option">
+                <input type="checkbox" name="dataset" value="{{ option.value }}" {% if option.value in filters.dataset %}checked{% endif %} />
+                <span class="filters-panel__text">{{ option.label }}</span>
+                <span class="filters-panel__count" data-facet-field="datasets" data-facet-value="{{ option.value }}">{{ option.active }}/{{ option.total }}</span>
+              </label>
+            {% else %}
+              <p class="filters-panel__empty">No dataset information.</p>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="filters-panel__group">
+          <legend>Reasoning mode</legend>
+          <div class="filters-panel__options">
+            {% for option in facets.reasoning_modes %}
+              <label class="filters-panel__option">
+                <input type="checkbox" name="reasoning_mode" value="{{ option.value }}" {% if option.value in filters.reasoning_mode %}checked{% endif %} />
+                <span class="filters-panel__text">{{ option.label }}</span>
+                <span class="filters-panel__count" data-facet-field="reasoning_modes" data-facet-value="{{ option.value }}">{{ option.active }}/{{ option.total }}</span>
+              </label>
+            {% else %}
+              <p class="filters-panel__empty">No reasoning metadata.</p>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="filters-panel__group">
+          <legend>Result source</legend>
+          <div class="filters-panel__options">
+            {% for option in facets.results_sources %}
+              <label class="filters-panel__option">
+                <input type="checkbox" name="results_source" value="{{ option.value }}" {% if option.value in filters.results_source %}checked{% endif %} />
+                <span class="filters-panel__text">{{ option.label }}</span>
+                <span class="filters-panel__count" data-facet-field="results_sources" data-facet-value="{{ option.value }}">{{ option.active }}/{{ option.total }}</span>
+              </label>
+            {% else %}
+              <p class="filters-panel__empty">No source metadata.</p>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="filters-panel__group">
+          <legend>Failures</legend>
+          <div class="filters-panel__options">
+            {% for option in facets.has_failures %}
+              <label class="filters-panel__option">
+                <input type="radio" name="has_failures" value="{{ option.value }}" {% if filters.has_failures is not none and option.value == 'true' and filters.has_failures %}checked{% elif filters.has_failures is not none and option.value == 'false' and not filters.has_failures %}checked{% endif %} />
+                <span class="filters-panel__text">{{ option.label }}</span>
+                <span class="filters-panel__count" data-facet-field="has_failures" data-facet-value="{{ option.value }}">{{ option.active }}/{{ option.total }}</span>
+              </label>
+            {% endfor %}
+            <label class="filters-panel__option">
+              <input type="radio" name="has_failures" value="any" {% if filters.has_failures is none %}checked{% endif %} />
+              <span class="filters-panel__text">Any</span>
+              <span class="filters-panel__count" data-facet-field="has_failures" data-facet-value="any">{{ run_count }}/{{ total_runs }}</span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="filters-panel__actions">
+        <a class="pill pill--ghost" href="/">Clear</a>
+      </div>
+    </div>
+  </form>
+  <div class="run-grid" id="run-grid">
+    {% for run in runs %}
+      {% include "partials/run_card.html" %}
+    {% else %}
+      <p class="empty-state">No runs match the selected filters.</p>
+    {% endfor %}
+  </div>
+</section>

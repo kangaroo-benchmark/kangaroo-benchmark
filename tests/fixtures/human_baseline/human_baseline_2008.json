@@ -1,0 +1,56 @@
+{
+  "schema_version": "2.0",
+  "year": 2008,
+  "locale": "DE",
+  "grades": [
+    { "id": "3", "label": "3", "members": [3], "max_points": 120.0 },
+    { "id": "4", "label": "4", "members": [4], "max_points": 120.0 }
+  ],
+  "bins": [
+    {
+      "id": "150",
+      "label_pdf": "150,00 (120,00)",
+      "range_default": { "min": 150.0, "max": 150.0, "inclusive": "both" },
+      "ranges_by_grade": {
+        "3": { "min": 120.0, "max": 120.0, "inclusive": "both" },
+        "4": { "min": 120.0, "max": 120.0, "inclusive": "both" }
+      }
+    },
+    {
+      "id": "140-149.75",
+      "label_pdf": "140,00 - 149,75 (112,00 - 119,75)",
+      "range_default": { "min": 140.0, "max": 149.75, "inclusive": "left" },
+      "ranges_by_grade": {
+        "3": { "min": 112.0, "max": 119.75, "inclusive": "left" },
+        "4": { "min": 112.0, "max": 119.75, "inclusive": "left" }
+      }
+    },
+    {
+      "id": "0-139.75",
+      "label_pdf": "0,00 - 139,75 (0,00 - 111,75)",
+      "range_default": { "min": 0.0, "max": 139.75, "inclusive": "left" },
+      "ranges_by_grade": {
+        "3": { "min": 0.0, "max": 111.75, "inclusive": "left" },
+        "4": { "min": 0.0, "max": 111.75, "inclusive": "left" }
+      }
+    }
+  ],
+  "counts_by_grade": {
+    "3": [1, 2, 3],
+    "4": [0, 3, 3]
+  },
+  "totals_by_grade": {
+    "3": 6,
+    "4": 6
+  },
+  "avg_score_by_grade": {
+    "3": 86.6,
+    "4": 85.9
+  },
+  "ui_groups": {
+    "3-4": [3, 4]
+  },
+  "source": {
+    "pdf_filename": "fixture.pdf"
+  }
+}

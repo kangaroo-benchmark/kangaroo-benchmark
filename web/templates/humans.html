@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+{% block title %}Human Baseline{% endblock %}
+{% block content %}
+<section class="page-section humans" id="human-baseline-root" data-has-data="{{ 'true' if has_humans else 'false' }}">
+  <header class="section__header">
+    <div>
+      <h1>Human Baseline</h1>
+      <p>Compare LLM runs against the official Känguru human distributions across years and grade bands.</p>
+    </div>
+  </header>
+
+  <script type="application/json" id="human-baseline-bootstrap">{{ bootstrap | tojson }}</script>
+
+  <div id="human-baseline-empty" class="empty-state"{% if has_humans %} hidden{% endif %}>
+    <p>No human baseline data detected. Add <code>human_baseline_YYYY.json</code> files to <code>human_results/</code> using <code>extraction_format.md</code>.</p>
+  </div>
+
+  {% if has_humans %}
+  <section class="section" id="human-baseline-highlights" hidden>
+    <div class="summary-header">
+      <h2>Human Baseline Highlights</h2>
+      <p class="section-description">Best-performing years and grades for the selected human comparator.</p>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-card">
+        <span class="summary-label">Best Human Year</span>
+        <span class="summary-value" id="baseline-best-year">–</span>
+        <small class="summary-note" id="baseline-best-year-note"></small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Best Human Grade</span>
+        <span class="summary-value" id="baseline-best-grade">–</span>
+        <small class="summary-note" id="baseline-best-grade-note"></small>
+      </div>
+    </div>
+  </section>
+
+  <section class="controls human-controls" id="human-baseline-controls">
+    <div class="controls-section">
+      <div class="controls-group controls-group--primary">
+        <h3 class="controls-heading">Selection</h3>
+        
+        <div class="control-row control-row--three-col">
+          <label class="control-label">
+            <span class="label-text">View Mode</span>
+            <select id="human-view-select" class="control-select">
+              <option value="run">Single LLM Run</option>
+              <option value="aggregate">Cohort Aggregate</option>
+            </select>
+          </label>
+          
+          <label class="control-label">
+            <span class="label-text">Aggregation Method</span>
+            <select id="aggregation-strategy" class="control-select">
+              <option value="best">Best performance</option>
+              <option value="average">Average</option>
+            </select>
+          </label>
+          
+          <label class="control-label" hidden id="human-cohort-type-wrapper">
+            <span class="label-text">Cohort Weighting</span>
+            <select id="human-cohort-type" class="control-select">
+              <option value="micro">Micro (weighted)</option>
+              <option value="macro">Macro (per run)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="control-row">
+          <div id="human-run-select-wrapper" class="control-label">
+            <span class="label-text">LLM Run</span>
+            <select id="human-run-select" class="control-select"></select>
+          </div>
+          
+          <div id="human-run-multi-wrapper" class="control-label" hidden>
+            <span class="label-text">Select Runs for Cohort</span>
+            <div class="run-checkbox-list" id="human-run-checklist"></div>
+            <div class="filter-actions">
+              <button type="button" class="pill pill--ghost" id="human-run-select-all">Select all</button>
+              <button type="button" class="pill pill--ghost" id="human-run-clear">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="controls-group controls-group--secondary">
+        <h3 class="controls-heading">View Options</h3>
+        <div class="control-row control-row--four-col">
+          <label id="human-table-view-wrapper" class="control-label">
+            <span class="label-text">Show Data For</span>
+            <select id="human-table-view" class="control-select">
+              <option value="single">Selected Year & Grade</option>
+              <option value="all-years" selected>All Years (Selected Grade)</option>
+              <option value="all-grades">All Grades (Selected Year)</option>
+              <option value="all">All Years & Grades</option>
+            </select>
+          </label>
+          <label class="control-label">
+            <span class="label-text">Organize By</span>
+            <select id="human-grouping-mode" class="control-select">
+              <option value="year">Year → Grade</option>
+              <option value="grade">Grade → Year</option>
+            </select>
+          </label>
+          <label class="control-label">
+            <span class="label-text">Compare With</span>
+            <div class="button-group" id="human-comparison-source">
+              <button type="button" class="button-group__button is-active" data-value="average">Average</button>
+              <button type="button" class="button-group__button" data-value="best">Best</button>
+            </div>
+          </label>
+          <label id="human-year-select-wrapper" class="control-label">
+            <span class="label-text">Year</span>
+            <select id="human-year-select" class="control-select"></select>
+          </label>
+          <label id="human-grade-select-wrapper" class="control-label">
+            <span class="label-text">Grade</span>
+            <select id="human-grade-select" class="control-select"></select>
+          </label>
+        </div>
+      </div>
+    </div>
+    <p class="controls__note" id="human-baseline-note"></p>
+  </section>
+
+  <section class="section" id="human-run-view" hidden>
+    <div class="quick-stats" id="human-run-quick-stats">
+      <div class="quick-stat"><span class="quick-stat-label">Entries</span><span class="quick-stat-value" id="quick-entries">–</span></div>
+      <div class="quick-stat"><span class="quick-stat-label">Years</span><span class="quick-stat-value" id="quick-years">–</span></div>
+      <div class="quick-stat"><span class="quick-stat-label">Grades</span><span class="quick-stat-value" id="quick-grades">–</span></div>
+      <div class="quick-stat"><span class="quick-stat-label">Points earned</span><span class="quick-stat-value" id="quick-points-earned">–</span></div>
+      <div class="quick-stat"><span class="quick-stat-label">Max points</span><span class="quick-stat-value" id="quick-max-points">–</span></div>
+    </div>
+    <div class="overview-summary">
+      <h2>Performance Overview</h2>
+      <p class="section-description">Quick view of how the LLM performs relative to human participants in the selected benchmark segments.</p>
+      
+      <div class="overview-cards">
+        <div class="overview-card overview-card--highlight">
+          <div class="overview-card__header">
+            <h3>Overall Performance</h3>
+          </div>
+          <div class="overview-card__body">
+            <div class="metric-row">
+              <div class="metric">
+                <span class="metric-label">Percentile Ranking</span>
+                <span class="metric-value metric-value--large" id="human-run-percentile">–</span>
+                <span class="metric-description" id="human-run-percentile-note">Where the LLM ranks among human participants</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Performance Rating</span>
+                <span class="metric-value metric-value--large" id="human-run-rating">–</span>
+                <span class="metric-description" id="human-run-rating-note">Visual quality indicator</span>
+              </div>
+            </div>
+            <div class="metric-row">
+              <div class="metric">
+                <span class="metric-label">Z-Score</span>
+                <span class="metric-value" id="human-run-zscore">–</span>
+                <span class="metric-description" id="human-run-zscore-note">Standard deviations from human mean</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="overview-card">
+          <div class="overview-card__header">
+            <h3>Score Comparison</h3>
+          </div>
+          <div class="overview-card__body">
+            <div class="comparison-row">
+              <div class="comparison-item comparison-item--llm">
+                <span class="comparison-label">LLM Score</span>
+                <div class="comparison-values">
+                  <span class="comparison-value" id="llm-total-score">–</span>
+                  <span class="comparison-pct" id="llm-score-pct">–</span>
+                </div>
+                <span class="comparison-note">of <span id="llm-max-points">–</span> max points</span>
+              </div>
+              
+              <div class="comparison-divider">
+                <span class="comparison-vs">vs</span>
+                <div class="gap-indicator">
+                  <span class="gap-value" id="gap-score-diff">–</span>
+                  <span class="gap-note" id="gap-score-note"></span>
+                </div>
+              </div>
+              
+              <div class="comparison-item comparison-item--human">
+                <span class="comparison-label" id="human-comparison-label">Human Average</span>
+                <div class="comparison-values" id="human-avg-score-wrapper">
+                  <span class="comparison-value" id="human-avg-score">–</span>
+                  <span class="comparison-pct" id="human-avg-pct">–</span>
+                </div>
+                <div class="comparison-values" id="human-best-score-wrapper" style="display: none;">
+                  <span class="comparison-value" id="human-best-score">–</span>
+                  <span class="comparison-pct" id="human-best-pct">–</span>
+                </div>
+                <span class="comparison-note">σ=<span id="human-std-dev">–</span>, n=<span id="human-total-count">–</span></span>
+              </div>
+            </div>
+            
+            <div class="additional-metrics">
+              <div class="metric-small">
+                <span class="metric-small-label">Points from Answers</span>
+                <span class="metric-small-value" id="llm-points-earned">–</span>
+              </div>
+              <div class="metric-small">
+                <span class="metric-small-label">Percentage Point Gap</span>
+                <span class="metric-small-value" id="gap-pct-diff">–</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="detailed-breakdown">
+      <div class="breakdown-header">
+        <h3>Detailed Results by Year & Grade</h3>
+        <p class="section-description">Comprehensive breakdown showing LLM performance against human baselines for each year and grade combination.</p>
+      </div>
+      
+      <div class="breakdown-controls">
+        <label class="breakdown-control">
+          <span class="breakdown-control-label">Sort</span>
+          <select id="human-run-sort" class="breakdown-select">
+            <option value="year-grade">Year, then Grade</option>
+            <option value="grade-year">Grade, then Year</option>
+            <option value="percentile-desc">Best Performance First</option>
+            <option value="percentile-asc">Worst Performance First</option>
+            <option value="gap-desc">Largest LLM Lead</option>
+            <option value="gap-asc">Largest Human Lead</option>
+            <option value="llm-score-desc">Highest LLM Score</option>
+            <option value="human-score-desc">Highest Human Avg</option>
+          </select>
+        </label>
+        
+        <label class="breakdown-control">
+          <span class="breakdown-control-label">Filter</span>
+          <select id="human-run-filter" class="breakdown-select">
+            <option value="all">Show All Results</option>
+            <option value="excellent">Top 5% Performance</option>
+            <option value="good">Top 25% Performance</option>
+            <option value="average">Above Average (≥50%)</option>
+            <option value="below-avg">Below Average (&lt;50%)</option>
+            <option value="llm-wins">LLM Wins Only</option>
+            <option value="human-wins">Human Wins Only</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    
+      <div class="table-wrapper">
+        <table id="human-run-table" class="comparison-table">
+          <thead>
+            <tr>
+              <th rowspan="2" class="col-year sortable" data-sort-key="year" tabindex="0" aria-sort="none">Year</th>
+            <th rowspan="2" class="col-grade sortable" data-sort-key="grade" tabindex="0" aria-sort="none">Grade</th>
+            <th colspan="2" class="group-llm">LLM Performance</th>
+            <th colspan="3" class="group-human">Human Performance</th>
+            <th colspan="2" class="group-comparison">Comparison</th>
+          </tr>
+          <tr>
+            <th class="col-score sortable" data-sort-key="llm_score" tabindex="0" aria-sort="none">Score</th>
+            <th class="col-pct sortable" data-sort-key="llm_pct" tabindex="0" aria-sort="none">Score %</th>
+            <th class="col-avg sortable" data-sort-key="human_score" tabindex="0" aria-sort="none" id="human-score-col-header">Avg (μ)</th>
+            <th class="col-pct sortable" data-sort-key="human_pct" tabindex="0" aria-sort="none" id="human-score-pct-col-header">Avg %</th>
+            <th class="col-std sortable" data-sort-key="human_std" tabindex="0" aria-sort="none">Std (σ)</th>
+            <th class="col-percentile sortable" data-sort-key="percentile" tabindex="0" aria-sort="none">Percentile</th>
+            <th class="col-gap sortable" data-sort-key="gap" tabindex="0" aria-sort="none">Point Gap</th>
+          </tr>
+          </thead>
+          <tbody id="human-run-table-body"></tbody>
+        </table>
+        <p class="table-note" id="human-run-aggregated-note" hidden></p>
+      </div>
+    
+    <div id="human-run-stats" class="results-summary">
+      <div class="summary-header">
+        <h4>Summary Statistics</h4>
+      </div>
+      <div class="summary-badges">
+        <div class="summary-badge">
+          <span class="badge-value" id="stats-total">0</span>
+          <span class="badge-label">Year-Grade Combinations</span>
+        </div>
+        <div class="summary-badge summary-badge--positive">
+          <span class="badge-value" id="stats-llm-wins">0</span>
+          <span class="badge-label">LLM Wins</span>
+        </div>
+        <div class="summary-badge summary-badge--negative">
+          <span class="badge-value" id="stats-human-wins">0</span>
+          <span class="badge-label">Human Wins</span>
+        </div>
+        <div class="summary-badge">
+          <span class="badge-value" id="stats-avg-percentile">–</span>
+          <span class="badge-label">Average Percentile</span>
+        </div>
+        <div class="summary-badge">
+          <span class="badge-value badge-value--small" id="stats-best-year">–</span>
+          <span class="badge-label">Best Year</span>
+        </div>
+        <div class="summary-badge">
+          <span class="badge-value badge-value--small" id="stats-best-grade">–</span>
+          <span class="badge-label">Best Grade</span>
+        </div>
+      </div>
+      <ul class="summary-thresholds" id="stats-thresholds"></ul>
+      <div class="summary-toplists" id="human-run-toplists" hidden>
+        <div class="summary-card summary-card--list">
+          <span class="summary-label">Top LLM Wins</span>
+          <ol id="top-llm-wins" class="summary-list"></ol>
+        </div>
+        <div class="summary-card summary-card--list">
+          <span class="summary-label">Top Human Wins</span>
+          <ol id="top-human-wins" class="summary-list"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="human-cohort-view" hidden>
+    <h2>Cohort Performance Analysis</h2>
+    <div class="summary-grid" id="human-cohort-summary-cards">
+      <div class="summary-card">
+        <span class="summary-label">Selected runs</span>
+        <span class="summary-value" id="human-cohort-run-count">–</span>
+        <small class="summary-note">Number of LLM runs in cohort</small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Avg percentile</span>
+        <span class="summary-value" id="human-cohort-avg-percentile">–</span>
+        <small class="summary-note" id="human-cohort-percentile-note"></small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Median percentile</span>
+        <span class="summary-value" id="human-cohort-median-percentile">–</span>
+        <small class="summary-note">50th percentile of run performance</small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Best performer</span>
+        <span class="summary-value" id="human-cohort-best-run">–</span>
+        <small class="summary-note" id="human-cohort-best-note"></small>
+      </div>
+      <div class="summary-card">
+        <span class="summary-label">Performance range</span>
+        <span class="summary-value" id="human-cohort-range">–</span>
+        <small class="summary-note">p25 to p75 percentile range</small>
+      </div>
+    </div>
+    
+    <h3>Detailed Breakdown</h3>
+    <div class="table-container">
+      <table id="human-cohort-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Grade</th>
+            <th>Runs</th>
+            <th>Samples</th>
+            <th>Avg score %</th>
+            <th>Avg percentile</th>
+            <th>p25</th>
+            <th>Median</th>
+            <th>p75</th>
+            <th>Best run</th>
+            <th>Lowest run</th>
+          </tr>
+        </thead>
+        <tbody id="human-cohort-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="human-charts" hidden>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>Human CDF vs LLM</h3>
+        <div class="chart-card__canvas">
+          <div class="chart-card__surface" id="human-cdf-chart"></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Bin Share Delta</h3>
+        <div class="chart-card__canvas">
+          <div class="chart-card__surface" id="human-heatmap-chart"></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Percentile Distribution</h3>
+        <div class="chart-card__canvas">
+          <div class="chart-card__surface" id="human-percentile-chart"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+</section>
+{% endblock %}

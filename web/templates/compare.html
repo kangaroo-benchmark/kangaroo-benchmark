@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Compare Runs{% endblock %}
+{% block content %}
+<section class="compare" data-run-a="{{ run_a or '' }}" data-run-b="{{ run_b or '' }}">
+  <header class="section__header">
+    <div>
+      <h1>Compare runs</h1>
+      <p>Select up to two runs to compare metrics, breakdowns, and per-id differences.</p>
+    </div>
+  </header>
+  <form id="compare-form" class="compare-form">
+    <label>Run A
+      <select name="run_a" id="compare-run-a" required>
+        <option value="">Select run</option>
+        {% for run in runs %}
+          <option value="{{ run.run_id }}" {% if run.run_id == run_a %}selected{% endif %}>{{ run.model_label or run.model_id }} · {{ run.run_id }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>Run B
+      <select name="run_b" id="compare-run-b" required>
+        <option value="">Select run</option>
+        {% for run in runs %}
+          <option value="{{ run.run_id }}" {% if run.run_id == run_b %}selected{% endif %}>{{ run.model_label or run.model_id }} · {{ run.run_id }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="pill">Compare</button>
+  </form>
+
+  <div id="compare-results">
+    {% if compare %}
+      <div class="compare-controls">
+        <label><input type="checkbox" id="compare-confusion-toggle" /> Show confusion matrices</label>
+      </div>
+      <section class="section compare-summary">
+        <h2>Metric deltas</h2>
+        <div class="compare-grid" id="compare-metrics">
+          {% for metric in compare.metrics %}
+            <div class="summary-card" data-metric="{{ metric.metric }}">
+              <span class="summary-label">{{ metric.metric.replace('_', ' ') }}</span>
+              <span class="summary-value">{{ metric.delta | round(4) if metric.delta is not none else '–' }}</span>
+              <span class="summary-note">A: {{ metric.run_a if metric.run_a is not none else '–' }} · B: {{ metric.run_b if metric.run_b is not none else '–' }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+      <section class="section compare-confusion hidden" id="compare-confusion-section">
+        <div class="chart-grid">
+          <div class="chart-card">
+            <h3>Run A confusion (<span id="compare-confusion-label-a"></span>)</h3>
+            <div class="chart-card__canvas">
+              <div class="chart-card__surface" id="compare-confusion-a"></div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Run B confusion (<span id="compare-confusion-label-b"></span>)</h3>
+            <div class="chart-card__canvas">
+              <div class="chart-card__surface" id="compare-confusion-b"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section compare-charts">
+        <div class="chart-grid">
+          <div class="chart-card">
+            <h3>Group delta</h3>
+            <div class="chart-card__canvas">
+              <div class="chart-card__surface" id="compare-group"></div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Year delta</h3>
+            <div class="chart-card__canvas">
+              <div class="chart-card__surface" id="compare-year"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section compare-rows">
+        <header class="section__header">
+          <h2>Per-id diffs</h2>
+          <div class="section__actions">
+            <select id="compare-view">
+              <option value="all">All</option>
+              <option value="changed">Changed</option>
+              <option value="improved">Improved</option>
+              <option value="regressed">Regressed</option>
+            </select>
+            <input type="number" id="compare-limit" min="1" max="2000" placeholder="Limit" />
+            <button type="button" class="pill" id="compare-refresh">Refresh</button>
+          </div>
+        </header>
+        <div class="table-container">
+          <table id="compare-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>A correct</th>
+                <th>B correct</th>
+                <th>A predicted</th>
+                <th>B predicted</th>
+                <th>A points</th>
+                <th>B points</th>
+                <th>Δ points</th>
+                <th>Δ latency</th>
+                <th>Δ tokens</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in compare.row_deltas %}
+                <tr>
+                  <td>{{ row.id }}</td>
+                  <td>{{ row.run_a_correct }}</td>
+                  <td>{{ row.run_b_correct }}</td>
+                  <td>{{ row.run_a_predicted or '–' }}</td>
+                  <td>{{ row.run_b_predicted or '–' }}</td>
+                  <td>{{ row.run_a_points if row.run_a_points is not none else '–' }}</td>
+                  <td>{{ row.run_b_points if row.run_b_points is not none else '–' }}</td>
+                  <td>{{ row.delta_points if row.delta_points is not none else '–' }}</td>
+                  <td>{{ row.delta_latency_ms if row.delta_latency_ms is not none else '–' }}</td>
+                  <td>{{ row.delta_total_tokens if row.delta_total_tokens is not none else '–' }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    {% else %}
+      <p>Select two runs to see comparison results.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

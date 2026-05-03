@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Scientific Analysis{% endblock %}
+{% block content %}
+<section class="analysis">
+  <header class="section__header">
+    <div>
+      <h1>Scientific Analysis</h1>
+      <p>Advanced analysis of multi-run performance and difficulty correlation.</p>
+    </div>
+  </header>
+
+  <div class="analysis-form-container">
+    <form id="analysis-form">
+      <fieldset>
+        <legend>Select LLM Runs for Analysis</legend>
+        <div class="run-checkbox-list">
+          {% for run in runs %}
+          <label class="checkbox-label">
+            <input type="checkbox" name="run_ids" value="{{ run.run_id }}">
+            <span>{{ run.model_label or run.model_id }} &middot; <small>{{ run.run_id }}</small></span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button type="submit" class="pill">Analyze</button>
+    </form>
+  </div>
+
+  <div id="analysis-results-container" style="display: none;">
+    <div id="analysis-results">
+      <p>Select one or more runs to begin the analysis.</p>
+    </div>
+
+    <section class="section analysis-charts" style="display: none;">
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Human vs. LLM Difficulty</h3>
+          <div class="chart-card__canvas">
+            <div class="chart-card__surface" id="scatter-human-vs-llm"></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Normalized Performance Over Years</h3>
+          <div class="chart-card__canvas">
+            <div class="chart-card__surface" id="bar-normalized-performance"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section analysis-tags" style="display: none;">
+      <h3>Performance by Tag</h3>
+      <div class="table-container">
+        <table id="tag-analysis-table">
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Question Count</th>
+              <th>Avg. Human Score</th>
+              <th>Avg. LLM Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</section>
+{% endblock %}

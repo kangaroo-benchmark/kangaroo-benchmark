@@ -1,0 +1,46 @@
+<div class="run-card" data-run-id="{{ run.run_id }}">
+  <div class="run-card__header">
+    <div>
+      <h2 class="run-card__title">{{ run.model_label or run.model_id or 'Unknown model' }}</h2>
+      <div class="run-card__meta">{{ run.run_id }}</div>
+    </div>
+    <div class="run-card__timestamp">{{ run.timestamp or 'n/a' }}</div>
+  </div>
+  {% set accuracy_value = run.metrics.accuracy * 100 if run.metrics.accuracy is not none else None %}
+  {% set accuracy_class = 'accuracy--low' %}
+  {% if accuracy_value is not none %}
+    {% if accuracy_value >= 85 %}
+      {% set accuracy_class = 'accuracy--high' %}
+    {% elif accuracy_value >= 60 %}
+      {% set accuracy_class = 'accuracy--mid' %}
+    {% endif %}
+  {% endif %}
+  <div class="run-card__metrics">
+    <div class="metric"><span class="metric__label">Accuracy</span><span class="metric__value accuracy {{ accuracy_class }}">{{ accuracy_value | round(2) if accuracy_value is not none else '–' }}{% if accuracy_value is not none %}%{% endif %}</span></div>
+    <div class="metric"><span class="metric__label">Total Points</span><span class="metric__value">{{ run.metrics.total_points_earned | round(2) }}</span></div>
+    <div class="metric"><span class="metric__label">Answered</span><span class="metric__value">{{ run.metrics.answered_count | intcomma }}</span></div>
+    <div class="metric"><span class="metric__label">Failed</span><span class="metric__value">{{ run.metrics.failed_count | intcomma }}</span></div>
+    <div class="metric"><span class="metric__label">Latency</span><span class="metric__value">{{ run.metrics.mean_latency_ms | round(1) if run.metrics.mean_latency_ms else '–' }} ms</span></div>
+    <div class="metric"><span class="metric__label">Output tokens</span><span class="metric__value">{{ run.metrics.mean_completion_tokens | round(1) if run.metrics.mean_completion_tokens else '–' }}</span></div>
+  </div>
+  <div class="run-card__footer">
+    <div class="run-card__tags">
+      {% if run.reasoning_mode %}<span class="tag">Reasoning: {{ run.reasoning_mode }}</span>{% endif %}
+      {% if run.dataset_name %}<span class="tag">Dataset: {{ run.dataset_name }}</span>{% endif %}
+      {% if run.has_failures %}<span class="tag tag--warn">Failures</span>{% endif %}
+      {% if run.metrics.unknown_usage_count and run.metrics.unknown_usage_count > 0 %}
+        <span class="tag tag--warn">Unknown usage: {{ run.metrics.unknown_usage_count }}</span>
+      {% endif %}
+      {% if run.metrics.warning_row_count %}
+        <span class="tag tag--warn">Warnings: {{ run.metrics.warning_row_count }}</span>
+      {% endif %}
+      {% if run.metrics.warning_counts and run.metrics.warning_counts.get('retry_due_to_no_parse') %}
+        <span class="tag tag--warn">No-parse retries: {{ run.metrics.warning_counts.get('retry_due_to_no_parse') }}</span>
+      {% endif %}
+    </div>
+    <div class="run-card__actions">
+      <a class="pill" href="/runs/{{ run.run_id }}">View</a>
+      <a class="pill" href="/compare?run_a={{ run.run_id }}">Compare</a>
+    </div>
+  </div>
+</div>
