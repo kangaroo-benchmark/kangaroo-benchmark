@@ -11,6 +11,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from analysis.figure_style import (
+    BRICK,
+    FILLS,
+    GRADE_COLORS,
+    INK,
+    MUTED,
+    POINT,
+    SERIES_COLORS,
+    TEAL,
+    styled_subplots,
+)
 from analysis.diagnostics import (
     MODEL_LABELS,
     _cluster_bootstrap_interval,
@@ -339,7 +350,7 @@ def compute_variance_decomposition(
 
 
 def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
-    figure, axis = plt.subplots(figsize=(7.2, 3.0))
+    figure, axis = styled_subplots(figsize=(7.2, 3.0))
     specifications = [spec for spec, _, _ in OUTCOME_SPECIFICATIONS]
     short_labels = {
         "Raw": "Raw",
@@ -347,9 +358,9 @@ def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
         "Grade FE + visual share": "+ visual share",
         "Grade FE + image-location shares": "diagram + option shares",
     }
-    colors = ["#0072B2", "#009E73", "#CC79A7", "#E69F00", "#D55E00"]
+    colors = SERIES_COLORS
     offsets = np.linspace(-0.3, 0.3, len(SERIES_LABELS))
-    axis.axvline(0, color="#444444", linewidth=0.9)
+    axis.axvline(0, color=INK, linewidth=0.7)
     for offset, color, (series, label) in zip(
         offsets, colors, SERIES_LABELS.items(), strict=True
     ):
@@ -368,8 +379,9 @@ def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
             markersize=4 if series == ENSEMBLE else 3,
             color=color,
             ecolor=color,
-            capsize=2,
-            linewidth=0.9,
+            capsize=1.5,
+            linewidth=0.8,
+            markeredgewidth=0.8,
             label=label,
         )
     axis.set_yticks(
@@ -379,7 +391,7 @@ def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
     )
     axis.set_xlabel("Change in cohort %max per +10 pp model %max", fontsize=8)
     axis.tick_params(axis="x", labelsize=7)
-    axis.grid(axis="x", alpha=0.2)
+    axis.grid(axis="x")
     axis.legend(fontsize=6.5, loc="upper right", frameon=False)
     figure.tight_layout(pad=0.6)
     return figure
@@ -388,7 +400,7 @@ def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
 def plot_forward_predictions(predictions: pd.DataFrame) -> plt.Figure:
     present = set(predictions["grade_bucket"])
     grades = [grade for grade in GRADE_ORDER if grade in present]
-    figure, axes = plt.subplots(1, len(grades), figsize=(7.2, 2.4), sharey=True)
+    figure, axes = styled_subplots(1, len(grades), figsize=(7.2, 2.4), sharey=True)
     for axis, grade in zip(np.atleast_1d(axes), grades, strict=True):
         frame = predictions.loc[
             (predictions["grade_bucket"] == grade) & (predictions["series"] == ENSEMBLE)
@@ -397,33 +409,33 @@ def plot_forward_predictions(predictions: pd.DataFrame) -> plt.Figure:
         axis.plot(
             observed["year"],
             observed["observed"],
-            color="#222222",
+            color=INK,
             marker="o",
-            markersize=2.5,
+            markersize=2.2,
             linewidth=1.0,
             label="Observed cohort",
         )
         axis.plot(
             observed["year"],
             observed["predicted"],
-            color="#888888",
+            color=MUTED,
             linestyle="--",
-            linewidth=1.0,
+            linewidth=0.9,
             label="Grade-mean baseline",
         )
         surrogate = frame.loc[frame["specification"] == "Model score"]
         axis.plot(
             surrogate["year"],
             surrogate["predicted"],
-            color="#D55E00",
+            color=BRICK,
             marker="s",
-            markersize=2.5,
+            markersize=2.2,
             linewidth=1.0,
-            label="Ensemble surrogate",
+            label="Ensemble calibration",
         )
         axis.set_title(grade, fontsize=8)
         axis.tick_params(labelsize=6.5)
-        axis.grid(alpha=0.2)
+        axis.grid(axis="y")
     np.atleast_1d(axes)[0].set_ylabel("Cohort %max", fontsize=8)
     handles, labels = np.atleast_1d(axes)[0].get_legend_handles_labels()
     figure.legend(
@@ -440,29 +452,33 @@ def plot_forward_predictions(predictions: pd.DataFrame) -> plt.Figure:
 
 
 def plot_variance_decomposition(decomposition: pd.DataFrame) -> plt.Figure:
-    figure, axis = plt.subplots(figsize=(7.2, 2.6))
+    figure, axis = styled_subplots(figsize=(7.2, 2.6))
     positions = np.arange(len(decomposition))
     width = 0.27
+    bar_style = {"edgecolor": INK, "linewidth": 0.5}
     axis.bar(
         positions - width,
         decomposition["r2_grade"],
         width,
-        color="#BBBBBB",
+        color=FILLS[3],
         label="Grade FE",
+        **bar_style,
     )
     axis.bar(
         positions,
         decomposition["r2_grade_visual"],
         width,
-        color="#0072B2",
+        color=FILLS[0],
         label="+ visual share",
+        **bar_style,
     )
     axis.bar(
         positions + width,
         decomposition["r2_grade_location"],
         width,
-        color="#D55E00",
+        color=FILLS[1],
         label="diagram + option shares",
+        **bar_style,
     )
     axis.set_xticks(
         positions,
@@ -472,7 +488,7 @@ def plot_variance_decomposition(decomposition: pd.DataFrame) -> plt.Figure:
     axis.set_ylabel("$R^2$ of form-level %max", fontsize=8)
     axis.set_ylim(0, 1)
     axis.tick_params(axis="y", labelsize=7)
-    axis.grid(axis="y", alpha=0.2)
+    axis.grid(axis="y")
     axis.legend(fontsize=6.5, frameon=False, ncol=3, loc="upper left")
     figure.tight_layout(pad=0.6)
     return figure
@@ -500,38 +516,38 @@ def compute_yearly_composition(item_scores: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_yearly_composition(yearly: pd.DataFrame) -> plt.Figure:
-    figure, axis = plt.subplots(figsize=(7.2, 2.6))
+    figure, axis = styled_subplots(figsize=(7.2, 2.6))
     axis.plot(
         yearly["year"],
         100 * yearly["auxiliary_visual_share"],
-        color="#d55e00",
+        color=INK,
         marker="o",
-        markersize=3.5,
-        linewidth=1.6,
+        markersize=2.6,
+        linewidth=1.4,
         label="Any auxiliary visual content",
     )
     axis.plot(
         yearly["year"],
         100 * yearly["question_diagram_share"],
-        color="#0072b2",
+        color=TEAL,
         marker="s",
-        markersize=3,
-        linewidth=1.2,
+        markersize=2.4,
+        linewidth=1.1,
         label="Question diagram",
     )
     axis.plot(
         yearly["year"],
         100 * yearly["option_image_share"],
-        color="#009e73",
+        color=BRICK,
         marker="^",
-        markersize=3,
-        linewidth=1.2,
+        markersize=2.4,
+        linewidth=1.1,
         label="Image-based answer options",
     )
     axis.set_xlabel("Contest year")
     axis.set_ylabel("Share of items (%)")
     axis.set_ylim(0, 80)
-    axis.grid(alpha=0.25)
+    axis.grid(axis="y")
     axis.legend(frameon=False, loc="upper left", fontsize=8)
     figure.tight_layout()
     return figure
@@ -545,8 +561,8 @@ def plot_composition_effects(panel: pd.DataFrame) -> plt.Figure:
         frame[column + "_dm"] = frame[column] - frame.groupby("grade_bucket")[
             column
         ].transform("mean")
-    figure, axes = plt.subplots(1, 2, figsize=(7.2, 2.7), sharex=True)
-    colors = plt.get_cmap("viridis")(np.linspace(0.05, 0.9, len(GRADE_ORDER)))
+    figure, axes = styled_subplots(1, 2, figsize=(7.2, 2.7), sharex=True)
+    colors = GRADE_COLORS
     for axis, column, label in [
         (axes[0], "human_pct_dm", "Official cohort %max"),
         (axes[1], ensemble + "_dm", "Equal-weight ensemble %max"),
@@ -555,10 +571,19 @@ def plot_composition_effects(panel: pd.DataFrame) -> plt.Figure:
         y = frame[column].to_numpy()
         for grade, color in zip(GRADE_ORDER, colors):
             mask = (frame["grade_bucket"] == grade).to_numpy()
-            axis.scatter(x[mask], y[mask], s=14, color=color, alpha=0.85, label=grade)
+            axis.scatter(
+                x[mask],
+                y[mask],
+                s=14,
+                color=color,
+                alpha=0.85,
+                edgecolor="white",
+                linewidth=0.3,
+                label=grade,
+            )
         slope, intercept = np.polyfit(x, y, 1)
         grid = np.linspace(x.min(), x.max(), 50)
-        axis.plot(grid, intercept + slope * grid, color="black", linewidth=1.2)
+        axis.plot(grid, intercept + slope * grid, color=INK, linewidth=1.2)
         axis.annotate(
             f"{10 * slope:+.2f} per +10 pp",
             xy=(0.03, 0.93),
@@ -566,13 +591,13 @@ def plot_composition_effects(panel: pd.DataFrame) -> plt.Figure:
             fontsize=9,
             va="top",
         )
-        axis.axhline(0, color="0.6", linewidth=0.6)
-        axis.axvline(0, color="0.6", linewidth=0.6)
-        axis.set_title(label, fontsize=10)
+        axis.axhline(0, color=MUTED, linewidth=0.5)
+        axis.axvline(0, color=MUTED, linewidth=0.5)
+        axis.set_title(label, fontsize=9)
         axis.set_xlabel(
             "Share of items with auxiliary visual content\n(pp, within-grade centered)"
         )
-        axis.grid(alpha=0.25)
+        axis.grid(axis="y")
     axes[0].set_ylabel("%max (within-grade centered)")
     axes[1].legend(frameon=False, fontsize=7, loc="lower left", ncol=2, title=None)
     figure.tight_layout()
@@ -660,34 +685,34 @@ def build_human_reference_table(panel: pd.DataFrame) -> pd.DataFrame:
 def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.Figure:
     """Composition drift over the archive and its opposite-signed associations with
     cohort and ensemble %max on the shared exams."""
-    figure, axes = plt.subplots(
+    figure, axes = styled_subplots(
         1, 3, figsize=(7.2, 2.5), gridspec_kw={"width_ratios": [1.35, 1, 1]}
     )
     drift = axes[0]
     drift.plot(
         yearly["year"],
         100 * yearly["auxiliary_visual_share"],
-        color="#d55e00",
+        color=INK,
         marker="o",
-        markersize=2.8,
-        linewidth=1.4,
+        markersize=2.4,
+        linewidth=1.3,
         label="Any auxiliary visual content",
     )
     drift.plot(
         yearly["year"],
         100 * yearly["question_diagram_share"],
-        color="#0072b2",
+        color=TEAL,
         marker="s",
-        markersize=2.4,
+        markersize=2.1,
         linewidth=1.0,
         label="Question diagram",
     )
     drift.plot(
         yearly["year"],
         100 * yearly["option_image_share"],
-        color="#009e73",
+        color=BRICK,
         marker="^",
-        markersize=2.4,
+        markersize=2.1,
         linewidth=1.0,
         label="Image-based options",
     )
@@ -696,7 +721,7 @@ def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.
     drift.set_ylabel("Share of items (%)")
     drift.set_title("(a) Composition of the archive", fontsize=9)
     drift.legend(frameon=False, fontsize=6.5, loc="upper left")
-    drift.grid(alpha=0.25)
+    drift.grid(axis="y")
 
     frame = panel.copy()
     ensemble = series_column(ENSEMBLE)
@@ -711,9 +736,11 @@ def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.
         (axes[2], ensemble + "_dm", "(c) Ensemble %max"),
     ]:
         y = frame[column].to_numpy()
-        axis.scatter(x, y, s=9, color="0.35", alpha=0.75)
+        axis.scatter(
+            x, y, s=11, color=POINT, alpha=0.9, edgecolor="white", linewidth=0.3
+        )
         slope, intercept = np.polyfit(x, y, 1)
-        axis.plot(grid, intercept + slope * grid, color="#d55e00", linewidth=1.4)
+        axis.plot(grid, intercept + slope * grid, color=BRICK, linewidth=1.3)
         axis.annotate(
             f"{10 * slope:+.2f} per +10 pp",
             xy=(0.04, 0.94),
@@ -721,11 +748,11 @@ def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.
             fontsize=8,
             va="top",
         )
-        axis.axhline(0, color="0.7", linewidth=0.6)
-        axis.axvline(0, color="0.7", linewidth=0.6)
+        axis.axhline(0, color=MUTED, linewidth=0.5)
+        axis.axvline(0, color=MUTED, linewidth=0.5)
         axis.set_title(title, fontsize=9)
         axis.set_xlabel("Visual share (pp)")
-        axis.grid(alpha=0.25)
+        axis.grid(axis="y")
     axes[1].set_ylabel("%max (centered)")
     figure.tight_layout(w_pad=1.0)
     return figure
