@@ -52,7 +52,7 @@ for hosts that do not render image bytes embedded in a Parquet column.
 
 ## Integrity and terms
 
-`checksums.sha256` covers every file in this directory. The repository's MIT
+`checksums.sha256` covers every data file in this directory (everything except this README). The repository's MIT
 license covers the code; the dataset and derived translations follow the
 dataset release terms (CC BY-NC 4.0), and the official human summaries are
 not covered by either.

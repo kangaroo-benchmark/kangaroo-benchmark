@@ -11,6 +11,13 @@ import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 
+from analysis.figure_style import (
+    BRICK,
+    FILLS,
+    INK,
+    SEQUENTIAL,
+    styled_subplots,
+)
 from analysis.inputs import (
     aggregate_exam_scores,
     build_comparison,
@@ -669,7 +676,7 @@ def compute_option_position_diagnostics(item_scores: pd.DataFrame) -> pd.DataFra
 def plot_alignment_summary(
     controlled: pd.DataFrame, exam_data: pd.DataFrame
 ) -> plt.Figure:
-    figure, axes = plt.subplots(
+    figure, axes = styled_subplots(
         1,
         2,
         figsize=(7.2, 3.1),
@@ -681,11 +688,11 @@ def plot_alignment_summary(
         exam_data["human_pct"],
         exam_data["pooled_ensemble_pct"],
         c=exam_data["multimodal_share"],
-        cmap="viridis",
+        cmap=SEQUENTIAL,
         s=20,
-        alpha=0.8,
+        alpha=0.9,
         edgecolor="white",
-        linewidth=0.25,
+        linewidth=0.3,
     )
     coefficients = np.polyfit(
         exam_data["human_pct"], exam_data["pooled_ensemble_pct"], 1
@@ -694,14 +701,14 @@ def plot_alignment_summary(
     scatter_axis.plot(
         x_values,
         coefficients[0] * x_values + coefficients[1],
-        color="#333333",
+        color=INK,
         linewidth=1.0,
     )
     scatter_axis.set_xlabel("Human exam score (%max)", fontsize=8)
     scatter_axis.set_ylabel("Model ensemble score (%max)", fontsize=8)
     scatter_axis.set_title("(a) Raw association", fontsize=9)
     scatter_axis.tick_params(labelsize=7)
-    scatter_axis.grid(alpha=0.2)
+    scatter_axis.grid(axis="y")
     scatter_axis.text(
         0.04,
         0.06,
@@ -722,7 +729,7 @@ def plot_alignment_summary(
         "Grade FE + image-location shares": "+ diagram/answer shares",
     }
     coefficient_axis = axes[1]
-    coefficient_axis.axvline(0, color="#444444", linewidth=0.9)
+    coefficient_axis.axvline(0, color=INK, linewidth=0.7)
     coefficient_axis.errorbar(
         coefficient_plot["effect_per_10pp_human"],
         np.arange(len(coefficient_plot)),
@@ -735,9 +742,10 @@ def plot_alignment_summary(
             ]
         ),
         fmt="s",
-        color="#D55E00",
-        ecolor="#D55E00",
-        capsize=3,
+        color=BRICK,
+        ecolor=BRICK,
+        capsize=2,
+        linewidth=0.8,
     )
     coefficient_axis.set_yticks(
         np.arange(len(coefficient_plot)),
@@ -755,7 +763,7 @@ def plot_alignment_summary(
     coefficient_axis.set_xlabel("Model-score change per +10 pp human score", fontsize=8)
     coefficient_axis.set_title("(b) Estimate and 95% CI", fontsize=9)
     coefficient_axis.tick_params(axis="x", labelsize=7)
-    coefficient_axis.grid(axis="x", alpha=0.2)
+    coefficient_axis.grid(axis="x")
 
     figure.tight_layout(pad=0.6, w_pad=0.8)
     return figure
@@ -765,8 +773,8 @@ def plot_image_subtypes(subtype_results: pd.DataFrame) -> plt.Figure:
     models = list(MODEL_LABELS)
     x = np.arange(len(SUBTYPE_ORDER))
     width = 0.19
-    colors = ["#4C72B0", "#E69F00", "#6B7A3D", "#CC79A7"]
-    figure, axis = plt.subplots(figsize=(9.5, 4.8))
+    colors = FILLS[:4]
+    figure, axis = styled_subplots(figsize=(7.2, 3.4))
     for index, (model, color) in enumerate(zip(models, colors, strict=True)):
         group = (
             subtype_results.loc[subtype_results["model"] == model]
@@ -780,14 +788,13 @@ def plot_image_subtypes(subtype_results: pd.DataFrame) -> plt.Figure:
             width,
             label=MODEL_LABELS[model],
             color=color,
-            edgecolor="#333333",
-            linewidth=0.4,
+            edgecolor=INK,
+            linewidth=0.5,
         )
-    axis.set_xticks(x, SUBTYPE_ORDER, rotation=12, ha="right")
+    axis.set_xticks(x, SUBTYPE_ORDER, rotation=0, ha="center")
     axis.set_ylabel("Accuracy (%)")
     axis.set_ylim(0, 100)
-    axis.set_title("Accuracy by location of auxiliary visual content")
-    axis.grid(axis="y", alpha=0.2)
+    axis.grid(axis="y")
     axis.legend(ncol=2, frameon=False)
     figure.tight_layout()
     return figure
