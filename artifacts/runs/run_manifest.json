@@ -1,0 +1,592 @@
+{
+  "dataset_sha256": "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9",
+  "notes": "results.parquet holds each run's final predicted letters, scored by the analysis against the dataset keys; results.jsonl.gz holds the first-pass item records; missing final answers were re-queried with tools/retry_missing_answers.py and raw_responses.jsonl.gz keeps every attempt.",
+  "runs": {
+    "20251013_191510_openai-gpt-5": {
+      "arm": "full",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1234,
+          "sha256": "689335faf61b500f89ccbc841546f2ae7743232501ec39ce4b355ceea1522ead"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 50666718,
+          "sha256": "b82d5e358b1a04920ece4ab6873f1de1752143b869199b378c57dc6543b7030e"
+        },
+        "results.jsonl.gz": {
+          "bytes": 760301,
+          "sha256": "237be0b89b5c03efadba5d29130c21464f62befdfb092f2694a525fec0408a73"
+        },
+        "results.parquet": {
+          "bytes": 330475,
+          "sha256": "a65a3d411bcd1d72f5dfb2cb9211769fc78230f73850f75ccc4731192da8e242"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 305391,
+          "sha256": "8f6160238084ab07662718438376aefe9ad14f48481002c9841937ae684fc479"
+        }
+      },
+      "final_table": "results.filled.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": null
+      },
+      "input": "kangaroo.parquet",
+      "model": "openai-gpt-5",
+      "model_id": "openai/gpt-5",
+      "retried_rows": 4,
+      "rows": 3886,
+      "rows_outside_dataset": 1,
+      "timestamp_utc": "20251013_191510"
+    },
+    "20251013_191528_x-ai-grok-4-fast": {
+      "arm": "full",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1246,
+          "sha256": "f7af757c7c12b475739eb208840006de20ab5d6ea0ad3bf341921379121574b8"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 686661,
+          "sha256": "d2a61081fc13748edd6ab1b62ba1cd3b6bafd77834b91631a4fdae2f051a0315"
+        },
+        "results.jsonl.gz": {
+          "bytes": 693996,
+          "sha256": "3a5a813504e7bf561946168a5881cb0321c8123836aa78c2617147ca1421ce68"
+        },
+        "results.parquet": {
+          "bytes": 330344,
+          "sha256": "6c13277c85d346750b82f58d1b4bb8c2777450ea98a56ca59ed161df3e921586"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 312441,
+          "sha256": "093c4a727118d150269a3e083ecb928539dbe256fb3221404dd5fcc14e5002a1"
+        }
+      },
+      "final_table": "results.filled.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": null
+      },
+      "input": "kangaroo.parquet",
+      "model": "x-ai-grok-4-fast",
+      "model_id": "x-ai/grok-4-fast",
+      "retried_rows": 39,
+      "rows": 3886,
+      "rows_outside_dataset": 1,
+      "timestamp_utc": "20251013_191528"
+    },
+    "20251014_080823_qwen-qwen3-vl-235b-a22b-thinking": {
+      "arm": "full",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1291,
+          "sha256": "8d6234ad42e5b5db7f37a743c17ed27805d46c5b26cd3357ca28f8697730246d"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 12056685,
+          "sha256": "5f86ac84618aad3d3dee0b29063027fc3532666bc6a21eb83f20ec3e75e189d9"
+        },
+        "results.jsonl.gz": {
+          "bytes": 1507269,
+          "sha256": "1faa363128d78d357d9c0b8536c5f2669942ddf6ef0a5dff6e55b4e5923bf2fb"
+        },
+        "results.parquet": {
+          "bytes": 330269,
+          "sha256": "64c3a1ccbb9fcf77682dfde8c0517b819bdcab301fe4b4148a256c2706f85595"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 318096,
+          "sha256": "5808916cba7cac0838a8e4def57fa3ec843375cc95f0cadc82c926c286d9f4b9"
+        }
+      },
+      "final_table": "results.filled.filled.filled.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": null
+      },
+      "input": "kangaroo.parquet",
+      "model": "qwen-qwen3-vl-235b-a22b-thinking",
+      "model_id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "retried_rows": 0,
+      "rows": 3886,
+      "rows_outside_dataset": 1,
+      "timestamp_utc": "20251014_080823"
+    },
+    "20251020_212534_anthropic-claude-sonnet-4.5": {
+      "arm": "full",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1279,
+          "sha256": "ce6272fefec85b06ca84e3b6f31aff7e8238d00bbcda5029664532e9c3082b75"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 2143601,
+          "sha256": "ac0615cf5fb7d70e642b854004be9254fa9073ac20858132195ba9f833297ef8"
+        },
+        "results.jsonl.gz": {
+          "bytes": 2169039,
+          "sha256": "906c434ace91b9cff15106ac0c491f3e1afa182948255143384fdb437c777f29"
+        },
+        "results.parquet": {
+          "bytes": 328413,
+          "sha256": "46da6a0418381380104a0a5ad87de180d52fd76c203de8be39e82a91e9a36fdc"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 290187,
+          "sha256": "48d0c8a10b8eee86378a58f5e722e93d5bfcc0c6a223c702eab608b90ecb9498"
+        }
+      },
+      "final_table": "results.filled.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": null
+      },
+      "input": "kangaroo.parquet",
+      "model": "anthropic-claude-sonnet-4.5",
+      "model_id": "anthropic/claude-sonnet-4.5",
+      "retried_rows": 0,
+      "rows": 3886,
+      "rows_outside_dataset": 1,
+      "timestamp_utc": "20251020_212534"
+    },
+    "20260807_163720_anthropic-claude-sonnet-4.5": {
+      "arm": "german_control",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1312,
+          "sha256": "0153927351732b4dbb24e539db8fd72376cf9373bab548481607c52eb6faf301"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 112857,
+          "sha256": "eda40b6745b5767a2887a26fdd55c9eabd22220bab45db7e4fe8d4ba00409af2"
+        },
+        "results.jsonl.gz": {
+          "bytes": 112561,
+          "sha256": "860716cd312f4137e9171082eed48471c1bebc455c8c482e74863875a60538cb"
+        },
+        "results.parquet": {
+          "bytes": 23351,
+          "sha256": "15cdd50f880f64fd0f065dafd7fb78466e9ad821242eb3d41a08b1f4e87862a3"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 15958,
+          "sha256": "c1bea9a81a96fb3d5962bd88769d4893cf814e4c6dd23e0be26ec15bd105e054"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/german_control.parquet",
+      "model": "anthropic-claude-sonnet-4.5",
+      "model_id": "anthropic/claude-sonnet-4.5",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_163720"
+    },
+    "20260807_164146_anthropic-claude-sonnet-4.5": {
+      "arm": "english",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1317,
+          "sha256": "0131238bdb0bf67f9e20030917b16790c9cff07b4abb50327c983b4e4ee152fe"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 120900,
+          "sha256": "48f5658723f74e85ddb59285eae0e0cb21b2978a48923a7dbef9b19ca865f51d"
+        },
+        "results.jsonl.gz": {
+          "bytes": 120918,
+          "sha256": "0cafd4a2aa0989d48d793655cc05e26351cdce78384e145090e50d2340c909a8"
+        },
+        "results.parquet": {
+          "bytes": 23134,
+          "sha256": "267b8381f62421e8dd78b60d10e45cca1a1e368a86cbd4c92e3412287edd7aee"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 15938,
+          "sha256": "7b1be4755a8c2d3f5620f5f611a54e3fec6f98630d7c2eac440c58352ce6bcb8"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/english_translation.parquet",
+      "model": "anthropic-claude-sonnet-4.5",
+      "model_id": "anthropic/claude-sonnet-4.5",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_164146"
+    },
+    "20260807_164637_anthropic-claude-sonnet-4.5": {
+      "arm": "blind",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1326,
+          "sha256": "b4edf4296e646f276d18681508d3e6c6a9bfa59a814b2879433a75ed5888d0a4"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 826983,
+          "sha256": "275066f507cb91f2e16d2fe1ae41acebf97ddbde7dd9e02557fe47853bedbc7a"
+        },
+        "results.jsonl.gz": {
+          "bytes": 822564,
+          "sha256": "fd29622f643bcc2ad96cc3162c4301b324d8a36d0dd1bf0a435b89e2e27eac8c"
+        },
+        "results.parquet": {
+          "bytes": 119945,
+          "sha256": "38b7daf99649d1fc98e1030c4a427c1d30032f6447ea94631fa0e0316947f2c4"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 100518,
+          "sha256": "ce911f5cf44ca1df0df966ef484c1e47f05b7641722eacee0c8b84b33e019e55"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": true
+      },
+      "input": "experiments/blind_question_diagram_only.parquet",
+      "model": "anthropic-claude-sonnet-4.5",
+      "model_id": "anthropic/claude-sonnet-4.5",
+      "retried_rows": 0,
+      "rows": 1353,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_164637"
+    },
+    "20260807_164656_openai-gpt-5": {
+      "arm": "german_control",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1267,
+          "sha256": "a752ede16745b0712f5cadfb48cf8586ccb94d7c23719099e1dc9720cb295e6d"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 2451309,
+          "sha256": "cb5d0571abc371df606b29c6e1cb5e11b0da97497aa88589f5f6b03f8bdd32a0"
+        },
+        "results.jsonl.gz": {
+          "bytes": 41240,
+          "sha256": "68a6cf5f3f4a951b132ede005e03beffbf9416c56b501d7c2400b58f1ea273d9"
+        },
+        "results.parquet": {
+          "bytes": 23436,
+          "sha256": "eda2c7d4bea3a0788c6cf09b8ae0d9de657a3e3a91c023c073c1023e5011ba25"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 17377,
+          "sha256": "1035d669d28a1c074930840fe152be784e072115a0017e75558b24c15e375ac4"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/german_control.parquet",
+      "model": "openai-gpt-5",
+      "model_id": "openai/gpt-5",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_164656"
+    },
+    "20260807_164703_qwen-qwen3-vl-235b-a22b-thinking": {
+      "arm": "german_control",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1324,
+          "sha256": "801d33afed306a3ce468ca12c8798f14d48efdfac5cdc7b8786985ce41fa3cfd"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 897355,
+          "sha256": "0fec849cb1b0fd7fb85b513430e54ac51d1e46979dafa822155abfd7df17d961"
+        },
+        "results.jsonl.gz": {
+          "bytes": 80596,
+          "sha256": "7ee62b9b5279c44dc2e2e742e5cef9fffea6ed9c63ee0b59c95bc56731d27a14"
+        },
+        "results.parquet": {
+          "bytes": 23435,
+          "sha256": "45ec6a69a0f9bad6289095dd9c0cdf493f266a7f092d7e12126d0554e02a1d91"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 18370,
+          "sha256": "0241d704c32e4371e848455f4ad1c62efb7ac25cae23ef3e50966cfbb11c6890"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/german_control.parquet",
+      "model": "qwen-qwen3-vl-235b-a22b-thinking",
+      "model_id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_164703"
+    },
+    "20260807_171242_openai-gpt-5": {
+      "arm": "english",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1272,
+          "sha256": "e76ed06eb1d6e85d76479d534d429fa658bad5619a8bd8bf306f129891da9f75"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 2610655,
+          "sha256": "0b2100aebd399205d7542c3263bcc55b443aed158b55ff0dc2fc6f00cc3b0054"
+        },
+        "results.jsonl.gz": {
+          "bytes": 37603,
+          "sha256": "a3069c3d44e2fb72e89733ae64f179201b6d6d0ab743e58366c1601c8264642f"
+        },
+        "results.parquet": {
+          "bytes": 23221,
+          "sha256": "10783811a2dda637568a5a9e8b64bc36c789b94ec9ccd0a0ddf57b2f50905b5f"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 17313,
+          "sha256": "27d0eb379629012d68e9ed859a0ba4478c72fe418762241ce47c8c85cec92f78"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/english_translation.parquet",
+      "model": "openai-gpt-5",
+      "model_id": "openai/gpt-5",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_171242"
+    },
+    "20260807_182113_openai-gpt-5": {
+      "arm": "blind",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1281,
+          "sha256": "7adb8ab2aace85b1f1876fcabef11ed5aff266eb5c6c8788446236f1e9734c85"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 14213212,
+          "sha256": "a892896e5342e50f6f026f6158ea5571d5eb717cd36cb2fe1bbbff8bf53775de"
+        },
+        "results.jsonl.gz": {
+          "bytes": 223931,
+          "sha256": "0afe723681d2a7f74b70d33d5d54bd768c7ec5b1fc5bb7134b6742f9f978eca2"
+        },
+        "results.parquet": {
+          "bytes": 120650,
+          "sha256": "39d62974f7ce0dce2a05dc8f4922c40e73c4a45c73de3940af0fdc40f38a1e93"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 107729,
+          "sha256": "8a97f6aa415054ff33360b3b360ca921820939b708afd2c51a160e783ed667ce"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": true
+      },
+      "input": "experiments/blind_question_diagram_only.parquet",
+      "model": "openai-gpt-5",
+      "model_id": "openai/gpt-5",
+      "retried_rows": 0,
+      "rows": 1353,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_182113"
+    },
+    "20260807_182113_qwen-qwen3-vl-235b-a22b-thinking": {
+      "arm": "english",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1329,
+          "sha256": "cbfc2fd8b5cf7e5df98bdfcebe774fa98d0356c85c84ca8c47d825acd51a112b"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 1171442,
+          "sha256": "97c8c3a1a9bbe842989fc9e8f4f0c1aba3b94dd7d380f25daa9cd867607f4786"
+        },
+        "results.jsonl.gz": {
+          "bytes": 133778,
+          "sha256": "cef7421e79311808141fc7b0f969725f12dfc7177cd8458cc760d5616ab58d4c"
+        },
+        "results.parquet": {
+          "bytes": 23232,
+          "sha256": "e7f9b19e6d75c150b283722d3009f8c74ef12620ab7171d7901b9c7a60d81984"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 18472,
+          "sha256": "374f8c80555a149c7fd628b912ecccf12319df2d8cc3f33c26066a07d62360ed"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": false
+      },
+      "input": "translation/english_translation.parquet",
+      "model": "qwen-qwen3-vl-235b-a22b-thinking",
+      "model_id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "retried_rows": 0,
+      "rows": 200,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_182113"
+    },
+    "20260807_191427_qwen-qwen3-vl-235b-a22b-thinking": {
+      "arm": "blind",
+      "decoding": {
+        "max_tokens": null,
+        "reasoning": "self-directed",
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "files": {
+        "config.json": {
+          "bytes": 1338,
+          "sha256": "3743257ea436b7b5476a31b186e34e8d26f8d92c7f1af8417b468b0fdbac8eb5"
+        },
+        "raw_responses.jsonl.gz": {
+          "bytes": 7816064,
+          "sha256": "b811cdc8133eb4eb3809bf49ae6645d03fb7325fae4208e6283339d9e90431ab"
+        },
+        "results.jsonl.gz": {
+          "bytes": 548370,
+          "sha256": "652e0a5ebf58b185509d1ad1c71c61447837a4ab48fed13ed8495cb1e6dee61e"
+        },
+        "results.parquet": {
+          "bytes": 120534,
+          "sha256": "9194a7dc6a40d3dd4929dc181730abc4cc6555b6899f6ddd4b8b85c4021b671f"
+        },
+        "usage_events.jsonl.gz": {
+          "bytes": 117473,
+          "sha256": "805659807cb5f9638d78f0320e911dbffd36f74565c4e8064e2174c34530f3f8"
+        }
+      },
+      "final_table": "results.parquet",
+      "images": {
+        "image_detail": "auto",
+        "image_jpeg_quality": 85,
+        "image_max_dim": 1024,
+        "no_images": true
+      },
+      "input": "experiments/blind_question_diagram_only.parquet",
+      "model": "qwen-qwen3-vl-235b-a22b-thinking",
+      "model_id": "qwen/qwen3-vl-235b-a22b-thinking",
+      "retried_rows": 0,
+      "rows": 1353,
+      "rows_outside_dataset": 0,
+      "timestamp_utc": "20260807_191427"
+    }
+  },
+  "schema_version": "2.0"
+}

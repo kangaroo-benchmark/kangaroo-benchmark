@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Optional, Sequence, Tuple
+from typing import Optional, Tuple
 
 DECLINED_TOKEN = "DECLINED"
 PENALTY_FACTOR = 0.25
-START_POINTS_LOWER_GRADES = 24.0
-START_POINTS_UPPER_GRADES = 30.0
+SUBMITTED_START_POINTS_LOWER_GRADES = 24.0
+SUBMITTED_START_POINTS_UPPER_GRADES = 30.0
 LOWER_GRADE_MIN = 3
 LOWER_GRADE_MAX = 6
 UPPER_GRADE_MIN = 7
@@ -49,27 +49,17 @@ def extract_grade_numbers(group_value: object) -> Tuple[int, ...]:
     return tuple(num for num in numbers if num is not None)
 
 
-def start_points_for_numbers(numbers: Sequence[int]) -> float:
-    """Return the official start capital for the given grade numbers."""
+def submitted_start_points_for_group(group_value: object) -> float:
+    """Return the legacy start capital used in the submitted analysis."""
+    numbers = extract_grade_numbers(group_value)
     if not numbers:
         return 0.0
-    # Use the smallest grade to decide the bucket.
     smallest = min(numbers)
     if UPPER_GRADE_MIN <= smallest <= UPPER_GRADE_MAX:
-        return START_POINTS_UPPER_GRADES
+        return SUBMITTED_START_POINTS_UPPER_GRADES
     if LOWER_GRADE_MIN <= smallest <= LOWER_GRADE_MAX:
-        return START_POINTS_LOWER_GRADES
+        return SUBMITTED_START_POINTS_LOWER_GRADES
     return 0.0
-
-
-def start_points_for_group(group_value: object) -> float:
-    """Return start capital inferred from a dataset ``group`` label."""
-    return start_points_for_numbers(extract_grade_numbers(group_value))
-
-
-def start_points_for_members(members: Sequence[int]) -> float:
-    """Return start capital based on explicit grade membership numbers."""
-    return start_points_for_numbers(members)
 
 
 def is_declined(predicted: Optional[str]) -> bool:
@@ -114,10 +104,8 @@ __all__ = [
     "extract_grade_numbers",
     "is_declined",
     "score_question",
-    "start_points_for_group",
-    "start_points_for_members",
-    "start_points_for_numbers",
+    "submitted_start_points_for_group",
     "PENALTY_FACTOR",
-    "START_POINTS_LOWER_GRADES",
-    "START_POINTS_UPPER_GRADES",
+    "SUBMITTED_START_POINTS_LOWER_GRADES",
+    "SUBMITTED_START_POINTS_UPPER_GRADES",
 ]

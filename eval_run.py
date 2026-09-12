@@ -20,7 +20,7 @@ from PIL import Image
 from tqdm import tqdm
 
 from console.metrics import Aggregator, UsageEvent
-from score_utils import score_question, start_points_for_group
+from score_utils import score_question
 
 try:
     from console.dashboard import Dashboard
@@ -778,12 +778,17 @@ async def evaluate_single_row(
     warnings: List[str] = []
     raw_entries: List[Dict[str, Any]] = []
 
-    q_bytes = coerce_bytes(row.get("question_image"))
-    opt_bytes = {
-        letter: coerce_bytes(row.get(f"sol_{letter}_image_bin"))
-        for letter in LETTER_SET
-    }
-    assoc_bytes = coerce_list_of_bytes(row.get("associated_images_bin")) or []
+    if args.no_images:
+        q_bytes = None
+        opt_bytes = {letter: None for letter in LETTER_SET}
+        assoc_bytes = []
+    else:
+        q_bytes = coerce_bytes(row.get("question_image"))
+        opt_bytes = {
+            letter: coerce_bytes(row.get(f"sol_{letter}_image_bin"))
+            for letter in LETTER_SET
+        }
+        assoc_bytes = coerce_list_of_bytes(row.get("associated_images_bin")) or []
 
     has_images = bool(q_bytes or any(opt_bytes.values()) or assoc_bytes)
     if has_images and not model_info.supports_vision:
@@ -1722,6 +1727,11 @@ def main():
         action="store_true",
         help="Evaluate only text (non-multimodal) questions; drop multimodal rows before running.",
     )
+    parser.add_argument(
+        "--no-images",
+        action="store_true",
+        help="Send no question, associated, or option images while retaining the selected rows.",
+    )
     # Image controls for multimodal inputs
     parser.add_argument(
         "--image_max_dim",
@@ -2067,35 +2077,11 @@ def main():
 
         start_points_total = 0.0
         if not points_series.empty:
-            combos = results_df.loc[points_series > 0, ["year", "group"]]
-            seen_keys: set[Tuple[str, str]] = set()
-            for year_value, group_value in combos.itertuples(index=False):
-                if pd.isna(group_value):
-                    continue
-
-                if isinstance(group_value, (int, float)) and not isinstance(
-                    group_value, bool
-                ):
-                    if float(group_value).is_integer():
-                        sanitized_group_value: object = int(float(group_value))
-                    else:
-                        sanitized_group_value = float(group_value)
-                else:
-                    sanitized_group_value = str(group_value).strip()
-
-                group_key = str(sanitized_group_value).strip()
-                if not group_key:
-                    continue
-                normalized_year = (
-                    "None" if pd.isna(year_value) else str(year_value).strip()
-                )
-                key = (normalized_year, group_key)
-                if key in seen_keys:
-                    continue
-                seen_keys.add(key)
-                start_bonus = start_points_for_group(sanitized_group_value)
-                if start_bonus > 0.0:
-                    start_points_total += start_bonus
+            scored_rows = results_df.loc[points_series > 0, ["year", "group"]]
+            scored_rows = scored_rows.loc[scored_rows["group"].notna()]
+            start_points_total = float(
+                scored_rows.groupby(["year", "group"], dropna=False).size().sum()
+            )
 
         raw_total_points = float(earned_series.sum())
         max_points_total = float(points_series.sum() + start_points_total)

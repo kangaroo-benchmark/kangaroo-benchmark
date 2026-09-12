@@ -1,0 +1,10 @@
+series,series_label,comparison,items,accuracy_reference,accuracy_treated,difference_pp,ci_low_pp,ci_high_pp,lost,gained,decline_rate_reference,decline_rate_treated
+openai-gpt-5,GPT-5,English minus German (translation pairs),200,0.9,0.895,-0.5,-3.5000000000000004,2.5,5,4,0.015,0.015
+openai-gpt-5,GPT-5,"Diagram removed minus retained (same batch, no crop)",70,0.8571428571428571,0.42857142857142855,-42.857142857142854,-54.285714285714285,-31.428571428571427,30,0,0.014285714285714285,0.5
+openai-gpt-5,GPT-5,"Images removed minus retained (full blind subset, Oct 2025 vs Aug 2026)",1353,0.8078344419807835,0.3924611973392461,-41.53732446415373,-44.41980783444198,-38.65299334811531,575,13,0.04434589800443459,0.5461936437546193
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,English minus German (translation pairs),200,0.85,0.845,-0.5,-5.0,4.0,11,10,0.0,0.0
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,"Diagram removed minus retained (same batch, no crop)",70,0.7857142857142857,0.5857142857142857,-20.0,-32.857142857142854,-7.142857142857142,20,6,0.0,0.08571428571428572
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,"Images removed minus retained (full blind subset, Oct 2025 vs Aug 2026)",1353,0.779009608277901,0.5624538063562454,-21.65558019216556,-24.316334072431633,-18.920916481892093,357,64,0.0,0.07095343680709534
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,English minus German (translation pairs),200,0.78,0.775,-0.5,-4.5,3.5000000000000004,9,8,0.0,0.0
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,"Diagram removed minus retained (same batch, no crop)",70,0.6428571428571429,0.4142857142857143,-22.857142857142858,-35.714285714285715,-10.0,20,4,0.0,0.22857142857142856
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,"Images removed minus retained (full blind subset, Oct 2025 vs Aug 2026)",1353,0.6430155210643016,0.44789356984478934,-19.51219512195122,-22.54249815225425,-16.62971175166297,365,101,0.009608277900960829,0.25277161862527714

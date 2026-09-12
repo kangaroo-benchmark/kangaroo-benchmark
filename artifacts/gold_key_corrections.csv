@@ -1,0 +1,83 @@
+id,year,group,problem_number,printed_problem_number,old_answer,corrected_answer,action,evidence
+00_1113_p2_119e1c96-b303-42ba-b41a-ea25135d5996,2000,11-13,8,7,B,D,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+00_1113_p2_0407960b-5e8c-4223-ab33-8669a48caac4,2000,11-13,9,8,A,B,repair_shifted_row,shifted problem_number sequence
+00_1113_p2_c565aae5-7ed8-449e-9508-f7880f14764b,2000,11-13,10,9,D,A,repair_shifted_row,shifted problem_number sequence
+00_1113_p2_1db80709-8649-4d60-ba8e-de8eb84744d3,2000,11-13,11,10,E,D,repair_shifted_row,shifted problem_number sequence
+00_1113_p2_43afce6a-cdbe-4c6c-8a35-ea5136967a0d,2000,11-13,12,11,C,E,repair_shifted_row,shifted problem_number sequence
+00_1113_p2_eb871e96-37c1-4928-9e9b-3fd6ab68783a,2000,11-13,13,12,B,C,repair_shifted_row,shifted problem_number sequence
+00_1113_p2_41b6de04-4ccd-43b2-aedd-3d5c677f53b2,2000,11-13,14,13,E,B,repair_shifted_row,shifted problem_number sequence
+00_1113_16dc316a-a571-4053-9d20-afa66e4d91cd,2000,11-13,15,14,B,E,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_0de9b510-a046-4187-88c5-e28719bb3947,2000,11-13,17,15,A,B,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_1ecdde48-1188-469e-8cb7-5764bc876764,2000,11-13,18,16,C,C,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+00_1113_p3_c5ef2bf5-ee65-486f-bfea-70eda648434a,2000,11-13,19,17,D,A,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_f97bf642-c077-435d-aced-5a19312b20d3,2000,11-13,20,18,D,C,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_03b47b99-9c57-4c68-b880-3ea6ce1aa2b5,2000,11-13,21,19,B,D,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_b2307e59-24b9-45a4-a095-5174bbbad373,2000,11-13,22,20,A,D,repair_shifted_row,shifted problem_number sequence
+00_1113_p3_981f40b3-15c4-4a60-84d4-bb219b62992e,2000,11-13,23,21,B,B,repair_shifted_row,shifted problem_number sequence
+00_1113_3ad334d3-afd3-4ed1-891d-afe766826ced,2000,11-13,24,22,A,A,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_d910ae76-ea2f-4a3b-bd5d-b0cabe437e5a,2000,11-13,26,23,B,B,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_eff66a89-dd8e-4ff4-8c01-1d45ed4846a1,2000,11-13,27,24,A,A,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_279f1e6b-fd89-42bc-a258-2a4810a318a9,2000,11-13,28,25,C,E,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+00_1113_p4_901dd929-f109-47e3-87b4-2733eaf26aeb,2000,11-13,29,26,E,B,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_48e550c5-975e-4a89-a40b-71f430989467,2000,11-13,30,27,E,A,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_8327e946-3dea-4836-ac97-e765e70ab0da,2000,11-13,31,28,C,C,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_a81f9821-72e9-40db-826a-8dc069f1f8c1,2000,11-13,32,29,E,E,repair_shifted_row,shifted problem_number sequence
+00_1113_p4_970ea9df-c900-4567-a8d6-60209a249af4,2000,11-13,33,30,E,E,repair_shifted_row,shifted problem_number sequence
+00_56_p2_0a1484c4-5031-4c4e-8abb-2e113a160959,2000,5-6,13,13,E,E,correct_statement_number,question crop shows problem number 13
+00_78_p4_a481a6e5-5520-423f-bf89-0895fab4279b,2000,7-8,25,24,D,D,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+00_78_p4_7e4a0d11-5ac7-4111-8322-abe1a2e1a29e,2000,7-8,26,25,B,D,repair_shifted_row,shifted problem_number sequence
+00_78_p4_3af86ecb-f730-402f-9dda-ef26c5acec5d,2000,7-8,27,26,C,B,repair_shifted_row,shifted problem_number sequence
+00_78_p4_e91ec4f8-6f68-4418-b9aa-abb18eb161a2,2000,7-8,28,27,C,C,repair_shifted_row,shifted problem_number sequence
+00_78_p4_6be2782b-9158-4bd1-a478-373c6821d4bc,2000,7-8,29,28,C,C,repair_shifted_row,shifted problem_number sequence
+00_78_p4_d7bf7ce2-38ec-48b7-b0de-888e8bd371c9,2000,7-8,30,29,D,C,repair_shifted_row,shifted problem_number sequence
+00_78_p4_7538b4c0-e40f-4c0f-8e06-4403a81be5db,2000,7-8,31,30,D,D,repair_shifted_row,shifted problem_number sequence
+01_34_p2_8c51874f-8d68-44a2-ac26-4e48e5c7142a,2001,3-4,8,7,B,E,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+01_34_p2_bbe291fc-95ed-4a5d-9457-873adb34addd,2001,3-4,9,8,D,B,repair_shifted_row,shifted problem_number sequence
+01_34_p2_7f957e38-20ff-4f7f-8181-a1982938ee06,2001,3-4,10,9,E,D,repair_shifted_row,shifted problem_number sequence
+01_34_p2_e4011dee-c87c-440f-b183-49fae3379a38,2001,3-4,11,10,C,E,repair_shifted_row,shifted problem_number sequence
+01_34_p3_3f4173a3-454a-42bd-8856-e6cbef27aed8,2001,3-4,12,11,E,C,repair_shifted_row,shifted problem_number sequence
+01_34_p3_1113b3b2-b333-49b9-85f3-32f5023eed1a,2001,3-4,13,12,B,E,repair_shifted_row,shifted problem_number sequence
+01_34_p3_a3de7656-6df4-4280-b235-d07a225d9866,2001,3-4,14,13,D,B,repair_shifted_row,shifted problem_number sequence
+01_34_p3_ca5225e5-f8b9-4c99-babc-db242719e122,2001,3-4,15,14,E,D,repair_shifted_row,shifted problem_number sequence
+01_34_p3_b9f37d7a-b41f-4061-b697-5f25b73cde58,2001,3-4,16,15,B,E,repair_shifted_row,shifted problem_number sequence
+01_34_p3_87051e21-6027-45bd-b28e-b913f0c69f4c,2001,3-4,17,16,C,B,repair_shifted_row,shifted problem_number sequence
+01_34_p4_b9c97aac-15b1-4a14-8ba4-6a99ce2ff32a,2001,3-4,18,17,E,C,repair_shifted_row,shifted problem_number sequence
+01_34_p4_09de860b-121f-4786-8b6a-be0737b59bf7,2001,3-4,19,18,D,E,repair_shifted_row,shifted problem_number sequence
+01_34_p4_bad79dd6-17d6-4be2-b0ef-8acfe8bf2607,2001,3-4,20,19,C,D,repair_shifted_row,shifted problem_number sequence
+01_34_p4_51a2964c-1459-4c8f-b170-b05cd90b6bae,2001,3-4,21,20,A,C,repair_shifted_row,shifted problem_number sequence
+01_34_p4_3d5ce627-4c5c-4cf6-b2a0-6820815b0095,2001,3-4,22,21,A,A,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_3ff55061-d5fe-4eaf-84bd-b6e355e7e573,2002,11-13,18,17,B,C,repair_shifted_row,shifted problem_number sequence; verified against official solution sheet
+02_1113_ergaenzt_p3_4aafc482-057d-4fbd-9469-2d14eda6f8e4,2002,11-13,19,18,A,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_325580ae-6197-4a80-8a70-411c92b3267e,2002,11-13,20,19,D,A,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_a4b8ce4d-404e-49e7-942b-3005b4813e89,2002,11-13,21,20,A,D,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_caab2d6d-28fc-443a-8077-9ad3dd9f41d1,2002,11-13,22,21,E,A,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_251030b7-0887-4bb8-9d7b-34122ccde72c,2002,11-13,23,22,B,E,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p3_29caff4c-49d8-40dc-903d-9c7ad29f2155,2002,11-13,24,23,B,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_232f5d20-20c0-4f7d-a4b1-e421922806cb,2002,11-13,25,24,C,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_6cace43c-9aa0-4a80-b92f-2f5f55bf8e27,2002,11-13,26,25,B,C,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_87717253-ae32-4fc3-945f-77b53e43b610,2002,11-13,27,26,C,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_5fc57695-5e86-4ee3-a25a-c0ab664e664d,2002,11-13,28,27,B,C,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_7dc020c6-f2c3-45bc-b934-85c5c454a5a3,2002,11-13,29,28,B,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_63911ad5-f72b-48d6-8e48-31b21a35a53f,2002,11-13,30,29,D,B,repair_shifted_row,shifted problem_number sequence
+02_1113_ergaenzt_p4_40a5e54b-a0c9-42d5-8eae-049a41022a4d,2002,11-13,31,30,D,D,repair_shifted_row,shifted problem_number sequence
+10_56_p1_0432720b-de2d-4274-bff9-332fad6d595b,2010,5-6,6,5,A,C,repair_shifted_row,shifted problem_number sequence
+10_56_p1_e995cd21-2d3d-4312-b4aa-45928c673ecb,2010,5-6,7,6,C,A,repair_shifted_row,shifted problem_number sequence
+10_56_p2_9c42b06f-344e-4d15-b58b-1c5231c993be,2010,5-6,8,7,B,C,repair_shifted_row,shifted problem_number sequence
+10_56_p2_e3bf9416-f72d-4c0f-ad8f-241f15c09d9b,2010,5-6,9,8,D,B,repair_shifted_row,shifted problem_number sequence
+10_56_p2_9ff6402d-0d52-45b5-bac3-0d68bb928cd1,2010,5-6,10,9,E,D,repair_shifted_row,shifted problem_number sequence
+10_56_p2_05f1d7c7-d329-4dcd-a5a3-77cef400ec74,2010,5-6,11,10,E,E,repair_shifted_row,shifted problem_number sequence
+10_56_p2_1dd690f7-1241-4cff-b32c-7e1326b9426f,2010,5-6,12,11,D,E,repair_shifted_row,shifted problem_number sequence
+10_56_p2_94e45fd5-63aa-4bb9-bed5-987b4cc4283f,2010,5-6,13,12,C,D,repair_shifted_row,shifted problem_number sequence
+10_56_p3_bb98cb55-b69b-4d34-baa3-351c7143777f,2010,5-6,14,13,E,C,repair_shifted_row,shifted problem_number sequence
+10_56_p3_8c33b63b-c23d-4ecc-89de-c4dcc8f3d2a4,2010,5-6,15,14,B,E,repair_shifted_row,shifted problem_number sequence
+10_56_p3_17146a76-2ea8-4f5d-8686-c585c1d8d380,2010,5-6,16,15,C,B,repair_shifted_row,shifted problem_number sequence
+10_56_p3_cbdf301c-ddcd-459f-b8ba-8de1c0dc53ab,2010,5-6,17,16,A,C,repair_shifted_row,shifted problem_number sequence
+10_56_p3_9308a72c-d255-465b-82aa-99ec28d95970,2010,5-6,18,17,B,A,repair_shifted_row,shifted problem_number sequence
+10_56_p3_ef15da40-8f9b-477c-a66a-d4c8f802d628,2010,5-6,19,18,D,B,repair_shifted_row,shifted problem_number sequence
+10_56_p4_e2c40dba-4c0b-449e-af80-0ee869a974d7,2010,5-6,20,19,E,D,repair_shifted_row,shifted problem_number sequence
+10_56_p4_89895a3b-59e4-4b0d-9c31-3661b2f37572,2010,5-6,21,20,A,E,repair_shifted_row,shifted problem_number sequence
+10_56_p4_1f19a264-9aff-4e95-bee7-309a4d2331ea,2010,5-6,22,21,D,A,repair_shifted_row,shifted problem_number sequence
+10_56_p4_204f01a5-1bfd-4577-bc80-f5941737178c,2010,5-6,23,22,C,D,repair_shifted_row,shifted problem_number sequence
+10_56_p4_6d572ab8-6275-48a7-a24f-d95b4d379011,2010,5-6,24,23,B,C,repair_shifted_row,shifted problem_number sequence
+10_56_p4_ad99e6be-8c58-423b-a371-fac6afbe24c7,2010,5-6,25,24,B,B,repair_shifted_row,shifted problem_number sequence
+10_56_p1_9cf8e5f5-7c42-4c92-ace3-e93a0f3a58c2,2010,5-6,5,,C,,drop_spurious_row,problem statement contains only a period

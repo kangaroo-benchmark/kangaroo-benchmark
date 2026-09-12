@@ -1,0 +1,113 @@
+model,year,items,accuracy,abstention_rate,model_label
+openai-gpt-5,2000,104,0.9903846153846154,0.009615384615384616,GPT-5
+openai-gpt-5,2001,99,0.98989898989899,0.010101010101010102,GPT-5
+openai-gpt-5,2002,96,0.9583333333333334,0.03125,GPT-5
+openai-gpt-5,2003,87,1.0,0.0,GPT-5
+openai-gpt-5,2004,86,0.9883720930232558,0.011627906976744186,GPT-5
+openai-gpt-5,2005,84,0.9880952380952381,0.0,GPT-5
+openai-gpt-5,2006,88,0.9886363636363636,0.011363636363636364,GPT-5
+openai-gpt-5,2007,89,1.0,0.0,GPT-5
+openai-gpt-5,2008,81,0.9753086419753086,0.0,GPT-5
+openai-gpt-5,2009,85,0.9647058823529412,0.0,GPT-5
+openai-gpt-5,2010,71,0.9859154929577465,0.014084507042253521,GPT-5
+openai-gpt-5,2011,80,0.9875,0.0,GPT-5
+openai-gpt-5,2012,84,0.9761904761904762,0.0,GPT-5
+openai-gpt-5,2013,84,1.0,0.0,GPT-5
+openai-gpt-5,2014,79,1.0,0.0,GPT-5
+openai-gpt-5,2015,77,1.0,0.0,GPT-5
+openai-gpt-5,2016,72,1.0,0.0,GPT-5
+openai-gpt-5,2017,66,1.0,0.0,GPT-5
+openai-gpt-5,2018,67,1.0,0.0,GPT-5
+openai-gpt-5,2019,63,1.0,0.0,GPT-5
+openai-gpt-5,2020,64,1.0,0.0,GPT-5
+openai-gpt-5,2021,58,0.9655172413793104,0.017241379310344827,GPT-5
+openai-gpt-5,2022,51,1.0,0.0,GPT-5
+openai-gpt-5,2023,52,1.0,0.0,GPT-5
+openai-gpt-5,2024,46,1.0,0.0,GPT-5
+openai-gpt-5,2025,41,1.0,0.0,GPT-5
+openai-gpt-5,1998,93,0.967741935483871,0.010752688172043012,GPT-5
+openai-gpt-5,1999,93,0.989247311827957,0.0,GPT-5
+x-ai-grok-4-fast,2000,104,0.9711538461538461,0.009615384615384616,Grok 4 Fast
+x-ai-grok-4-fast,2001,99,0.9393939393939394,0.04040404040404041,Grok 4 Fast
+x-ai-grok-4-fast,2002,96,0.9583333333333334,0.020833333333333332,Grok 4 Fast
+x-ai-grok-4-fast,2003,87,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2004,86,0.9534883720930233,0.023255813953488372,Grok 4 Fast
+x-ai-grok-4-fast,2005,84,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2006,88,0.9772727272727273,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2007,89,0.9550561797752809,0.033707865168539325,Grok 4 Fast
+x-ai-grok-4-fast,2008,81,0.9753086419753086,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2009,85,0.9764705882352941,0.011764705882352941,Grok 4 Fast
+x-ai-grok-4-fast,2010,71,0.9577464788732394,0.014084507042253521,Grok 4 Fast
+x-ai-grok-4-fast,2011,80,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2012,84,0.9761904761904762,0.011904761904761904,Grok 4 Fast
+x-ai-grok-4-fast,2013,84,0.9880952380952381,0.011904761904761904,Grok 4 Fast
+x-ai-grok-4-fast,2014,79,0.9746835443037974,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2015,77,0.987012987012987,0.012987012987012988,Grok 4 Fast
+x-ai-grok-4-fast,2016,72,0.9861111111111112,0.013888888888888888,Grok 4 Fast
+x-ai-grok-4-fast,2017,66,0.9848484848484849,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2018,67,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2019,63,0.9841269841269841,0.015873015873015872,Grok 4 Fast
+x-ai-grok-4-fast,2020,64,0.953125,0.03125,Grok 4 Fast
+x-ai-grok-4-fast,2021,58,0.9827586206896551,0.017241379310344827,Grok 4 Fast
+x-ai-grok-4-fast,2022,51,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2023,52,0.9423076923076923,0.038461538461538464,Grok 4 Fast
+x-ai-grok-4-fast,2024,46,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,2025,41,1.0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,1998,93,0.989247311827957,0.010752688172043012,Grok 4 Fast
+x-ai-grok-4-fast,1999,93,0.967741935483871,0.021505376344086023,Grok 4 Fast
+qwen-qwen3-vl-235b-a22b-thinking,2000,104,0.9807692307692307,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2001,99,0.98989898989899,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2002,96,0.96875,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2003,87,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2004,86,0.9767441860465116,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2005,84,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2006,88,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2007,89,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2008,81,0.9382716049382716,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2009,85,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2010,71,0.9859154929577465,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2011,80,0.975,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2012,84,0.9642857142857143,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2013,84,0.9880952380952381,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2014,79,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2015,77,0.987012987012987,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2016,72,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2017,66,0.9848484848484849,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2018,67,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2019,63,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2020,64,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2021,58,0.9827586206896551,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2022,51,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2023,52,0.9807692307692307,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2024,46,0.9782608695652174,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,2025,41,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,1998,93,0.9247311827956989,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,1999,93,0.978494623655914,0.0,Qwen3-VL
+anthropic-claude-sonnet-4.5,2000,104,0.9519230769230769,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2001,99,0.9696969696969697,0.010101010101010102,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2002,96,0.90625,0.010416666666666666,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2003,87,0.9310344827586207,0.022988505747126436,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2004,86,0.9651162790697675,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2005,84,0.9523809523809523,0.011904761904761904,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2006,88,0.9318181818181818,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2007,89,0.9550561797752809,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2008,81,0.8888888888888888,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2009,85,0.9529411764705882,0.011764705882352941,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2010,71,0.8732394366197183,0.014084507042253521,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2011,80,0.925,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2012,84,0.8809523809523809,0.011904761904761904,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2013,84,0.9285714285714286,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2014,79,0.9746835443037974,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2015,77,0.8831168831168831,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2016,72,0.9444444444444444,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2017,66,0.8484848484848485,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2018,67,0.9701492537313433,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2019,63,0.9365079365079365,0.015873015873015872,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2020,64,0.90625,0.03125,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2021,58,0.8448275862068966,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2022,51,0.8235294117647058,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2023,52,0.9230769230769231,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2024,46,0.8695652173913043,0.021739130434782608,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,2025,41,1.0,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,1998,93,0.9247311827956989,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,1999,93,0.978494623655914,0.0,Claude Sonnet 4.5

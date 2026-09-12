@@ -1,0 +1,5 @@
+model,items,correct,accuracy,abstentions,decline_rate,no_valid_selections,model_label,contest_points,exams_won
+openai-gpt-5,3886,3433,0.8834276891405044,117,0.0301080802882141,0,GPT-5,17299.5,85
+x-ai-grok-4-fast,3886,3044,0.7833247555326814,460,0.11837364899639732,0,Grok 4 Fast,15762.5,9
+qwen-qwen3-vl-235b-a22b-thinking,3886,3354,0.863098301595471,0,0.0,4,Qwen3-VL,16803.75,39
+anthropic-claude-sonnet-4.5,3886,3006,0.7735460627895008,29,0.007462686567164179,0,Claude Sonnet 4.5,14958.25,7

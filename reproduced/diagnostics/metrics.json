@@ -1,0 +1,331 @@
+{
+  "composition_control": {
+    "Grade FE + image-location shares": {
+      "ci_95": [
+        -3.201236248126097,
+        2.456922954416216
+      ],
+      "effect_per_10pp_human": -0.6250186396575044,
+      "partial_correlation": -0.05002898968090317,
+      "r2": 0.6301020872280412
+    },
+    "Grade FE + multimodal share": {
+      "ci_95": [
+        -4.570219036923036,
+        0.5044424161450776
+      ],
+      "effect_per_10pp_human": -2.1069270370791737,
+      "partial_correlation": -0.1763961518173802,
+      "r2": 0.597733029795458
+    },
+    "Grade fixed effects": {
+      "ci_95": [
+        -7.269185267499064,
+        -1.5989075024971382
+      ],
+      "effect_per_10pp_human": -4.975381980979333,
+      "partial_correlation": -0.36468090207807663,
+      "r2": 0.4438234712758068
+    },
+    "Raw": {
+      "ci_95": [
+        -9.658381816110609,
+        -4.938362448891684
+      ],
+      "effect_per_10pp_human": -7.579338532782817,
+      "partial_correlation": -0.49037806881338697,
+      "r2": 0.24047065037314708
+    }
+  },
+  "contest_totals": {
+    "Claude Sonnet 4.5": {
+      "contest_points": 14958.25,
+      "forms": 140,
+      "possible_points": 19440.0
+    },
+    "GPT-5": {
+      "contest_points": 17299.5,
+      "forms": 140,
+      "possible_points": 19440.0
+    },
+    "Grok 4 Fast": {
+      "contest_points": 15762.5,
+      "forms": 140,
+      "possible_points": 19440.0
+    },
+    "Qwen3-VL": {
+      "contest_points": 16803.75,
+      "forms": 140,
+      "possible_points": 19440.0
+    }
+  },
+  "dataset": {
+    "evaluated_items": 3886,
+    "question_crop_present": 3886,
+    "released_rows": 3886,
+    "sha256": "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9",
+    "subtype_counts": {
+      "Image answers only": 119,
+      "No separate visual element": 2140,
+      "Question diagram and image answers": 274,
+      "Question diagram only": 1353
+    }
+  },
+  "form_adjustments": {
+    "fixed_credit_form_adjustments": [
+      {
+        "fixed_bonus": 6,
+        "group": "9-10",
+        "official_max": 150,
+        "year": 2001
+      },
+      {
+        "fixed_bonus": 6,
+        "group": "3-4",
+        "official_max": 105,
+        "year": 2003
+      }
+    ],
+    "non_evaluable_official_slots": 2,
+    "shared_comparisons": 115
+  },
+  "image_subtype": {
+    "Claude Sonnet 4.5 / Image answers only": {
+      "accuracy": 0.5630252100840336,
+      "decline_rate": 0.01680672268907563,
+      "items": 119
+    },
+    "Claude Sonnet 4.5 / No separate visual element": {
+      "accuracy": 0.9261682242990654,
+      "decline_rate": 0.005607476635514018,
+      "items": 2140
+    },
+    "Claude Sonnet 4.5 / Question diagram and image answers": {
+      "accuracy": 0.3175182481751825,
+      "decline_rate": 0.0072992700729927005,
+      "items": 274
+    },
+    "Claude Sonnet 4.5 / Question diagram only": {
+      "accuracy": 0.6430155210643016,
+      "decline_rate": 0.009608277900960829,
+      "items": 1353
+    },
+    "GPT-5 / Image answers only": {
+      "accuracy": 0.6218487394957983,
+      "decline_rate": 0.1092436974789916,
+      "items": 119
+    },
+    "GPT-5 / No separate visual element": {
+      "accuracy": 0.9887850467289719,
+      "decline_rate": 0.004672897196261682,
+      "items": 2140
+    },
+    "GPT-5 / Question diagram and image answers": {
+      "accuracy": 0.5474452554744526,
+      "decline_rate": 0.12408759124087591,
+      "items": 274
+    },
+    "GPT-5 / Question diagram only": {
+      "accuracy": 0.8078344419807835,
+      "decline_rate": 0.04434589800443459,
+      "items": 1353
+    },
+    "Grok 4 Fast / Image answers only": {
+      "accuracy": 0.42016806722689076,
+      "decline_rate": 0.3445378151260504,
+      "items": 119
+    },
+    "Grok 4 Fast / No separate visual element": {
+      "accuracy": 0.9766355140186916,
+      "decline_rate": 0.012616822429906542,
+      "items": 2140
+    },
+    "Grok 4 Fast / Question diagram and image answers": {
+      "accuracy": 0.16423357664233576,
+      "decline_rate": 0.4927007299270073,
+      "items": 274
+    },
+    "Grok 4 Fast / Question diagram only": {
+      "accuracy": 0.6348854397634885,
+      "decline_rate": 0.18994826311899482,
+      "items": 1353
+    },
+    "Qwen3-VL / Image answers only": {
+      "accuracy": 0.5630252100840336,
+      "decline_rate": 0.0,
+      "items": 119
+    },
+    "Qwen3-VL / No separate visual element": {
+      "accuracy": 0.9841121495327103,
+      "decline_rate": 0.0,
+      "items": 2140
+    },
+    "Qwen3-VL / Question diagram and image answers": {
+      "accuracy": 0.4635036496350365,
+      "decline_rate": 0.0,
+      "items": 274
+    },
+    "Qwen3-VL / Question diagram only": {
+      "accuracy": 0.779009608277901,
+      "decline_rate": 0.0,
+      "items": 1353
+    }
+  },
+  "model_correlations": [
+    {
+      "bootstrap_samples": 2000,
+      "comparisons": 115,
+      "pearson_ci_high": -0.24062702722248575,
+      "pearson_ci_low": -0.5838465172715719,
+      "pearson_r": -0.42849858697223775,
+      "series": "GPT-5",
+      "spearman_ci_high": -0.18026035708228005,
+      "spearman_ci_low": -0.5906725758094684,
+      "spearman_rho": -0.3994096005239563
+    },
+    {
+      "bootstrap_samples": 2000,
+      "comparisons": 115,
+      "pearson_ci_high": -0.19628685061689546,
+      "pearson_ci_low": -0.5656788168945189,
+      "pearson_r": -0.4014161279384103,
+      "series": "Qwen3-VL",
+      "spearman_ci_high": -0.21240208322310755,
+      "spearman_ci_low": -0.5544467454274947,
+      "spearman_rho": -0.4062464774181938
+    },
+    {
+      "bootstrap_samples": 2000,
+      "comparisons": 115,
+      "pearson_ci_high": -0.21655594473977413,
+      "pearson_ci_low": -0.6675204833179397,
+      "pearson_r": -0.45439869737141736,
+      "series": "Grok 4 Fast",
+      "spearman_ci_high": -0.22736880483303631,
+      "spearman_ci_low": -0.6020280633700366,
+      "spearman_rho": -0.42205711866927625
+    },
+    {
+      "bootstrap_samples": 2000,
+      "comparisons": 115,
+      "pearson_ci_high": -0.13538401210678452,
+      "pearson_ci_low": -0.505326559964618,
+      "pearson_r": -0.33978764497227687,
+      "series": "Claude Sonnet 4.5",
+      "spearman_ci_high": -0.10729888154005925,
+      "spearman_ci_low": -0.4638689086427255,
+      "spearman_rho": -0.3086143152040722
+    },
+    {
+      "bootstrap_samples": 2000,
+      "comparisons": 115,
+      "pearson_ci_high": -0.2879221454636073,
+      "pearson_ci_low": -0.6396986067276024,
+      "pearson_r": -0.49037806881338686,
+      "series": "Equal-weight ensemble",
+      "spearman_ci_high": -0.255000761069344,
+      "spearman_ci_low": -0.6109466827357357,
+      "spearman_rho": -0.4567138210082801
+    }
+  ],
+  "pooled": {
+    "comparisons": 115,
+    "pearson_r": -0.49037806881338686,
+    "pearson_year_cluster_ci_95": [
+      -0.6387613792761093,
+      -0.2905383025296059
+    ],
+    "spearman_rho": -0.4567138210082801,
+    "spearman_year_cluster_ci_95": [
+      -0.6166927989513415,
+      -0.25898128286671224
+    ]
+  },
+  "pooled_statistics": {
+    "difficulty": {
+      "all_oos_r2_negative": false,
+      "max_lomo_deviation_sd": 1.0849285981545378,
+      "mean_per_grade_ensemble_correlation": -0.38543754678573106,
+      "mean_per_grade_reference_correlation": -0.2825531097365336,
+      "opposite_sign_count": 73,
+      "opposite_sign_rate": 0.6347826086956522
+    },
+    "inputs": {
+      "grade_buckets": 5,
+      "human_years": 23,
+      "items_per_model": 3886,
+      "models": 4
+    },
+    "pooled": {
+      "comparisons": 115,
+      "pearson_p": 2.6513193165606805e-08,
+      "pearson_r": -0.49037806881338686,
+      "pearson_year_cluster_ci_95": [
+        -0.6387613792761093,
+        -0.2905383025296059
+      ],
+      "spearman_p": 2.8922719969814717e-07,
+      "spearman_rho": -0.4567138210082801,
+      "spearman_year_cluster_ci_95": [
+        -0.6166927989513415,
+        -0.25898128286671224
+      ]
+    }
+  },
+  "response_policy": {
+    "Claude Sonnet 4.5": {
+      "abstention_rate": 0.007462686567164179,
+      "abstentions": 29,
+      "accuracy": 0.7735460627895008,
+      "items": 3886,
+      "no_valid_selections": 0
+    },
+    "GPT-5": {
+      "abstention_rate": 0.0301080802882141,
+      "abstentions": 117,
+      "accuracy": 0.8834276891405044,
+      "items": 3886,
+      "no_valid_selections": 0
+    },
+    "Grok 4 Fast": {
+      "abstention_rate": 0.11837364899639732,
+      "abstentions": 460,
+      "accuracy": 0.7833247555326814,
+      "items": 3886,
+      "no_valid_selections": 0
+    },
+    "Qwen3-VL": {
+      "abstention_rate": 0.0,
+      "abstentions": 0,
+      "accuracy": 0.863098301595471,
+      "items": 3886,
+      "no_valid_selections": 4
+    }
+  },
+  "text_only_diagnostic": {
+    "All items": {
+      "grade_fe_accuracy_pp_per_10pp_human": -4.961058349887325,
+      "pearson_ci_95": [
+        -0.6389883167903042,
+        -0.26764695206054967
+      ],
+      "pearson_r": -0.4795771252904933
+    },
+    "Auxiliary visual content": {
+      "grade_fe_accuracy_pp_per_10pp_human": -2.5707868486284253,
+      "pearson_ci_95": [
+        -0.47017108032848604,
+        -0.11553085693694147
+      ],
+      "pearson_r": -0.2957436566393137
+    },
+    "No separate visual element": {
+      "grade_fe_accuracy_pp_per_10pp_human": 0.15316940193956527,
+      "pearson_ci_95": [
+        0.0169994036311648,
+        0.34179646641929556
+      ],
+      "pearson_r": 0.19356158053533298
+    }
+  }
+}

@@ -1020,7 +1020,7 @@ wheels = [
 [[package]]
 name = "kaenguru-benchmark"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "cachetools" },
     { name = "fastapi" },
@@ -1030,6 +1030,9 @@ dependencies = [
     { name = "jinja2" },
     { name = "jupyter" },
     { name = "matplotlib" },
+    { name = "nbclient" },
+    { name = "nbformat" },
+    { name = "numpy" },
     { name = "orjson" },
     { name = "pandas" },
     { name = "pillow" },
@@ -1061,6 +1064,9 @@ requires-dist = [
     { name = "jinja2", specifier = ">=3.1" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = ">=3.10.6" },
+    { name = "nbclient", specifier = ">=0.10" },
+    { name = "nbformat", specifier = ">=5.10" },
+    { name = "numpy", specifier = ">=1.26" },
     { name = "orjson", specifier = ">=3.10" },
     { name = "pandas", specifier = ">=2.2" },
     { name = "pillow", specifier = ">=10.3" },

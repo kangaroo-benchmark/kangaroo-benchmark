@@ -1,0 +1,51 @@
+{
+  "args": {
+    "dashboard_refresh_hz": 5.0,
+    "dataset": "english_translation.parquet",
+    "events_jsonl": "auto",
+    "fail_fast": false,
+    "group": null,
+    "image_detail": "auto",
+    "image_jpeg_quality": 85,
+    "image_max_dim": 1024,
+    "internal_effort": null,
+    "language": null,
+    "limit": null,
+    "live_dashboard": false,
+    "max_tokens": null,
+    "model": "anthropic/claude-sonnet-4.5",
+    "no_images": false,
+    "output_dir": "runs",
+    "points_range": null,
+    "reasoning": "self-directed",
+    "recent_items": 20,
+    "seed": null,
+    "sequential": false,
+    "temperature": 0.0,
+    "text_only": false,
+    "top_p": 1.0,
+    "ui_compact": false,
+    "vision_only": false,
+    "worker_count": 8,
+    "year": null,
+    "year_range": null
+  },
+  "machine_local_paths_removed": true,
+  "model": {
+    "id": "anthropic/claude-sonnet-4.5",
+    "label": "Anthropic Claude Sonnet 4.5",
+    "min_request_interval": null,
+    "supports_json_response_format": true,
+    "supports_vision": true
+  },
+  "multimodal_policy": {
+    "cli_filtered_out_rows": 0,
+    "effective_text_only": false,
+    "model_filtered_out_rows": 0,
+    "model_supports_vision": true,
+    "rows_after_filter": 199,
+    "text_only_cli": false,
+    "total_rows_loaded": 199
+  },
+  "timestamp_utc": "20260807_164146"
+}

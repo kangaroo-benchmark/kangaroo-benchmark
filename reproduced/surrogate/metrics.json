@@ -1,0 +1,494 @@
+{
+  "forward_prediction": {
+    "Claude Sonnet 4.5": {
+      "Grade mean": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0,
+        "grades_beating_baseline_mae": 0,
+        "mae": 4.158515257036336,
+        "mae_change_ci_95": [
+          0.0,
+          0.0
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 0
+      },
+      "Model score": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.00878434689352292,
+        "grades_beating_baseline_mae": 2,
+        "mae": 4.25163177035851,
+        "mae_change_ci_95": [
+          -0.26958262193439864,
+          0.43115931329322527
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 37
+      },
+      "Model score + visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": -0.0010815268963446645,
+        "grades_beating_baseline_mae": 2,
+        "mae": 4.026833299179378,
+        "mae_change_ci_95": [
+          -1.0315847107242293,
+          0.7602028903325386
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 43
+      },
+      "Visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0937608250550237,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.8270728110008236,
+        "mae_change_ci_95": [
+          -1.1626846463377123,
+          0.470079443800717
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 47
+      }
+    },
+    "Equal-weight ensemble": {
+      "Grade mean": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0,
+        "grades_beating_baseline_mae": 0,
+        "mae": 4.158515257036336,
+        "mae_change_ci_95": [
+          0.0,
+          0.0
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 0
+      },
+      "Model score": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": -0.006481554904791631,
+        "grades_beating_baseline_mae": 4,
+        "mae": 4.11515373919375,
+        "mae_change_ci_95": [
+          -0.6836576987822908,
+          0.5421477727419726
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 43
+      },
+      "Model score + visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.04660699351308428,
+        "grades_beating_baseline_mae": 4,
+        "mae": 3.87469567115821,
+        "mae_change_ci_95": [
+          -1.204889260602356,
+          0.6068459514291578
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 43
+      },
+      "Visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0937608250550237,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.8270728110008236,
+        "mae_change_ci_95": [
+          -1.1612282468164616,
+          0.4978882965075615
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 47
+      }
+    },
+    "GPT-5": {
+      "Grade mean": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0,
+        "grades_beating_baseline_mae": 0,
+        "mae": 4.158515257036336,
+        "mae_change_ci_95": [
+          0.0,
+          0.0
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 0
+      },
+      "Model score": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": -0.015299296648192406,
+        "grades_beating_baseline_mae": 3,
+        "mae": 4.162021916256578,
+        "mae_change_ci_95": [
+          -0.44759500996390855,
+          0.44532056008478493
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 32
+      },
+      "Model score + visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.017643818536285605,
+        "grades_beating_baseline_mae": 2,
+        "mae": 3.9952108059033717,
+        "mae_change_ci_95": [
+          -1.090274677970816,
+          0.6370565436874698
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 37
+      },
+      "Visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0937608250550237,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.8270728110008236,
+        "mae_change_ci_95": [
+          -1.1508584878267663,
+          0.5451420650358139
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 47
+      }
+    },
+    "Grok 4 Fast": {
+      "Grade mean": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0,
+        "grades_beating_baseline_mae": 0,
+        "mae": 4.158515257036336,
+        "mae_change_ci_95": [
+          0.0,
+          0.0
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 0
+      },
+      "Model score": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": -0.05680857149123941,
+        "grades_beating_baseline_mae": 3,
+        "mae": 4.160991404900515,
+        "mae_change_ci_95": [
+          -0.6368196171635436,
+          0.6618037252839527
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 41
+      },
+      "Model score + visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.009231973639665658,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.892238022233237,
+        "mae_change_ci_95": [
+          -1.2509594858387223,
+          0.7868339072418863
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 45
+      },
+      "Visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0937608250550237,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.8270728110008236,
+        "mae_change_ci_95": [
+          -1.1147290828017324,
+          0.5256457218746238
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 47
+      }
+    },
+    "Qwen3-VL": {
+      "Grade mean": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0,
+        "grades_beating_baseline_mae": 0,
+        "mae": 4.158515257036336,
+        "mae_change_ci_95": [
+          0.0,
+          0.0
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 0
+      },
+      "Model score": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": -0.00721265189910425,
+        "grades_beating_baseline_mae": 3,
+        "mae": 4.104028952527991,
+        "mae_change_ci_95": [
+          -0.5058201542233082,
+          0.35743140176664673
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 40
+      },
+      "Model score + visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0689642680036675,
+        "grades_beating_baseline_mae": 4,
+        "mae": 3.6785475429862897,
+        "mae_change_ci_95": [
+          -1.3210455486202652,
+          0.35356164723709704
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 45
+      },
+      "Visual share": {
+        "baseline_mae": 4.158515257036336,
+        "forward_r2": 0.0937608250550237,
+        "grades_beating_baseline_mae": 3,
+        "mae": 3.8270728110008236,
+        "mae_change_ci_95": [
+          -1.1877964331382582,
+          0.4799033799292102
+        ],
+        "predictions": 75,
+        "years_beating_baseline": 47
+      }
+    }
+  },
+  "outcome_regressions": {
+    "Claude Sonnet 4.5": {
+      "Grade FE + image-location shares": {
+        "ci_95": [
+          -1.2714003205612092,
+          0.7279501112160052
+        ],
+        "effect_per_10pp_model": -0.24741957897174563,
+        "r2_increment": 0.0014575444160462858
+      },
+      "Grade FE + visual share": {
+        "ci_95": [
+          -1.892866976767635,
+          0.14481139004997917
+        ],
+        "effect_per_10pp_model": -0.8902087133822982,
+        "r2_increment": 0.020797476418393135
+      },
+      "Grade fixed effects": {
+        "ci_95": [
+          -2.6877919425912116,
+          -0.5544887099842031
+        ],
+        "effect_per_10pp_model": -1.6035830336669052,
+        "r2_increment": 0.08549996813867
+      },
+      "Raw": {
+        "ci_95": [
+          -2.8319827033123897,
+          -0.6228222706713237
+        ],
+        "effect_per_10pp_model": -1.8132284737414641,
+        "r2_increment": 0.11545564367580619
+      }
+    },
+    "Equal-weight ensemble": {
+      "Grade FE + image-location shares": {
+        "ci_95": [
+          -2.3966948856167467,
+          1.4389705304481186
+        ],
+        "effect_per_10pp_model": -0.4004520264970151,
+        "r2_increment": 0.0014205998456766622
+      },
+      "Grade FE + visual share": {
+        "ci_95": [
+          -3.3596304439465996,
+          0.26485690534424555
+        ],
+        "effect_per_10pp_model": -1.4768239159870211,
+        "r2_increment": 0.021632184506487295
+      },
+      "Grade fixed effects": {
+        "ci_95": [
+          -4.493955391421339,
+          -0.8008000096915867
+        ],
+        "effect_per_10pp_model": -2.673004019568852,
+        "r2_increment": 0.1094937649161597
+      },
+      "Raw": {
+        "ci_95": [
+          -4.423201958737543,
+          -1.6440823207806448
+        ],
+        "effect_per_10pp_model": -3.172712886923347,
+        "r2_increment": 0.24047065037314674
+      }
+    },
+    "GPT-5": {
+      "Grade FE + image-location shares": {
+        "ci_95": [
+          -2.06352970400702,
+          0.5803522067786819
+        ],
+        "effect_per_10pp_model": -0.6993666354280521,
+        "r2_increment": 0.007204575187043427
+      },
+      "Grade FE + visual share": {
+        "ci_95": [
+          -2.498656061169698,
+          0.6350132187021413
+        ],
+        "effect_per_10pp_model": -1.0180881467199712,
+        "r2_increment": 0.01542374742735364
+      },
+      "Grade fixed effects": {
+        "ci_95": [
+          -3.474826442401459,
+          -0.16844625241064887
+        ],
+        "effect_per_10pp_model": -1.8496597985249361,
+        "r2_increment": 0.05786127548763331
+      },
+      "Raw": {
+        "ci_95": [
+          -3.8835599929590456,
+          -1.3338226036376877
+        ],
+        "effect_per_10pp_model": -2.623877220590666,
+        "r2_increment": 0.18361103903720455
+      }
+    },
+    "Grok 4 Fast": {
+      "Grade FE + image-location shares": {
+        "ci_95": [
+          -1.7537433803968914,
+          1.8565797571702705
+        ],
+        "effect_per_10pp_model": 0.38463252603179254,
+        "r2_increment": 0.002124592932577829
+      },
+      "Grade FE + visual share": {
+        "ci_95": [
+          -2.3916845813891032,
+          1.1568676828457956
+        ],
+        "effect_per_10pp_model": -0.4065769851714495,
+        "r2_increment": 0.0025581467984836515
+      },
+      "Grade fixed effects": {
+        "ci_95": [
+          -3.7462701994399774,
+          0.059144360650406944
+        ],
+        "effect_per_10pp_model": -1.654227010774438,
+        "r2_increment": 0.07119186193579663
+      },
+      "Raw": {
+        "ci_95": [
+          -3.570921159645821,
+          -0.8333050222617464
+        ],
+        "effect_per_10pp_model": -2.1316303163394172,
+        "r2_increment": 0.2064781761728406
+      }
+    },
+    "Qwen3-VL": {
+      "Grade FE + image-location shares": {
+        "ci_95": [
+          -1.4685634550489373,
+          0.8413075038656004
+        ],
+        "effect_per_10pp_model": -0.19500141261145332,
+        "r2_increment": 0.0006866203678571603
+      },
+      "Grade FE + visual share": {
+        "ci_95": [
+          -2.081956394358792,
+          0.3672604545242645
+        ],
+        "effect_per_10pp_model": -0.7182045370920425,
+        "r2_increment": 0.009901884730978194
+      },
+      "Grade fixed effects": {
+        "ci_95": [
+          -3.025865471884679,
+          -0.2263378157824748
+        ],
+        "effect_per_10pp_model": -1.5661487479854168,
+        "r2_increment": 0.05671764581411931
+      },
+      "Raw": {
+        "ci_95": [
+          -3.4301130138114893,
+          -0.9398955116565516
+        ],
+        "effect_per_10pp_model": -2.2177019889111924,
+        "r2_increment": 0.16113490776906625
+      }
+    }
+  },
+  "panel": {
+    "forward_predictions_per_grade": 15,
+    "grade_buckets": 5,
+    "minimum_training_years": 8,
+    "shared_exams": 115
+  },
+  "variance_decomposition": {
+    "Claude Sonnet 4.5": {
+      "r2_grade": 0.05316796938926438,
+      "r2_grade_location": 0.32197834519541435,
+      "r2_grade_visual": 0.2526623662595431,
+      "sd_within_grade": 8.646597223681187,
+      "visual_r2_increment_ci_95": [
+        0.10399784096738737,
+        0.2944562943478733
+      ]
+    },
+    "Cohort": {
+      "r2_grade": 0.17669007980741547,
+      "r2_grade_location": 0.4324184128917039,
+      "r2_grade_visual": 0.3047801471076059,
+      "sd_within_grade": 4.3026436568607815,
+      "visual_r2_increment_ci_95": [
+        0.009460362787294636,
+        0.3172503753410905
+      ]
+    },
+    "Equal-weight ensemble": {
+      "r2_grade": 0.35851038101038724,
+      "r2_grade_location": 0.629173946770429,
+      "r2_grade_visual": 0.5848142758919275,
+      "sd_within_grade": 5.870144446537714,
+      "visual_r2_increment_ci_95": [
+        0.14863684961839346,
+        0.29796153680339177
+      ]
+    },
+    "GPT-5": {
+      "r2_grade": 0.36584923875162134,
+      "r2_grade_location": 0.44768506268077424,
+      "r2_grade_visual": 0.44203446645015443,
+      "sd_within_grade": 6.166742997312189,
+      "visual_r2_increment_ci_95": [
+        0.022655422648234596,
+        0.16707922533738306
+      ]
+    },
+    "Grok 4 Fast": {
+      "r2_grade": 0.42748119407960317,
+      "r2_grade_location": 0.6839663410814757,
+      "r2_grade_visual": 0.6594432431649289,
+      "sd_within_grade": 7.648456010705452,
+      "visual_r2_increment_ci_95": [
+        0.12083035124142372,
+        0.31793090141234526
+      ]
+    },
+    "Qwen3-VL": {
+      "r2_grade": 0.2942206977060794,
+      "r2_grade_location": 0.44886511109298355,
+      "r2_grade_visual": 0.4140800106218633,
+      "sd_within_grade": 7.210739326933819,
+      "visual_r2_increment_ci_95": [
+        0.056491154238058346,
+        0.20803583332835102
+      ]
+    }
+  }
+}

@@ -5,7 +5,9 @@ Quickstart (uses uv for environment management)
 
 - Requirements: Python 3.11+, `uv` installed, OpenRouter API key.
 - This repository contains the evaluation runner, dashboard, dataset checker, and retry tooling used for the German Kangaroo benchmark.
-- Code is released under the MIT License. The benchmark dataset is a separate artifact and uses its own dataset license.
+- Code is released under the MIT License. The source-derived contest text and
+  images are a separate artifact whose redistribution terms require explicit
+  rights-holder confirmation.
 
 Setup
 
@@ -24,11 +26,28 @@ Artifact Contents
 - `score_utils.py`: shared Kangaroo scoring logic.
 - `tests/`: regression tests for scoring, evaluation, retry, and dashboard data handling.
 - `models.json`: editable model registry for provider/model metadata.
+- `artifacts/`: archived model outputs and inputs for the paper's analyses.
+- `artifacts/image_preview/`: three directly viewable sample question images
+  for hosts that do not render binary Parquet image columns.
+- `analysis/`: analysis code for the cohort comparisons and item diagnostics.
+
+Reproducing the Paper Analyses
+
+The reported statistics can be regenerated from the released dataset and the
+archived model outputs without an API key or new model calls:
+
+```bash
+uv run reproduce-diagnostics
+uv run reproduce-surrogate
+```
+
+Both commands read `data/kangaroo.parquet` and write under `reproduced/`. See
+`analysis/README.md` for inputs, definitions, and the remaining commands.
 
 Reproducing the Paper Runs
 
 The paper results were produced from the released benchmark Parquet file. Replace
-`/abs/path/to/full.parquet` below with the downloaded dataset artifact path.
+`/abs/path/to/kangaroo.parquet` below with the downloaded dataset artifact path.
 
 1. Install the environment:
 
@@ -39,28 +58,34 @@ The paper results were produced from the released benchmark Parquet file. Replac
 2. Validate the dataset file:
 
    ```bash
-   uv run python check_dataset.py --dataset /abs/path/to/full.parquet
+   uv run python check_dataset.py /abs/path/to/kangaroo.parquet
    ```
 
 3. Run a full multimodal evaluation for a model:
 
    ```bash
-   uv run python eval_run.py --dataset /abs/path/to/full.parquet --model openai/gpt-5
+   uv run python eval_run.py --dataset /abs/path/to/kangaroo.parquet --model openai/gpt-5
    ```
 
-4. Run the text-only diagnostic slice:
+4. Run the no-separate-visual-element diagnostic slice:
 
    ```bash
-   uv run python eval_run.py --dataset /abs/path/to/full.parquet --model openai/gpt-5 --text-only
+   uv run python eval_run.py --dataset /abs/path/to/kangaroo.parquet --model openai/gpt-5 --text-only
    ```
 
-5. Inspect generated runs in the dashboard:
+5. Run the blind-image diagnostic on the multimodal subset:
+
+   ```bash
+   uv run python eval_run.py --dataset /abs/path/to/kangaroo.parquet --model openai/gpt-5 --vision-only --no-images
+   ```
+
+6. Inspect generated runs in the dashboard:
 
    ```bash
    uv run python dashboard.py --host 127.0.0.1 --port 8000
    ```
 
-6. Run the automated tests:
+7. Run the automated tests:
 
    ```bash
    uv run pytest
@@ -68,8 +93,8 @@ The paper results were produced from the released benchmark Parquet file. Replac
 
 The runner writes each evaluation under `runs/{timestamp}_{model}/`, including
 per-question results, aggregate metrics, configuration, failures, and raw model
-responses. The main paper tables and plots are computed from these run outputs
-using the dashboard aggregation code and the included analysis notebooks.
+responses. The paper's tables and plots are computed from the archived run outputs by
+the analysis commands above.
 
 Input Data
 
@@ -92,8 +117,8 @@ Response Format Expectations
 
 - Reasoning is optional. Models may provide intermediate thoughts, but the evaluator only scores the choice communicated in the final line.
 - If the correct option cannot be determined confidently, end with `Final answer: Declined`. This is scored neutrally (0 points, no penalty) and recorded separately.
-- Any other outputs (omitted final line or malformed responses) are treated as errors and retried once before being scored as incorrect.
-- Text-only evaluation (skips multimodal questions):
+- Any other outputs (omitted final line or malformed responses) are retried once and, if still unresolved, scored as incorrect with the wrong-answer penalty.
+- No-auxiliary-image evaluation (skips rows flagged as multimodal):
   - `uv run python eval_run.py --dataset /abs/path/to/dataset.parquet --model openai/gpt-5 --text-only`
 - Add `--sequential` if you need to process requests strictly one at a time.
 
@@ -101,7 +126,10 @@ Advanced Runner Arguments
 
 - `--limit N`: Limit the run to a random sample of N questions.
 - `--seed N`: Set the random seed for sampling when using `--limit`.
-- `--text-only`: Evaluate only text (non-multimodal) questions.
+- `--text-only`: Evaluate only rows without a separately extracted question diagram or
+  image-based answer option. The full question crop is still sent.
+- `--no-images`: Retain the selected rows but suppress every image input. Combine
+  it with `--vision-only` for the blind-image baseline.
 - `--fail-fast`: Stop the run on the first error.
 - For live dashboard customization: `--live-dashboard`, `--no-live-dashboard`, `--dashboard-refresh-hz HZ`, `--recent-items N`, `--ui-compact`.
 
@@ -116,7 +144,16 @@ Dataset Filtering
 
 Scoring
 
-- LLM runs follow the official Känguru convention: grades 3–6 start with 24 points and grades 7–13 start with 30. Correct answers earn the full task value, unanswered questions score 0, and wrong or unparseable final answers subtract one quarter of the task value (for example, -0.75, -1.0, -1.25). Choosing `Declined` earns 0 points with no penalty; it still counts as an answered question for accuracy reporting. Totals and weighted accuracy include the start capital so model scores align with the published human ranges.
+- LLM runs follow the official Känguru convention: the starting capital equals
+  the number of items in the exam, making the maximum five times the item
+  count. Correct answers earn the full task value, unanswered questions score
+  0, and wrong or unparseable final answers subtract one quarter of the task
+  value (for example, -0.75, -1.0, -1.25). Choosing `Declined` earns 0 points
+  with no penalty. Totals and weighted accuracy include the starting capital.
+- The 2001 grades 9 to 10 form uses the explicit fixed credit recorded in
+  `artifacts/form_adjustments.csv`. The 2003 grades 3 to 4 adjustment preserves
+  the published maximum and remains an analysis convention pending organizer
+  confirmation.
 
 Image Controls (to reduce input bloat)
 

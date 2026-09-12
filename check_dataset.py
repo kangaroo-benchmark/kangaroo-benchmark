@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import base64
 import os
+import re
 from dataclasses import dataclass
 from io import BytesIO
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
@@ -465,6 +466,13 @@ def check_rows(
                 rid,
                 "Problem text is empty or whitespace only",
             )
+        elif str(row.get("problem_statement")).strip() == ".":
+            issues.error(
+                "placeholder_problem_statement",
+                idx,
+                rid,
+                "Problem text contains only a period",
+            )
 
         # Answer letter
         ans = _letter(row.get("answer"))
@@ -585,6 +593,22 @@ def check_rows(
                 rid,
                 f"Suspicious problem_number: {row.get('problem_number')!r}",
             )
+        statement_match = re.match(
+            r"\s*(\d{1,2})[.)]", str(row.get("problem_statement", ""))
+        )
+        printed_number = int(statement_match.group(1)) if statement_match else None
+        if (
+            pn is not None
+            and printed_number is not None
+            and printed_number != pn
+            and abs(printed_number - pn) <= 3
+        ):
+            issues.error(
+                "problem_number_mismatch",
+                idx,
+                rid,
+                f"problem_number={pn}, printed number={printed_number}",
+            )
 
         try:
             points = float(row.get("points"))
@@ -655,12 +679,40 @@ def check_distribution(df: pd.DataFrame, console: Console) -> None:
     ]:  # only first 20 groups to keep output short
         counts = gdf["points"].value_counts(dropna=False)
         c3, c4, c5 = (
-            int(counts.get(3.0, 0) + counts.get(3, 0)),
-            int(counts.get(4.0, 0) + counts.get(4, 0)),
-            int(counts.get(5.0, 0) + counts.get(5, 0)),
+            int(counts.get(3, 0)),
+            int(counts.get(4, 0)),
+            int(counts.get(5, 0)),
         )
         table.add_row(str(year), str(group), str(len(gdf)), str(c3), str(c4), str(c5))
     console.print(table)
+
+
+def check_exam_structure(df: pd.DataFrame, issues: IssueCollector) -> None:
+    if not all(c in df.columns for c in ("year", "group", "points")):
+        return
+    official_exceptions = {
+        (2001, "9-10"): {3: 10, 4: 10, 5: 9},
+        (2003, "3-4"): {3: 7, 4: 7, 5: 6},
+    }
+    for (year, group), exam in df.groupby(["year", "group"]):
+        counts = exam["points"].value_counts()
+        tier_counts = {point: int(counts.get(point, 0)) for point in (3, 4, 5)}
+        if len(set(tier_counts.values())) != 1:
+            key = (int(year), str(group))
+            if official_exceptions.get(key) == tier_counts:
+                issues.warn(
+                    "official_form_adjustment_required",
+                    None,
+                    None,
+                    f"{year} {group} requires its documented six-point fixed adjustment",
+                )
+                continue
+            issues.error(
+                "unbalanced_exam_tiers",
+                None,
+                None,
+                f"{year} {group} has point-tier counts {tier_counts}",
+            )
 
 
 def humanize_issues(
@@ -773,6 +825,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         issues.error("empty_dataset", None, None, "Dataset has 0 rows")
     else:
         check_uniqueness(df, issues)
+        check_exam_structure(df, issues)
         decode_limit = args.image_decode_limit if not args.full_images else len(df) * 10
         check_rows(df, issues, image_decode_limit=max(0, decode_limit))
         check_distribution(df, console)

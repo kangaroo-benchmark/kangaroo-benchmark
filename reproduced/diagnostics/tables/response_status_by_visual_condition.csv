@@ -1,0 +1,9 @@
+model,visual_condition,items,correct,accuracy,valid_selections,abstentions,abstention_rate,no_valid_selections,no_valid_selection_rate,model_label
+openai-gpt-5,No separate visual element,2140,2116,0.9887850467289719,2130,10,0.004672897196261682,0,0.0,GPT-5
+openai-gpt-5,Auxiliary visual content,1746,1317,0.7542955326460481,1639,107,0.06128293241695303,0,0.0,GPT-5
+x-ai-grok-4-fast,No separate visual element,2140,2090,0.9766355140186916,2113,27,0.012616822429906542,0,0.0,Grok 4 Fast
+x-ai-grok-4-fast,Auxiliary visual content,1746,954,0.5463917525773195,1313,433,0.2479954180985109,0,0.0,Grok 4 Fast
+qwen-qwen3-vl-235b-a22b-thinking,No separate visual element,2140,2106,0.9841121495327103,2139,0,0.0,1,0.00046728971962616824,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,Auxiliary visual content,1746,1248,0.7147766323024055,1743,0,0.0,3,0.001718213058419244,Qwen3-VL
+anthropic-claude-sonnet-4.5,No separate visual element,2140,1982,0.9261682242990654,2128,12,0.005607476635514018,0,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,Auxiliary visual content,1746,1024,0.586483390607102,1729,17,0.009736540664375716,0,0.0,Claude Sonnet 4.5

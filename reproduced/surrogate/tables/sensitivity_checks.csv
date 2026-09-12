@@ -1,0 +1,16 @@
+series,series_label,check,comparisons,effect_per_10pp_model,ci_low_per_10pp,ci_high_per_10pp
+openai-gpt-5,GPT-5,"Grade FE, excluding fixed-credit forms",113,-1.782345832631881,-3.561792123837568,-0.08088865966465993
+openai-gpt-5,GPT-5,Grade + year FE,115,-0.2549709382682797,-1.5305562493453315,1.1339775008150708
+openai-gpt-5,GPT-5,"Grade FE, leave one year out",110,-1.8473518511526947,-2.2002682248077945,-1.2281166747567542
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,"Grade FE, excluding fixed-credit forms",113,-1.5761450159581565,-3.139138262348494,-0.18195294953560087
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,Grade + year FE,115,0.08572993484686017,-1.2075885461779337,1.2004119803670297
+qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,"Grade FE, leave one year out",110,-1.569000257441981,-2.153988681263551,-1.2414382544078049
+x-ai-grok-4-fast,Grok 4 Fast,"Grade FE, excluding fixed-credit forms",113,-1.5988637557565961,-3.6207265630299585,0.16270582723572902
+x-ai-grok-4-fast,Grok 4 Fast,Grade + year FE,115,-0.40512475812613646,-2.0614671744265305,0.874252722642729
+x-ai-grok-4-fast,Grok 4 Fast,"Grade FE, leave one year out",110,-1.66249261428282,-2.7751651032546176,-1.226743076489654
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,"Grade FE, excluding fixed-credit forms",113,-1.54471499553106,-2.631446149273966,-0.5318572759804171
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,Grade + year FE,115,-0.19554927414155515,-1.276283600849568,0.8396719034871958
+anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,"Grade FE, leave one year out",110,-1.6036896970507353,-1.8773499990457791,-1.3171592675757853
+ensemble,Equal-weight ensemble,"Grade FE, excluding fixed-credit forms",113,-2.5911679583089264,-4.450924913076219,-0.5937638616317565
+ensemble,Equal-weight ensemble,Grade + year FE,115,-0.3239227943667853,-1.991535305728662,1.3290697272304208
+ensemble,Equal-weight ensemble,"Grade FE, leave one year out",110,-2.6737310224221082,-3.3521612370099243,-2.19113036583346

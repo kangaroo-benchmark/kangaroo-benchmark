@@ -1,0 +1,41 @@
+model,grade_bucket,visual_condition,items,accuracy,abstention_rate,model_label
+openai-gpt-5,11-13,No separate visual element,523,0.9847036328871893,0.0057361376673040155,GPT-5
+openai-gpt-5,11-13,Auxiliary visual content,317,0.807570977917981,0.04100946372239748,GPT-5
+openai-gpt-5,3-4,No separate visual element,278,0.9964028776978417,0.0,GPT-5
+openai-gpt-5,3-4,Auxiliary visual content,345,0.6666666666666666,0.06956521739130435,GPT-5
+openai-gpt-5,5-6,No separate visual element,354,0.9971751412429378,0.0,GPT-5
+openai-gpt-5,5-6,Auxiliary visual content,390,0.7051282051282052,0.06923076923076923,GPT-5
+openai-gpt-5,7-8,No separate visual element,472,0.9830508474576272,0.00847457627118644,GPT-5
+openai-gpt-5,7-8,Auxiliary visual content,368,0.7853260869565217,0.06793478260869565,GPT-5
+openai-gpt-5,9-10,No separate visual element,513,0.9883040935672515,0.005847953216374269,GPT-5
+openai-gpt-5,9-10,Auxiliary visual content,326,0.8190184049079755,0.05521472392638037,GPT-5
+x-ai-grok-4-fast,11-13,No separate visual element,523,0.97131931166348,0.011472275334608031,Grok 4 Fast
+x-ai-grok-4-fast,11-13,Auxiliary visual content,317,0.637223974763407,0.1608832807570978,Grok 4 Fast
+x-ai-grok-4-fast,3-4,No separate visual element,278,0.9820143884892086,0.007194244604316547,Grok 4 Fast
+x-ai-grok-4-fast,5-6,No separate visual element,354,0.9887005649717514,0.002824858757062147,Grok 4 Fast
+x-ai-grok-4-fast,3-4,Auxiliary visual content,345,0.40869565217391307,0.3507246376811594,Grok 4 Fast
+x-ai-grok-4-fast,5-6,Auxiliary visual content,390,0.45384615384615384,0.3128205128205128,Grok 4 Fast
+x-ai-grok-4-fast,7-8,No separate visual element,472,0.9745762711864406,0.019067796610169493,Grok 4 Fast
+x-ai-grok-4-fast,7-8,Auxiliary visual content,368,0.6059782608695652,0.22282608695652173,Grok 4 Fast
+x-ai-grok-4-fast,9-10,No separate visual element,513,0.9727095516569201,0.017543859649122806,Grok 4 Fast
+x-ai-grok-4-fast,9-10,Auxiliary visual content,326,0.647239263803681,0.17484662576687116,Grok 4 Fast
+qwen-qwen3-vl-235b-a22b-thinking,11-13,No separate visual element,523,0.9674952198852772,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,11-13,Auxiliary visual content,317,0.7823343848580442,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,3-4,No separate visual element,278,1.0,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,3-4,Auxiliary visual content,345,0.6376811594202898,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,5-6,No separate visual element,354,0.9943502824858758,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,5-6,Auxiliary visual content,390,0.6743589743589744,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,7-8,No separate visual element,472,0.9872881355932204,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,7-8,Auxiliary visual content,368,0.7472826086956522,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,9-10,No separate visual element,513,0.9824561403508771,0.0,Qwen3-VL
+qwen-qwen3-vl-235b-a22b-thinking,9-10,Auxiliary visual content,326,0.7423312883435583,0.0,Qwen3-VL
+anthropic-claude-sonnet-4.5,11-13,No separate visual element,523,0.9177820267686424,0.0076481835564053535,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,11-13,Auxiliary visual content,317,0.61198738170347,0.00946372239747634,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,3-4,No separate visual element,278,0.9928057553956835,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,3-4,Auxiliary visual content,345,0.5739130434782609,0.005797101449275362,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,5-6,No separate visual element,354,0.9548022598870056,0.0,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,5-6,Auxiliary visual content,390,0.5461538461538461,0.01282051282051282,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,7-8,No separate visual element,472,0.9067796610169492,0.01059322033898305,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,7-8,Auxiliary visual content,368,0.6059782608695652,0.01358695652173913,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,9-10,No separate visual element,513,0.8966861598440545,0.005847953216374269,Claude Sonnet 4.5
+anthropic-claude-sonnet-4.5,9-10,Auxiliary visual content,326,0.6012269938650306,0.006134969325153374,Claude Sonnet 4.5
