@@ -1,5 +1,0 @@
-{
-  "blind_question_diagram_design": "separately extracted question diagram with textual answer options; evaluated without the question crop and without the diagram",
-  "blind_question_diagram_only_items": 1353,
-  "dataset_sha256": "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9"
-}

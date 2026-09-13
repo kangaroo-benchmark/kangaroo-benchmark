@@ -30,7 +30,6 @@
     "year": null,
     "year_range": null
   },
-  "machine_local_paths_removed": true,
   "model": {
     "id": "anthropic/claude-sonnet-4.5",
     "label": "Anthropic Claude Sonnet 4.5",

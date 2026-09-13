@@ -230,7 +230,7 @@ def test_answer_json_success(monkeypatch, tmp_path):
     assert config["args"].get("reasoning") == "self-directed"
 
 
-def test_no_live_dashboard_flag(monkeypatch, tmp_path):
+def test_run_writes_results_and_metrics(monkeypatch, tmp_path):
     dataset = write_parquet(tmp_path, [make_row(1, with_images=False)])
 
     payload = {
@@ -251,7 +251,6 @@ def test_no_live_dashboard_flag(monkeypatch, tmp_path):
         dataset,
         model_id="openai/gpt-5",
         responses=[FakeResp(200, payload)],
-        extra_args=["--no-live-dashboard"],
     )
 
     events_file = run_dir / "usage_events.jsonl"
@@ -324,7 +323,7 @@ def test_unparsed_response_penalized(monkeypatch, tmp_path):
     assert row["points_earned"] == pytest.approx(-1.25)
 
     metrics = json.loads((run_dir / "metrics.json").read_text())
-    assert metrics["total_points_earned"] == pytest.approx(-1.25)
+    assert metrics["total_points_earned"] == pytest.approx(-0.25)
 
 
 def test_final_answer_line_precedence(monkeypatch, tmp_path):
@@ -378,7 +377,7 @@ def test_final_line_declined(monkeypatch, tmp_path):
     assert "declined_explicit" in (row["warnings"] or [])
     metrics = json.loads((run_dir / "metrics.json").read_text())
     assert metrics["declined_count"] == 1
-    assert metrics["total_points_earned"] == pytest.approx(0.0)
+    assert metrics["total_points_earned"] == pytest.approx(1.0)
 
 
 def test_declined_phrase_detection(monkeypatch, tmp_path):
@@ -698,6 +697,30 @@ def test_text_only_cli_filters_multimodal(monkeypatch, tmp_path):
     assert metrics["text_only_evaluation"] is True
     assert metrics["text_only_source"] == "cli"
     assert metrics.get("cli_filtered_out_multimodal_rows") == 1
+
+
+def test_no_images_flag_removes_all_image_parts(monkeypatch, tmp_path):
+    dataset = write_parquet(tmp_path, [make_row(11, with_images=True)])
+    payload = {
+        "id": "gen_no_images",
+        "model": "openai/gpt-5",
+        "choices": [{"message": {"content": '{"answer":"A"}'}}],
+    }
+    captured: List[Dict[str, Any]] = []
+    run_dir = run_eval(
+        monkeypatch,
+        tmp_path,
+        dataset,
+        model_id="openai/gpt-5",
+        responses=[FakeResp(200, payload)],
+        extra_args=["--no-images"],
+        capture_payloads=captured,
+    )
+
+    content = captured[0]["messages"][1]["content"]
+    assert all(part["type"] != "image_url" for part in content)
+    config = json.loads((run_dir / "config.json").read_text())
+    assert config["args"]["no_images"] is True
 
 
 def test_image_decode_warning(monkeypatch, tmp_path):

@@ -30,7 +30,6 @@
     "year": null,
     "year_range": null
   },
-  "machine_local_paths_removed": true,
   "model": {
     "id": "qwen/qwen3-vl-235b-a22b-thinking",
     "label": "Qwen 3 VL 235B A22B Thinking",

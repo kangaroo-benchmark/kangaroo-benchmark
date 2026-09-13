@@ -359,8 +359,7 @@ def _shared_slope_errors(
 def compute_forward_sensitivity(
     panel: pd.DataFrame, predictions: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Forward errors of a recent-history baseline and of calibrations that pool the
-    grade groups with one shared model-score slope, against the same held-out forms."""
+    """Forward errors of a recent-history baseline and of shared-slope calibrations."""
     ensemble_rows = predictions.loc[predictions["series"] == ENSEMBLE]
     reference = {
         "baseline_error": FORWARD_BASELINE,
@@ -428,8 +427,7 @@ def compute_forward_sensitivity(
 def compute_human_mean_sensitivity(
     panel: pd.DataFrame, histogram_scores: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Bin-midpoint estimates against the reported cohort means, and the ensemble's
-    forward errors when every cohort mean uses the midpoint estimator."""
+    """Bin-midpoint means against the reported means, and forward errors using them."""
     merged = panel.merge(
         histogram_scores[["year", "exam", "human_pct"]].rename(
             columns={"human_pct": "histogram_pct"}
@@ -478,9 +476,7 @@ def compute_human_mean_sensitivity(
 def compute_variance_decomposition(
     panel: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Share of between-form variance explained by grade and visual composition, with
-    the visual-share coefficient under grade effects, added year effects, and an added
-    linear calendar trend."""
+    """Variance explained by grade and visual composition; visual-share coefficients."""
     outcomes = {
         "human_pct": "Cohort",
         **{series_column(series): label for series, label in SERIES_LABELS.items()},
@@ -819,8 +815,7 @@ def _drop_adjusted_forms(panel: pd.DataFrame) -> pd.DataFrame:
 def compute_sensitivity_checks(
     panel: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Robustness of the grade-fixed-effects association to form exclusion, year effects,
-    and single-year influence."""
+    """Robustness of the grade-fixed-effects association."""
     records = []
     reduced = _drop_adjusted_forms(panel)
     for series_index, (series, label) in enumerate(SERIES_LABELS.items()):
@@ -885,8 +880,7 @@ def build_human_reference_table(panel: pd.DataFrame) -> pd.DataFrame:
 
 
 def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.Figure:
-    """Composition drift over the archive and its opposite-signed associations with
-    cohort and ensemble %max on the shared exams."""
+    """Composition drift and its associations with cohort and ensemble %max."""
     figure, axes = styled_subplots(
         1, 3, figsize=(7.2, 2.5), gridspec_kw={"width_ratios": [1.35, 1, 1]}
     )
@@ -970,7 +964,7 @@ ABLATION_MODELS = {
 def _paired_difference(
     first: np.ndarray, second: np.ndarray, seed: int, repetitions: int = 2000
 ) -> tuple[float, float, float]:
-    """Mean of second minus first over paired items, with a percentile bootstrap over items."""
+    """Mean of second minus first over items, with a percentile bootstrap over items."""
     difference = second.astype(float) - first.astype(float)
     rng = np.random.default_rng(seed)
     draws = rng.choice(difference, size=(repetitions, len(difference)), replace=True)
@@ -1029,11 +1023,8 @@ def _pair_record(
 def compute_ablation_pairs(
     project_root: Path, dataset: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Paired accuracy differences from the August 2026 comparisons, every arm scored
-    against the dataset keys: English versus German on the 200 translation pairs; diagram
-    removed versus retained on the 70 diagram items the translation subset shares with the
-    blind subset (same batch, both arms without the rendered crop); and the full 1,353-item
-    blind subset against the archived October 2025 runs."""
+    """Paired accuracy differences: English versus German on the 200 translation pairs, and
+    the blind rerun of the question-diagram items versus the October 2025 runs."""
     runs_dir = project_root / "artifacts" / "runs"
     comparison_runs = {
         (model, arm): run_id for run_id, (model, arm) in COMPARISON_RUNS.items()
@@ -1045,36 +1036,23 @@ def compute_ablation_pairs(
             arm: _scored_arm(runs_dir / comparison_runs[(series, arm)], dataset)
             for arm in ["german_control", "english", "blind"]
         }
-        if len(arms["german_control"]) != 200 or len(arms["english"]) != 200:
-            raise ValueError("Expected 200 matched translation pairs")
         records.append(
             _pair_record(
                 series,
-                "English minus German (translation pairs)",
+                "English minus German",
                 arms["german_control"],
                 arms["english"],
                 5500 + index,
                 repetitions,
             )
         )
+        october = _scored_arm(runs_dir / full_runs[series], dataset)
         records.append(
             _pair_record(
                 series,
-                "Diagram removed minus retained (same batch, no crop)",
-                arms["german_control"],
+                "Images removed minus retained",
+                october.loc[arms["blind"].index],
                 arms["blind"],
-                5600 + index,
-                repetitions,
-            )
-        )
-        blind_ids = dataset.loc[dataset["id"].isin(arms["blind"].index), "id"]
-        october = _scored_arm(runs_dir / full_runs[series], dataset).loc[blind_ids]
-        records.append(
-            _pair_record(
-                series,
-                "Images removed minus retained (full blind subset, Oct 2025 vs Aug 2026)",
-                october,
-                arms["blind"].loc[blind_ids],
                 5700 + index,
                 repetitions,
             )

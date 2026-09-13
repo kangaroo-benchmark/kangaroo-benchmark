@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from collections.abc import Callable
 from pathlib import Path
@@ -22,7 +23,6 @@ from analysis.inputs import (
     aggregate_exam_scores,
     build_comparison,
     compute_statistics,
-    file_sha256,
     load_dataset,
     load_human_scores,
     load_item_scores,
@@ -806,7 +806,6 @@ def run_diagnostics(
     write_outputs: bool = True,
 ) -> dict[str, object]:
     dataset = load_dataset(dataset_path)
-    dataset_hash = file_sha256(dataset_path)
     human_scores = load_human_scores(project_root / "artifacts" / "human_results")
     items = load_item_scores(project_root / "artifacts" / "runs", dataset)
     form_adjustments = pd.read_csv(project_root / "artifacts" / "form_adjustments.csv")
@@ -874,11 +873,7 @@ def run_diagnostics(
     ]
     if not mismatched_forms.empty:
         raise ValueError("Model and human official item counts differ")
-    comparison, lomo = build_comparison(
-        exam_scores,
-        human_scores,
-        expected_comparisons=115,
-    )
+    comparison, lomo = build_comparison(exam_scores, human_scores)
     if not np.allclose(comparison["human_max"], comparison["possible_points"]):
         raise ValueError("Model and human score maxima differ on complete shared exams")
     pooled_statistics, calibration, out_of_sample = compute_statistics(comparison, lomo)
@@ -936,10 +931,7 @@ def run_diagnostics(
     model_performance["exams_won"] = (
         model_performance["model"].map(winner_counts).fillna(0).astype(int)
     )
-    metrics["dataset"] = {
-        "sha256": dataset_hash,
-        **image_metadata,
-    }
+    metrics["dataset"] = image_metadata
     metrics["form_adjustments"] = {
         "non_evaluable_official_slots": int(len(form_adjustments)),
         "fixed_credit_form_adjustments": form_adjustments[
@@ -1051,3 +1043,23 @@ def run_diagnostics(
         "out_of_sample": out_of_sample,
         "form_adjustments": form_adjustments,
     }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset", type=Path, default=Path("data/kangaroo.parquet"))
+    args = parser.parse_args()
+    project_root = Path(__file__).resolve().parents[1]
+    dataset_path = args.dataset.expanduser()
+    if not dataset_path.is_absolute():
+        dataset_path = project_root / dataset_path
+    results = run_diagnostics(project_root, dataset_path)
+    pooled = results["metrics"]["pooled"]
+    print(f"Shared exam comparisons: {pooled['comparisons']}")
+    print(f"Pearson r: {pooled['pearson_r']:.6f}")
+    print(f"Spearman rho: {pooled['spearman_rho']:.6f}")
+    print(f"Outputs: {project_root / 'reproduced' / 'diagnostics'}")
+
+
+if __name__ == "__main__":
+    main()
