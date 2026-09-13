@@ -30,7 +30,6 @@
     "year": null,
     "year_range": null
   },
-  "machine_local_paths_removed": true,
   "model": {
     "id": "openai/gpt-5",
     "label": "OpenAI GPT 5",

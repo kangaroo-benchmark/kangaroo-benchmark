@@ -1,61 +1,33 @@
 [project]
-name = "kaenguru-benchmark"
-version = "0.1.0"
-description = "Evaluation runner and dashboard for the German Kangaroo benchmark"
-readme = "README.md"
+name = "kangaroo-benchmark"
+version = "1.0.0"
 requires-python = ">=3.11"
 dependencies = [
-    "nbclient>=0.10",
-    "nbformat>=5.10",
+    "httpx>=0.27",
+    "matplotlib>=3.10",
     "numpy>=1.26",
     "pandas>=2.2",
-    "pyarrow>=16.0",
-    "requests>=2.32",
-    "httpx>=0.27",
     "pillow>=10.3",
-    "tqdm>=4.66",
+    "pyarrow>=16.0",
     "pytest>=8.3",
-    "fastapi>=0.111",
-    "uvicorn[standard]>=0.29",
-    "jinja2>=3.1",
-    "orjson>=3.10",
-    "humanize>=4.9",
-    "cachetools>=5.3",
-    "rich>=13.7",
-    "pyqt5>=5.15.11",
-    "jupyter>=1.1.1",
-    "python-multipart>=0.0.20",
-    "matplotlib>=3.10.6",
-    "scipy>=1.16.2",
-    "ipykernel>=6.30.1",
-    "tiktoken>=0.12.0",
+    "scipy>=1.16",
+    "tqdm>=4.66",
 ]
 
 [project.scripts]
-reproduce-diagnostics = "analysis.reproduce_diagnostics:main"
+reproduce-diagnostics = "analysis.diagnostics:main"
 reproduce-surrogate = "analysis.surrogate_analysis:main"
-prepare-experiments = "analysis.prepare_experiments:main"
-build-translation-subset = "analysis.translation_subset:main"
 
 [build-system]
 requires = ["setuptools>=80.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["score_utils"]
+py-modules = ["score_utils", "eval_run"]
 
 [tool.setuptools.packages.find]
-include = ["analysis*"]
+include = ["analysis*", "console*"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
-
-[tool.ruff]
-extend-exclude = ["*.ipynb"]
-
-[dependency-groups]
-dev = [
-    "ipykernel>=6.30.1",
-    "ruff>=0.15.12",
-]

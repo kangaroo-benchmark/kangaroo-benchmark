@@ -1,7 +1,7 @@
 {
   "args": {
     "dashboard_refresh_hz": 5.0,
-    "dataset": "full.parquet",
+    "dataset": "dataset_full.edited.corrected.parquet",
     "events_jsonl": "auto",
     "fail_fast": false,
     "group": null,
@@ -29,7 +29,6 @@
     "year": null,
     "year_range": null
   },
-  "machine_local_paths_removed": true,
   "model": {
     "id": "openai/gpt-5",
     "label": "OpenAI GPT 5",

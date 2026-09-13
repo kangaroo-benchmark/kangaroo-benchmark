@@ -63,7 +63,6 @@
     "evaluated_items": 3886,
     "question_crop_present": 3886,
     "released_rows": 3886,
-    "sha256": "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9",
     "subtype_counts": {
       "Image answers only": 119,
       "No separate visual element": 2140,

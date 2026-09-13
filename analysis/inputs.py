@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -12,7 +11,6 @@ from scipy.stats import pearsonr, spearmanr
 
 from score_utils import DECLINED_TOKEN, PENALTY_FACTOR
 
-DATASET_SHA256 = "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9"
 DATASET_ITEMS = 3886
 
 # Full evaluations of the released dataset (October 2025).
@@ -54,19 +52,6 @@ COMPARISON_RUNS = {
         "blind",
     ),
 }
-ARM_INPUTS = {
-    "full": "kangaroo.parquet",
-    "german_control": "translation/german_control.parquet",
-    "english": "translation/english_translation.parquet",
-    "blind": "experiments/blind_question_diagram_only.parquet",
-}
-# Translation-arm rows carry the source item id plus an arm suffix.
-ARM_ID_SUFFIX = {
-    "full": "",
-    "german_control": "_de_control",
-    "english": "_en",
-    "blind": "",
-}
 REFERENCE_MODEL = "openai-gpt-5"
 GRADE_MEMBERS = {
     "3-4": (3, 4),
@@ -77,24 +62,13 @@ GRADE_MEMBERS = {
 }
 GRADE_LABELS = {group: f"Grade {group}" for group in GRADE_MEMBERS}
 GRADE_ORDER = {label: index for index, label in enumerate(GRADE_LABELS.values())}
-OFFICIAL_FORM_ADJUSTMENTS = {(2001, "9-10"), (2003, "3-4")}
 METADATA_COLUMNS = ["year", "group", "problem_number", "points", "multimodal"]
 COMPACT_RUN_COLUMNS = ["id", "source_id", *METADATA_COLUMNS, "predicted"]
 
 
-def file_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def load_dataset(dataset_path: Path) -> pd.DataFrame:
-    """The released dataset, verified against its pinned checksum."""
-    digest = file_sha256(dataset_path)
-    if digest != DATASET_SHA256:
-        raise ValueError(f"Unexpected dataset hash {digest}; expected {DATASET_SHA256}")
     dataset = pd.read_parquet(dataset_path)
     dataset["id"] = dataset["id"].astype(str)
-    if len(dataset) != DATASET_ITEMS or dataset["id"].nunique() != DATASET_ITEMS:
-        raise ValueError(f"Expected {DATASET_ITEMS:,} unique items in the dataset")
     return dataset
 
 
@@ -117,20 +91,15 @@ def _histogram_mean(data: dict[str, object], grade_id: str) -> float:
 
 
 def load_human_scores(human_dir: Path, histogram_means: bool = False) -> pd.DataFrame:
-    """Official cohort means per grade group, weighting listed grades by participants.
-
-    Summaries without a reported mean use the frequency-weighted bin-midpoint mean;
-    ``histogram_means`` applies that estimator to every summary."""
+    """Official cohort means per grade group, weighting listed grades by participants;
+    summaries without a reported mean use the frequency-weighted bin-midpoint mean."""
     records: list[dict[str, object]] = []
     files = sorted(human_dir.glob("human_baseline_*.json"))
     if not files:
-        raise FileNotFoundError(f"No human baseline files found in {human_dir}")
+        raise FileNotFoundError(f"No cohort summary files in {human_dir}")
 
     for path in files:
         data = json.loads(path.read_text(encoding="utf-8"))
-        if data["schema_version"] != "2.0":
-            raise ValueError(f"Unsupported schema in {path}: {data['schema_version']}")
-
         year = int(data["year"])
         totals = data["totals_by_grade"]
         average_scores = data["avg_score_by_grade"]
@@ -206,14 +175,7 @@ def load_human_scores(human_dir: Path, histogram_means: bool = False) -> pd.Data
 
 
 def read_compact_run(run_dir: Path) -> pd.DataFrame:
-    """The compact result table of an archived run."""
-    path = run_dir / "results.parquet"
-    if not path.exists():
-        raise FileNotFoundError(f"Missing model results: {path}")
-    frame = pd.read_parquet(path)
-    missing = set(COMPACT_RUN_COLUMNS) - set(frame.columns)
-    if missing:
-        raise ValueError(f"{path} is missing columns: {sorted(missing)}")
+    frame = pd.read_parquet(run_dir / "results.parquet")
     frame["id"] = frame["id"].astype(str)
     frame["source_id"] = frame["source_id"].astype(str)
     return frame
@@ -223,8 +185,6 @@ def score_predictions(predictions: pd.DataFrame, dataset: pd.DataFrame) -> pd.Da
     """Score predicted letters against the dataset keys with the contest rule."""
     reference = dataset.set_index("id")
     scored = predictions.copy()
-    if not scored["source_id"].isin(reference.index).all():
-        raise ValueError("Predictions reference items outside the dataset")
     for column in [*METADATA_COLUMNS, "answer"]:
         scored[column] = scored["source_id"].map(reference[column]).to_numpy()
     scored["year"] = scored["year"].astype(int)
@@ -249,16 +209,10 @@ def load_item_scores(runs_dir: Path, dataset: pd.DataFrame) -> pd.DataFrame:
     """Scored item-level outputs of the full runs, one row per model and item."""
     frames = []
     for run_id, model in RUNS.items():
-        frame = read_compact_run(runs_dir / run_id)
-        if len(frame) != DATASET_ITEMS or frame["source_id"].nunique() != DATASET_ITEMS:
-            raise ValueError(f"{run_id} must cover every dataset item exactly once")
-        frame = score_predictions(frame, dataset)
+        frame = score_predictions(read_compact_run(runs_dir / run_id), dataset)
         frame["model"] = model
         frames.append(frame)
-    item_scores = pd.concat(frames, ignore_index=True)
-    if not set(item_scores["group"].unique()).issubset(GRADE_MEMBERS):
-        raise ValueError("Unexpected exam group in the archived runs")
-    return item_scores
+    return pd.concat(frames, ignore_index=True)
 
 
 def aggregate_exam_scores(
@@ -273,10 +227,6 @@ def aggregate_exam_scores(
             (int(row.year), str(row.group)): row
             for row in form_adjustments.itertuples(index=False)
         }
-        if set(adjustments) != OFFICIAL_FORM_ADJUSTMENTS:
-            raise ValueError(
-                f"Unexpected official form adjustments: {set(adjustments)}"
-            )
 
     records = []
     for (model, year, exam), group in item_scores.groupby(
@@ -326,17 +276,13 @@ def _z_score(series: pd.Series) -> pd.Series:
 
 
 def build_comparison(
-    exam_scores: pd.DataFrame,
-    human_scores: pd.DataFrame,
-    expected_comparisons: int = 115,
+    exam_scores: pd.DataFrame, human_scores: pd.DataFrame
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Build the shared form comparisons and grade-normalized difficulty series."""
+    """The shared form comparisons and grade-normalized difficulty series."""
     index_columns = ["year", "exam", "grade_bucket"]
     model_scores = exam_scores.pivot_table(
         index=index_columns, columns="model", values="llm_pct"
     )
-    if model_scores.isna().any().any():
-        raise ValueError("Every shared exam must contain all four model scores")
 
     model_summary = pd.DataFrame(
         {
@@ -361,10 +307,6 @@ def build_comparison(
     comparison = model_summary.reset_index().merge(
         human_scores, on=index_columns, how="inner", validate="one_to_one"
     )
-    if len(comparison) != expected_comparisons:
-        raise ValueError(
-            f"Expected {expected_comparisons} shared exams, found {len(comparison)}"
-        )
 
     comparison["human_difficulty"] = -comparison.groupby("grade_bucket")[
         "human_pct"

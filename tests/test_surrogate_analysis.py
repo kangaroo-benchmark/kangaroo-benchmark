@@ -137,20 +137,14 @@ def test_reproduced_surrogate_outputs_match_reported_values():
     )
 
     pairs = pd.read_csv(tables / "ablation_pairs.csv")
-    same_batch = pairs.loc[
-        pairs["comparison"].str.startswith("Diagram removed")
-    ].set_index("series")
-    assert (same_batch["items"] == 70).all()
-    assert np.isclose(
-        same_batch.loc["openai-gpt-5", "difference_pp"], -42.857, atol=5e-3
-    )
-    assert (same_batch["ci_high_pp"] < 0).all()
-    translation = pairs.loc[pairs["comparison"].str.startswith("English")]
+    translation = pairs.loc[pairs["comparison"] == "English minus German"]
+    assert (translation["items"] == 200).all()
     assert np.allclose(translation["difference_pp"], -0.5)
     full_blind = pairs.loc[
-        pairs["comparison"].str.startswith("Images removed")
+        pairs["comparison"] == "Images removed minus retained"
     ].set_index("series")
     assert (full_blind["items"] == 1353).all()
+    assert (full_blind["ci_high_pp"] < 0).all()
     gpt5 = full_blind.loc["openai-gpt-5"]
     assert np.isclose(gpt5["difference_pp"], -41.537, atol=5e-3)
     assert gpt5["lost"] == 575 and gpt5["gained"] == 13

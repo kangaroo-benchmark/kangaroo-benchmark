@@ -22,14 +22,6 @@ from tqdm import tqdm
 from console.metrics import Aggregator, UsageEvent
 from score_utils import score_question
 
-try:
-    from console.dashboard import Dashboard
-
-    DASHBOARD_AVAILABLE = True
-except Exception:  # pragma: no cover - rich not installed
-    Dashboard = None  # type: ignore
-    DASHBOARD_AVAILABLE = False
-
 
 REQUIRED_COLUMNS = [
     "id",
@@ -139,8 +131,6 @@ def _text_contains_decline(text: str) -> bool:
 
 DEFAULT_RETRY_MAX_TOKENS = 256
 
-# HTTP statuses considered transient/retryable at either transport- or row-level.
-# Includes timeouts and common CDN gateway errors in addition to rate limit and 5xx.
 RETRYABLE_STATUS_CODES = {
     408,  # Request Timeout
     425,  # Too Early (ask client to retry)
@@ -189,7 +179,6 @@ class RowRecord:
     prompt_tokens: Optional[int]
     completion_tokens: Optional[int]
     total_tokens: Optional[int]
-    # Extra usage details when available from providers (e.g., OpenRouter)
     reasoning_tokens: Optional[int] = None
     explicit_reasoning_tokens: Optional[int] = None
     cached_prompt_tokens: Optional[int] = None
@@ -297,11 +286,8 @@ def coerce_bytes(x: Any) -> Optional[bytes]:
         return None
     if isinstance(x, (bytes, bytearray, memoryview)):
         return bytes(x)
-    # Sometimes parquet may roundtrip as Python "Binary" type; attempt fallback
     if isinstance(x, str):
-        # Try base64 decode if it looks like base64; otherwise treat as no-bytes
         try:
-            # Heuristic: ignore tiny strings
             if len(x) > 16:
                 return base64.b64decode(x, validate=False)
         except Exception:
@@ -319,7 +305,6 @@ def coerce_list_of_bytes(x: Any) -> Optional[List[bytes]]:
             if b is not None:
                 out.append(b)
         return out if out else None
-    # Sometimes arrow returns numpy arrays or other sequences
     try:
         from collections.abc import Sequence
 
@@ -332,13 +317,11 @@ def coerce_list_of_bytes(x: Any) -> Optional[List[bytes]]:
             return out if out else None
     except Exception:
         pass
-    # Explicit numpy.ndarray handling (object arrays of bytes)
     try:
         import numpy as np  # type: ignore
 
         if isinstance(x, np.ndarray):
             out: List[bytes] = []
-            # Convert to list to avoid numpy scalars
             for item in x.tolist():
                 b = coerce_bytes(item)
                 if b is not None:
@@ -357,7 +340,6 @@ def pil_from_bytes(img_bytes: bytes) -> Optional[Image.Image]:
     """
     try:
         img = Image.open(BytesIO(img_bytes))
-        # Ensure the image is actually loaded to catch decoding errors early
         img.load()
         return img
     except Exception:
@@ -371,12 +353,10 @@ def image_to_data_url(
     max_dim: int = 1024,
     jpeg_quality: int = 85,
 ) -> Tuple[str, str]:
-    # Downscale while preserving aspect ratio; never upscale.
     if max(img.size) > max_dim:
         img = img.copy()
         img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
 
-    # Choose encoding format based on alpha channel and preference
     fmt = (prefer_format or "").upper().strip()
     has_alpha = getattr(img, "mode", "").upper() in {"RGBA", "LA"}
     if not fmt:
@@ -387,7 +367,6 @@ def image_to_data_url(
         fmt = "PNG" if has_alpha else "JPEG"
     mime = "image/png" if fmt == "PNG" else "image/jpeg"
 
-    # Encode
     buf = BytesIO()
     save_kwargs = {"format": fmt}
     if fmt == "JPEG":
@@ -401,7 +380,6 @@ def image_to_data_url(
         if img.mode not in ("RGB", "L"):
             img = img.convert("RGB")
     else:
-        # For PNG, enable optimization; avoid palette conversion to preserve details.
         save_kwargs.update({"optimize": True})
     img.save(buf, **save_kwargs)
     b64 = base64.b64encode(buf.getvalue()).decode("ascii")
@@ -438,13 +416,11 @@ def build_messages(
 
     content_parts: List[Dict[str, Any]] = []
 
-    # Question text
     q_label = "Frage:" if is_de else "Question:"
     content_parts.append(
         {"type": "text", "text": f"{q_label} {row['problem_statement']}"}
     )
 
-    # Question image
     if encoded_images.get("question"):
         q_img_label = "Fragebild:" if is_de else "Question image:"
         content_parts.append({"type": "text", "text": q_img_label})
@@ -458,7 +434,6 @@ def build_messages(
             }
         )
 
-    # Associated images
     assoc = encoded_images.get("assoc_list") or []
     for i, url in enumerate(assoc, start=1):
         if url:
@@ -468,7 +443,6 @@ def build_messages(
                 {"type": "image_url", "image_url": {"url": url, "detail": image_detail}}
             )
 
-    # Options A..E
     choice_hdr = "Antwortmöglichkeiten:" if is_de else "Answer choices:"
     content_parts.append({"type": "text", "text": choice_hdr})
     for letter in ["A", "B", "C", "D", "E"]:
@@ -482,7 +456,6 @@ def build_messages(
                 {"type": "image_url", "image_url": {"url": url, "detail": image_detail}}
             )
 
-    # Instruction last
     content_parts.append({"type": "text", "text": final_instruction})
 
     messages: List[Dict[str, Any]] = [{"role": "system", "content": sys_text}]
@@ -529,7 +502,6 @@ def normalize_message_content(content: Any) -> str:
                         parts.append(nested_text)
                     continue
 
-                # Fall back to serialising remaining primitive entries for debugging
                 for key in ("tool_calls", "arguments"):
                     value = item.get(key)
                     if value is not None:
@@ -605,7 +577,6 @@ def resolve_dataset_path(raw_path: str) -> str:
 def parse_answer_from_text(
     text: str,
 ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
-    # returns (answer, rationale, parse_warning)
     if not text or not text.strip():
         return None, None, "empty_response"
 
@@ -675,7 +646,6 @@ async def request_with_retries(
     on_status: Optional[Callable[[int], None]] = None,
     on_throttle: Optional[Callable[[], None]] = None,
 ) -> Tuple[httpx.Response, float]:
-    # Slightly extended deterministic backoff to better absorb rare 429s.
     delays = [0.5, 1.0, 2.0, 4.0]
     last_exc: Optional[Exception] = None
     start = time.perf_counter()
@@ -933,8 +903,6 @@ async def evaluate_single_row(
                     "status_code": resp.status_code,
                 }
             )
-            # If this status is retryable, perform a row-level retry instead of failing immediately
-            # to further reduce the chance of a final failure (e.g., rare 429 slipping through).
             if resp.status_code in RETRYABLE_STATUS_CODES and attempt < max_attempts:
                 try:
                     await limiter.record_throttle()
@@ -981,7 +949,6 @@ async def evaluate_single_row(
             gen_id = data.get("id")
             choices = data.get("choices") or []
             if choices and isinstance(choices, list):
-                # Some providers may return None entries; guard accordingly
                 sanitized_choices = [
                     choice for choice in choices if isinstance(choice, dict)
                 ]
@@ -1011,7 +978,6 @@ async def evaluate_single_row(
                                 dst_key, 0.0
                             ) + float(val)
                             break
-                # Details when available
                 prompt_details = None
                 for detail_key in ("prompt_tokens_details", "input_tokens_details"):
                     details_candidate = usage.get(detail_key)
@@ -1052,7 +1018,6 @@ async def evaluate_single_row(
                             combined_usage_details.get("explicit_reasoning_tokens", 0.0)
                             + float(rt)
                         )
-                    # Some providers report visible reasoning separately (e.g., output_text tokens)
                     explicit_rt = completion_details.get("explicit_reasoning_tokens")
                     if isinstance(explicit_rt, (int, float)):
                         combined_usage_details["explicit_reasoning_tokens"] = (
@@ -1069,7 +1034,6 @@ async def evaluate_single_row(
                     combined_usage["cost"] = combined_usage.get("cost", 0.0) + float(
                         cost_val
                     )
-            # Fallback: some providers put usage into an X-Usage header
             elif hasattr(resp, "headers"):
                 hdr = None
                 try:
@@ -1078,14 +1042,12 @@ async def evaluate_single_row(
                     hdr = None
                 if hdr:
                     parsed: Optional[Dict[str, Any]] = None
-                    # First try JSON
                     try:
                         parsed_json = json.loads(hdr)
                         if isinstance(parsed_json, dict):
                             parsed = parsed_json
                     except Exception:
                         parsed = None
-                    # Then try a simple key=value parser (comma/semicolon separated)
                     if parsed is None:
                         try:
                             kv: Dict[str, float] = {}
@@ -1105,7 +1067,6 @@ async def evaluate_single_row(
                                 parsed = dict(kv)
                         except Exception:
                             parsed = None
-                    # Apply parsed usage fields if any
                     if isinstance(parsed, dict):
                         for dst_key, src_keys in usage_key_aliases.items():
                             for src_key in src_keys:
@@ -1115,7 +1076,6 @@ async def evaluate_single_row(
                                         dst_key, 0.0
                                     ) + float(val)
                                     break
-                        # Details: either nested objects or dot-keys
                         prompt_details = None
                         for detail_key in (
                             "prompt_tokens_details",
@@ -1147,7 +1107,6 @@ async def evaluate_single_row(
                         if completion_details is None:
                             completion_details = {}
 
-                        # Also support flattened keys like "prompt_tokens_details.cached_tokens=123"
                         def _maybe_from_flat(src_key: str) -> Optional[float]:
                             val = parsed.get(src_key)
                             try:
@@ -1344,7 +1303,6 @@ async def evaluate_single_row(
                 cost_usd = float(cost_usd)
             except Exception:
                 cost_usd = None
-        # Details (single-attempt fallback)
         try:
             prompt_details_map = None
             for detail_key in ("prompt_tokens_details", "input_tokens_details"):
@@ -1443,10 +1401,6 @@ async def evaluate_rows_async(
     failures_file,
     worker_count: int,
     *,
-    dashboard_enabled: bool,
-    dashboard_refresh_hz: float,
-    dashboard_recent: int,
-    dashboard_compact: bool,
     events_path: Optional[Path],
 ) -> Tuple[List[RowRecord], List[Dict[str, Any]], int]:
     rows: List[RowRecord] = []
@@ -1467,23 +1421,10 @@ async def evaluate_rows_async(
         len(rows_data),
         model_id=model_info.id,
         events_path=events_path,
-        recent_items=dashboard_recent,
         min_request_interval=model_info.min_request_interval,
     )
 
-    dashboard = None
-    progress: Optional[tqdm] = None
-    if dashboard_enabled and DASHBOARD_AVAILABLE and Dashboard is not None:
-        dashboard = Dashboard(
-            aggregator,
-            refresh_hz=dashboard_refresh_hz,
-            compact=dashboard_compact,
-            recent_rows=dashboard_recent,
-        )
-        dashboard.start()
-        dashboard.update(aggregator.snapshot(in_flight=0, worker_count=worker_count))
-    else:
-        progress = tqdm(total=len(rows_data), desc="Evaluating", unit="q")
+    progress = tqdm(total=len(rows_data), desc="Evaluating", unit="q")
 
     def build_usage_event(outcome: WorkerOutcome) -> UsageEvent:
         record = outcome.record
@@ -1615,16 +1556,7 @@ async def evaluate_rows_async(
                 write_jsonl_line(results_jsonl, record_dict)
             event = build_usage_event(outcome)
             aggregator.record_event(event)
-            if dashboard is not None:
-                async with inflight_lock:
-                    inflight_current = active_inflight
-                snapshot = aggregator.snapshot(
-                    in_flight=inflight_current, worker_count=worker_count
-                )
-                dashboard.update(snapshot)
-            else:
-                if progress is not None:
-                    progress.update(1)
+            progress.update(1)
             result_queue.task_done()
 
     limits = httpx.Limits(
@@ -1647,10 +1579,7 @@ async def evaluate_rows_async(
             await result_queue.put(None)
             await consumer_task
     finally:
-        if dashboard is not None:
-            dashboard.stop()
-        if progress is not None:
-            progress.close()
+        progress.close()
         aggregator.close()
 
     return rows, results_records, skipped
@@ -1681,25 +1610,6 @@ def main():
     parser.add_argument("--output_dir", default="runs")
     parser.add_argument("--fail_fast", action="store_true")
     parser.add_argument(
-        "--live-dashboard",
-        dest="live_dashboard",
-        action="store_true",
-        help="Force enable the Rich dashboard even on non-tty outputs.",
-    )
-    parser.add_argument(
-        "--no-live-dashboard",
-        dest="live_dashboard",
-        action="store_false",
-        help="Disable the Rich dashboard even on ttys.",
-    )
-    parser.set_defaults(live_dashboard=None)
-    parser.add_argument(
-        "--dashboard-refresh-hz",
-        type=float,
-        default=5.0,
-        help="Refresh rate for the live dashboard (updates per second).",
-    )
-    parser.add_argument(
         "--events-jsonl",
         default="auto",
         help="Path to usage events JSONL log ('off' to disable, default auto).",
@@ -1712,17 +1622,6 @@ def main():
         help="Disable usage events capture.",
     )
     parser.add_argument(
-        "--recent-items",
-        type=int,
-        default=20,
-        help="Number of recent items to show in the dashboard table.",
-    )
-    parser.add_argument(
-        "--ui-compact",
-        action="store_true",
-        help="Use compact dashboard layout suitable for smaller terminals.",
-    )
-    parser.add_argument(
         "--text-only",
         action="store_true",
         help="Evaluate only text (non-multimodal) questions; drop multimodal rows before running.",
@@ -1732,7 +1631,6 @@ def main():
         action="store_true",
         help="Send no question, associated, or option images while retaining the selected rows.",
     )
-    # Image controls for multimodal inputs
     parser.add_argument(
         "--image_max_dim",
         type=int,
@@ -1749,7 +1647,6 @@ def main():
         help="Vision detail hint for providers that support it",
     )
 
-    # Categorical Filters
     parser.add_argument(
         "--year",
         type=int,
@@ -1769,7 +1666,6 @@ def main():
         help="Filter by one or more specific languages.",
     )
 
-    # Range Filters
     parser.add_argument(
         "--year-range",
         type=str,
@@ -1781,7 +1677,6 @@ def main():
         help="Filter by an inclusive range of points (e.g., '3.75-5.0').",
     )
 
-    # Boolean Filter
     parser.add_argument(
         "--vision-only",
         action="store_true",
@@ -1800,28 +1695,7 @@ def main():
     args.reasoning = None
     args.internal_effort = None
 
-    stdout_isatty = sys.stdout.isatty()
-    if args.live_dashboard is True:
-        dashboard_enabled = True
-    elif args.live_dashboard is False:
-        dashboard_enabled = False
-    else:
-        dashboard_enabled = stdout_isatty
-    if dashboard_enabled and not DASHBOARD_AVAILABLE:
-        print(
-            "Rich dashboard unavailable; falling back to tqdm progress bar.",
-            file=sys.stderr,
-        )
-        dashboard_enabled = False
-    dashboard_refresh = max(1.0, float(args.dashboard_refresh_hz or 5.0))
-    dashboard_recent = max(5, int(args.recent_items or 20))
     events_config = args.events_jsonl or "auto"
-
-    if dashboard_enabled and not stdout_isatty:
-        print(
-            "Warning: live dashboard forced on a non-TTY output; layout may degrade.",
-            file=sys.stderr,
-        )
 
     load_env_file()
 
@@ -1870,7 +1744,6 @@ def main():
         else:
             df = df.head(args.limit)
 
-    # Handle mutual exclusion between text-only and vision-only
     if args.text_only and args.vision_only:
         print(
             "ERROR: --text-only and --vision-only are mutually exclusive.",
@@ -1878,8 +1751,6 @@ def main():
         )
         sys.exit(2)
 
-    # Apply filters sequentially
-    # Categorical filters
     if args.year:
         df = df[df["year"].isin(args.year)]
 
@@ -1889,7 +1760,6 @@ def main():
     if args.language:
         df = df[df["language"].isin(args.language)]
 
-    # Range filters
     if args.year_range:
         try:
             start_str, end_str = args.year_range.split("-")
@@ -1983,7 +1853,6 @@ def main():
         f"  Mode: {'sequential' if worker_count == 1 else f'concurrent x{worker_count}'}"
     )
     print(f"  Rate limiter: {limiter_desc}")
-    print(f"  Live dashboard: {'on' if dashboard_enabled else 'off'}")
     if events_path is not None:
         print(f"  Usage events: {str(events_path)}")
     else:
@@ -2000,7 +1869,6 @@ def main():
         print(f"  Dropped due to no-vision: {model_filtered_out_rows}")
     else:
         print("  Text-only filter: off")
-    # Add proper spacing after pre-run summary to separate from dashboard
     print()
 
     with (
@@ -2019,10 +1887,6 @@ def main():
                 raw_responses_file,
                 failures_file,
                 worker_count,
-                dashboard_enabled=dashboard_enabled,
-                dashboard_refresh_hz=dashboard_refresh,
-                dashboard_recent=dashboard_recent,
-                dashboard_compact=bool(args.ui_compact),
                 events_path=events_path,
             )
         )
@@ -2314,7 +2178,6 @@ def main():
     with open(os.path.join(run_dir, "config.json"), "w", encoding="utf-8") as f:
         json.dump(config, f, ensure_ascii=False, indent=2)
 
-    # Add proper spacing before post-run summary to avoid cramped appearance
     print()
     print("Summary:")
     print(f"  Answered: {answered_count}")
@@ -2378,7 +2241,6 @@ def main():
             print(f"  Top warnings: {top_warnings}")
     print(f"  Worker count: {worker_count}")
 
-    # Calculate and display total runtime
     end_time = time.time()
     total_runtime = end_time - start_time
     hours, rem = divmod(int(total_runtime), 3600)
