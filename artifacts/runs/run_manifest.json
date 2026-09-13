@@ -1,6 +1,6 @@
 {
   "dataset_sha256": "131e4eeb45bae89d7bf3796461b009cc8cba7e514aacde2f8d36849ddbe911d9",
-  "notes": "results.parquet holds each run's final predicted letters, scored by the analysis against the dataset keys; results.jsonl.gz holds the first-pass item records; missing final answers were re-queried with tools/retry_missing_answers.py and raw_responses.jsonl.gz keeps every attempt.",
+  "notes": "results.parquet holds each run's final predicted letters, scored by the analysis against the dataset keys; results.jsonl.gz holds the first-pass item records; items left without a final answer by a provider error were re-queried under the same settings with tools/retry_missing_answers.py (retried_rows) and raw_responses.jsonl.gz keeps every attempt.",
   "runs": {
     "20251013_191510_openai-gpt-5": {
       "arm": "full",
@@ -132,7 +132,7 @@
       "input": "kangaroo.parquet",
       "model": "qwen-qwen3-vl-235b-a22b-thinking",
       "model_id": "qwen/qwen3-vl-235b-a22b-thinking",
-      "retried_rows": 0,
+      "retried_rows": 52,
       "rows": 3886,
       "rows_outside_dataset": 1,
       "timestamp_utc": "20251014_080823"

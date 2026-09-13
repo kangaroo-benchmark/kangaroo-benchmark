@@ -116,8 +116,11 @@ def _histogram_mean(data: dict[str, object], grade_id: str) -> float:
     return float(np.average(np.asarray(midpoints, dtype=float), weights=counts))
 
 
-def load_human_scores(human_dir: Path) -> pd.DataFrame:
-    """Official cohort means per grade group, weighting listed grades by participants."""
+def load_human_scores(human_dir: Path, histogram_means: bool = False) -> pd.DataFrame:
+    """Official cohort means per grade group, weighting listed grades by participants.
+
+    Summaries without a reported mean use the frequency-weighted bin-midpoint mean;
+    ``histogram_means`` applies that estimator to every summary."""
     records: list[dict[str, object]] = []
     files = sorted(human_dir.glob("human_baseline_*.json"))
     if not files:
@@ -137,7 +140,8 @@ def load_human_scores(human_dir: Path) -> pd.DataFrame:
             if grade_id == "overall":
                 continue
             average = average_scores.get(grade_id)
-            if average is None:
+            reported = average is not None and not histogram_means
+            if not reported:
                 average = _histogram_mean(data, grade_id)
             grade_records.append(
                 {
@@ -146,6 +150,7 @@ def load_human_scores(human_dir: Path) -> pd.DataFrame:
                     "human_score": float(average),
                     "human_max": float(grade["max_points"]),
                     "students": int(totals[grade_id]),
+                    "reported": reported,
                 }
             )
 
@@ -190,6 +195,9 @@ def load_human_scores(human_dir: Path) -> pd.DataFrame:
                     "human_grades_used": ",".join(
                         str(record["grade_id"]) for record in selected
                     ),
+                    "human_mean_source": "reported"
+                    if all(record["reported"] for record in selected)
+                    else "histogram",
                 }
             )
 
