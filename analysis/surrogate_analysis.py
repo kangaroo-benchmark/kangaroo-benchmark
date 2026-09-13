@@ -28,7 +28,13 @@ from analysis.diagnostics import (
     _fit_ols,
     run_diagnostics,
 )
-from analysis.inputs import COMPARISON_RUNS, RUNS, read_compact_run, score_predictions
+from analysis.inputs import (
+    COMPARISON_RUNS,
+    RUNS,
+    load_human_scores,
+    read_compact_run,
+    score_predictions,
+)
 
 ENSEMBLE = "ensemble"
 SERIES_LABELS = {**MODEL_LABELS, ENSEMBLE: "Equal-weight ensemble"}
@@ -57,6 +63,7 @@ FORWARD_BASELINE = "Grade mean"
 VISUAL_SPECIFICATION = "Visual share"
 GRADE_ORDER = ["Grade 3-4", "Grade 5-6", "Grade 7-8", "Grade 9-10", "Grade 11-13"]
 MIN_TRAINING_YEARS = 8
+RECENT_WINDOW_YEARS = 3
 SHARED_COMPARISONS = 115
 
 
@@ -72,6 +79,7 @@ def build_panel(exam_data: pd.DataFrame, exam_scores: pd.DataFrame) -> pd.DataFr
             "exam",
             "grade_bucket",
             "human_pct",
+            "human_mean_source",
             "pooled_ensemble_pct",
             "students",
             "item_count",
@@ -302,10 +310,177 @@ def summarize_forward_predictions(
     return per_grade, pd.DataFrame(pooled_records)
 
 
+def _recent_mean_errors(group: pd.DataFrame, window: int) -> pd.DataFrame:
+    group = group.sort_values("year").reset_index(drop=True)
+    records = []
+    for index in range(MIN_TRAINING_YEARS, len(group)):
+        target = group.iloc[index]
+        records.append(
+            {
+                "year": int(target["year"]),
+                "training_years": int(index),
+                "observed": float(target["human_pct"]),
+                "predicted": float(
+                    group.iloc[index - window : index]["human_pct"].mean()
+                ),
+            }
+        )
+    return pd.DataFrame(records)
+
+
+def _shared_slope_errors(
+    panel: pd.DataFrame, group: pd.DataFrame, column: str
+) -> pd.DataFrame:
+    group = group.sort_values("year").reset_index(drop=True)
+    grade_dummy = f"grade_bucket_{group['grade_bucket'].iloc[0]}"
+    records = []
+    for index in range(MIN_TRAINING_YEARS, len(group)):
+        target = group.iloc[index]
+        training = panel.loc[panel["year"] < target["year"]]
+        coefficients = _fit_ols(training, "human_pct", [column], ["grade_bucket"])[
+            "coefficients"
+        ]
+        prediction = (
+            coefficients["intercept"]
+            + coefficients.get(grade_dummy, 0.0)
+            + coefficients[column] * float(target[column])
+        )
+        records.append(
+            {
+                "year": int(target["year"]),
+                "training_years": int(index),
+                "observed": float(target["human_pct"]),
+                "predicted": float(prediction),
+            }
+        )
+    return pd.DataFrame(records)
+
+
+def compute_forward_sensitivity(
+    panel: pd.DataFrame, predictions: pd.DataFrame, repetitions: int = 2000
+) -> pd.DataFrame:
+    """Forward errors of a recent-history baseline and of calibrations that pool the
+    grade groups with one shared model-score slope, against the same held-out forms."""
+    ensemble_rows = predictions.loc[predictions["series"] == ENSEMBLE]
+    reference = {
+        "baseline_error": FORWARD_BASELINE,
+        "visual_error": VISUAL_SPECIFICATION,
+    }
+    variants = [("Recent mean (last three years)", None)]
+    variants += [("Model score, shared slope", series) for series in SERIES_LABELS]
+    records = []
+    for index, (spec, series) in enumerate(variants):
+        frames = []
+        for grade, group in panel.groupby("grade_bucket", sort=False):
+            errors = (
+                _recent_mean_errors(group, RECENT_WINDOW_YEARS)
+                if series is None
+                else _shared_slope_errors(panel, group, series_column(series))
+            )
+            errors["grade_bucket"] = grade
+            frames.append(errors)
+        frame = pd.concat(frames, ignore_index=True)
+        frame["error"] = frame["observed"] - frame["predicted"]
+        for column, reference_spec in reference.items():
+            frame = frame.merge(
+                ensemble_rows.loc[
+                    ensemble_rows["specification"] == reference_spec,
+                    ["grade_bucket", "year", "error"],
+                ].rename(columns={"error": column}),
+                on=["grade_bucket", "year"],
+                validate="one_to_one",
+            )
+        interval = _cluster_bootstrap_interval(
+            frame,
+            lambda sample: float(
+                (sample["error"].abs() - sample["baseline_error"].abs()).mean()
+            ),
+            seed=5500 + index,
+            repetitions=repetitions,
+        )
+        visual_interval = _cluster_bootstrap_interval(
+            frame,
+            lambda sample: float(
+                (sample["error"].abs() - sample["visual_error"].abs()).mean()
+            ),
+            seed=5600 + index,
+            repetitions=repetitions,
+        )
+        records.append(
+            {
+                "series": series or "none",
+                "series_label": SERIES_LABELS[series] if series else "Cohort history",
+                "specification": spec,
+                **_forward_metrics(frame),
+                "mae_change_ci_low": interval[0],
+                "mae_change_ci_high": interval[1],
+                "mae_change_vs_visual": float(
+                    (frame["error"].abs() - frame["visual_error"].abs()).mean()
+                ),
+                "mae_change_vs_visual_ci_low": visual_interval[0],
+                "mae_change_vs_visual_ci_high": visual_interval[1],
+                "bootstrap_samples": interval[2],
+            }
+        )
+    return pd.DataFrame(records)
+
+
+def compute_human_mean_sensitivity(
+    panel: pd.DataFrame, histogram_scores: pd.DataFrame, repetitions: int = 2000
+) -> pd.DataFrame:
+    """Bin-midpoint estimates against the reported cohort means, and the ensemble's
+    forward errors when every cohort mean uses the midpoint estimator."""
+    merged = panel.merge(
+        histogram_scores[["year", "exam", "human_pct"]].rename(
+            columns={"human_pct": "histogram_pct"}
+        ),
+        on=["year", "exam"],
+        validate="one_to_one",
+    )
+    reported = merged.loc[merged["human_mean_source"] == "reported"]
+    deviation = reported["histogram_pct"] - reported["human_pct"]
+    alternative = panel.assign(human_pct=merged["histogram_pct"].to_numpy())
+    predictions = compute_forward_predictions(alternative)
+    _, pooled = summarize_forward_predictions(
+        predictions.loc[predictions["series"] == ENSEMBLE], repetitions=repetitions
+    )
+    ensemble = pooled.set_index("specification")
+    return pd.DataFrame(
+        [
+            {
+                "forms_reported": int(len(reported)),
+                "forms_estimated": int(
+                    (merged["human_mean_source"] == "histogram").sum()
+                ),
+                "midpoint_minus_reported_mean": float(deviation.mean()),
+                "midpoint_minus_reported_mae": float(deviation.abs().mean()),
+                "midpoint_minus_reported_max_abs": float(deviation.abs().max()),
+                "forward_baseline_mae": float(ensemble.loc[FORWARD_BASELINE, "mae"]),
+                "forward_visual_mae": float(ensemble.loc[VISUAL_SPECIFICATION, "mae"]),
+                "forward_ensemble_mae": float(ensemble.loc["Model score", "mae"]),
+                "forward_ensemble_mae_change": float(
+                    ensemble.loc["Model score", "mae_change"]
+                ),
+                "forward_ensemble_mae_change_ci_low": float(
+                    ensemble.loc["Model score", "mae_change_ci_low"]
+                ),
+                "forward_ensemble_mae_change_ci_high": float(
+                    ensemble.loc["Model score", "mae_change_ci_high"]
+                ),
+                "bootstrap_samples": int(
+                    ensemble.loc["Model score", "bootstrap_samples"]
+                ),
+            }
+        ]
+    )
+
+
 def compute_variance_decomposition(
     panel: pd.DataFrame, repetitions: int = 2000
 ) -> pd.DataFrame:
-    """Share of between-form variance explained by grade and visual composition."""
+    """Share of between-form variance explained by grade and visual composition, with
+    the visual-share coefficient under grade effects, added year effects, and an added
+    linear calendar trend."""
     outcomes = {
         "human_pct": "Cohort",
         **{series_column(series): label for series, label in SERIES_LABELS.items()},
@@ -329,6 +504,34 @@ def compute_variance_decomposition(
             seed=5300 + index,
             repetitions=repetitions,
         )
+        calendar = {}
+        for name, predictors, fixed_effects, seed in [
+            ("", ["multimodal_share"], ["grade_bucket"], 5700),
+            ("_year_fe", ["multimodal_share"], ["grade_bucket", "year"], 5800),
+            ("_trend", ["multimodal_share", "year"], ["grade_bucket"], 5900),
+        ]:
+            fit = _fit_ols(panel, column, predictors, fixed_effects)
+            calendar_interval = _cluster_bootstrap_interval(
+                panel,
+                lambda sample, column=column, predictors=predictors, fe=fixed_effects: (
+                    float(
+                        _fit_ols(sample, column, predictors, fe)["coefficients"][
+                            "multimodal_share"
+                        ]
+                    )
+                ),
+                seed=seed + index,
+                repetitions=repetitions,
+            )
+            calendar[f"effect_per_10pp_visual_share{name}"] = 0.1 * float(
+                fit["coefficients"]["multimodal_share"]
+            )
+            calendar[f"effect_per_10pp_visual_share{name}_ci_low"] = (
+                0.1 * calendar_interval[0]
+            )
+            calendar[f"effect_per_10pp_visual_share{name}_ci_high"] = (
+                0.1 * calendar_interval[1]
+            )
         records.append(
             {
                 "outcome": column,
@@ -341,8 +544,7 @@ def compute_variance_decomposition(
                 "visual_r2_increment": float(visual["r2"] - grade_only["r2"]),
                 "visual_r2_increment_ci_low": interval[0],
                 "visual_r2_increment_ci_high": interval[1],
-                "effect_per_10pp_visual_share": 0.1
-                * float(visual["coefficients"]["multimodal_share"]),
+                **calendar,
                 "bootstrap_samples": interval[2],
             }
         )
@@ -892,6 +1094,13 @@ def run_surrogate_analysis(
     regressions = compute_outcome_regressions(panel)
     predictions = compute_forward_predictions(panel)
     per_grade, pooled = summarize_forward_predictions(predictions)
+    forward_sensitivity = compute_forward_sensitivity(panel, predictions)
+    human_mean_sensitivity = compute_human_mean_sensitivity(
+        panel,
+        load_human_scores(
+            project_root / "artifacts" / "human_results", histogram_means=True
+        ),
+    )
     decomposition = compute_variance_decomposition(panel)
 
     def series_rows(frame: pd.DataFrame, series: str) -> pd.DataFrame:
@@ -971,6 +1180,12 @@ def run_surrogate_analysis(
         predictions.to_csv(table_dir / "forward_predictions.csv", index=False)
         per_grade.to_csv(table_dir / "forward_prediction_by_grade.csv", index=False)
         pooled.to_csv(table_dir / "forward_prediction_pooled.csv", index=False)
+        forward_sensitivity.to_csv(
+            table_dir / "forward_prediction_sensitivity.csv", index=False
+        )
+        human_mean_sensitivity.to_csv(
+            table_dir / "human_mean_sensitivity.csv", index=False
+        )
         decomposition.to_csv(table_dir / "variance_decomposition.csv", index=False)
         yearly_composition.to_csv(table_dir / "yearly_composition.csv", index=False)
         sensitivity.to_csv(table_dir / "sensitivity_checks.csv", index=False)
@@ -998,6 +1213,8 @@ def run_surrogate_analysis(
         "predictions": predictions,
         "per_grade": per_grade,
         "pooled": pooled,
+        "forward_sensitivity": forward_sensitivity,
+        "human_mean_sensitivity": human_mean_sensitivity,
         "decomposition": decomposition,
     }
 

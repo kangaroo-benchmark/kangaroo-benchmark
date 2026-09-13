@@ -171,3 +171,33 @@ def test_reproduced_surrogate_outputs_match_reported_values():
         & (sensitivity["check"] == "Grade + year FE")
     ].iloc[0]
     assert year_effects["ci_low_per_10pp"] < 0 < year_effects["ci_high_per_10pp"]
+
+    forward_sensitivity = pd.read_csv(tables / "forward_prediction_sensitivity.csv")
+    recent = forward_sensitivity.loc[forward_sensitivity["series"] == "none"].iloc[0]
+    assert np.isclose(recent["mae"], 3.550, atol=5e-4)
+    assert recent["mae_change_ci_low"] < 0 < recent["mae_change_ci_high"]
+    shared = forward_sensitivity.loc[forward_sensitivity["series"] == ENSEMBLE].iloc[0]
+    assert np.isclose(shared["mae"], 3.910, atol=5e-4)
+    assert shared["mae_change_ci_low"] < 0 < shared["mae_change_ci_high"]
+
+    human_means = pd.read_csv(tables / "human_mean_sensitivity.csv").iloc[0]
+    assert human_means["forms_reported"] == 55 and human_means["forms_estimated"] == 60
+    assert np.isclose(human_means["midpoint_minus_reported_mae"], 0.130, atol=5e-4)
+    assert np.isclose(human_means["forward_ensemble_mae"], 4.138, atol=5e-4)
+
+    decomposition = pd.read_csv(tables / "variance_decomposition.csv").set_index(
+        "outcome"
+    )
+    cohort = decomposition.loc["human_pct"]
+    assert np.isclose(cohort["effect_per_10pp_visual_share"], 1.351, atol=5e-4)
+    assert np.isclose(cohort["effect_per_10pp_visual_share_year_fe"], 0.381, atol=5e-4)
+    assert (
+        cohort["effect_per_10pp_visual_share_year_fe_ci_low"]
+        < 0
+        < cohort["effect_per_10pp_visual_share_year_fe_ci_high"]
+    )
+    ensemble_share = decomposition.loc["model_pct__ensemble"]
+    assert np.isclose(
+        ensemble_share["effect_per_10pp_visual_share_year_fe"], -2.226, atol=5e-4
+    )
+    assert ensemble_share["effect_per_10pp_visual_share_year_fe_ci_high"] < 0
