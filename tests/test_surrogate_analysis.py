@@ -95,7 +95,7 @@ def test_variance_decomposition_explains_constructed_model_scores():
     decomposition = compute_variance_decomposition(panel, repetitions=50).set_index(
         "outcome_label"
     )
-    human = decomposition.loc["Cohort"]
+    human = decomposition.loc["Human mean"]
     ensemble = decomposition.loc["Equal-weight ensemble"]
     assert np.isclose(human["r2_grade"], 1.0)
     assert np.isclose(human["visual_r2_increment"], 0.0, atol=1e-9)

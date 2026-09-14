@@ -51,7 +51,7 @@ def test_visual_gap_persists_within_every_point_tier_and_grade_bucket():
             values="accuracy",
         )
         assert (
-            comparison["No separate visual element"]
+            comparison["Text-only"]
             > comparison["Auxiliary visual content"]
         ).all()
 
