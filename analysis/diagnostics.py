@@ -35,7 +35,7 @@ MODEL_LABELS = {
     "anthropic-claude-sonnet-4.5": "Claude Sonnet 4.5",
 }
 SUBTYPE_ORDER = [
-    "No separate visual element",
+    "Text-only",
     "Question diagram only",
     "Image answers only",
     "Question diagram and image answers",
@@ -168,7 +168,7 @@ def build_exam_diagnostics(
     slice_records = []
     slices = {
         "All items": pd.Series(True, index=item_scores.index),
-        "No separate visual element": ~item_scores["multimodal"],
+        "Text-only": ~item_scores["multimodal"],
         "Auxiliary visual content": item_scores["multimodal"],
     }
     for slice_name, mask in slices.items():
@@ -514,9 +514,9 @@ def compute_image_subtypes(
             "Question diagram only",
             "Image answers only",
         ],
-        default="No separate visual element",
+        default="Text-only",
     )
-    derived_multimodal = image_metadata["image_subtype"] != "No separate visual element"
+    derived_multimodal = image_metadata["image_subtype"] != "Text-only"
     if not derived_multimodal.equals(image_metadata["multimodal"]):
         raise ValueError("Released multimodal flag disagrees with image fields")
 
@@ -585,8 +585,8 @@ def compute_behavioral_diagnostics(
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     scores = scored_subtypes.copy()
     scores["visual_condition"] = np.where(
-        scores["image_subtype"] == "No separate visual element",
-        "No separate visual element",
+        scores["image_subtype"] == "Text-only",
+        "Text-only",
         "Auxiliary visual content",
     )
     scores["valid_selection"] = scores["predicted_normalized"].isin(list("ABCDE"))
@@ -632,7 +632,7 @@ def compute_behavioral_diagnostics(
     by_grade["model_label"] = by_grade["model"].map(MODEL_LABELS)
 
     no_visual_by_year = (
-        scores.loc[scores["visual_condition"] == "No separate visual element"]
+        scores.loc[scores["visual_condition"] == "Text-only"]
         .groupby(["model", "year"], sort=False)
         .agg(
             items=("id", "size"),

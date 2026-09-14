@@ -478,7 +478,7 @@ def compute_variance_decomposition(
 ) -> pd.DataFrame:
     """Variance explained by grade and visual composition; visual-share coefficients."""
     outcomes = {
-        "human_pct": "Cohort",
+        "human_pct": "Human mean",
         **{series_column(series): label for series, label in SERIES_LABELS.items()},
     }
     records = []
@@ -587,7 +587,7 @@ def plot_outcome_coefficients(regressions: pd.DataFrame) -> plt.Figure:
         [short_labels[spec] for spec in specifications],
         fontsize=8,
     )
-    axis.set_xlabel("Change in cohort %max per +10 pp model %max", fontsize=8)
+    axis.set_xlabel("Change in human mean score per +10 pp model %max", fontsize=8)
     axis.tick_params(axis="x", labelsize=7)
     axis.grid(axis="x")
     axis.legend(fontsize=6.5, loc="upper right", frameon=False)
@@ -611,7 +611,7 @@ def plot_forward_predictions(predictions: pd.DataFrame) -> plt.Figure:
             marker="o",
             markersize=2.2,
             linewidth=1.0,
-            label="Observed cohort",
+            label="Observed human mean",
         )
         axis.plot(
             observed["year"],
@@ -634,7 +634,7 @@ def plot_forward_predictions(predictions: pd.DataFrame) -> plt.Figure:
         axis.set_title(grade, fontsize=8)
         axis.tick_params(labelsize=6.5)
         axis.grid(axis="y")
-    np.atleast_1d(axes)[0].set_ylabel("Cohort %max", fontsize=8)
+    np.atleast_1d(axes)[0].set_ylabel("Human mean score (%max)", fontsize=8)
     handles, labels = np.atleast_1d(axes)[0].get_legend_handles_labels()
     figure.legend(
         handles,
@@ -683,7 +683,7 @@ def plot_variance_decomposition(decomposition: pd.DataFrame) -> plt.Figure:
         [textwrap.fill(label, 12) for label in decomposition["outcome_label"]],
         fontsize=7.5,
     )
-    axis.set_ylabel("$R^2$ of form-level %max", fontsize=8)
+    axis.set_ylabel("$R^2$ of exam-level %max", fontsize=8)
     axis.set_ylim(0, 1)
     axis.tick_params(axis="y", labelsize=7)
     axis.grid(axis="y")
@@ -722,7 +722,7 @@ def plot_yearly_composition(yearly: pd.DataFrame) -> plt.Figure:
         marker="o",
         markersize=2.6,
         linewidth=1.4,
-        label="Any auxiliary visual content",
+        label="Multimodal (any)",
     )
     axis.plot(
         yearly["year"],
@@ -762,7 +762,7 @@ def plot_composition_effects(panel: pd.DataFrame) -> plt.Figure:
     figure, axes = styled_subplots(1, 2, figsize=(7.2, 2.7), sharex=True)
     colors = GRADE_COLORS
     for axis, column, label in [
-        (axes[0], "human_pct_dm", "Official cohort %max"),
+        (axes[0], "human_pct_dm", "Human mean score (%max)"),
         (axes[1], ensemble + "_dm", "Equal-weight ensemble %max"),
     ]:
         x = 100 * frame["multimodal_share_dm"].to_numpy()
@@ -793,7 +793,7 @@ def plot_composition_effects(panel: pd.DataFrame) -> plt.Figure:
         axis.axvline(0, color=MUTED, linewidth=0.5)
         axis.set_title(label, fontsize=9)
         axis.set_xlabel(
-            "Share of items with auxiliary visual content\n(pp, within-grade centered)"
+            "Visual share\n(pp, within-grade centered)"
         )
         axis.grid(axis="y")
     axes[0].set_ylabel("%max (within-grade centered)")
@@ -892,7 +892,7 @@ def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.
         marker="o",
         markersize=2.4,
         linewidth=1.3,
-        label="Any auxiliary visual content",
+        label="Multimodal (any)",
     )
     drift.plot(
         yearly["year"],
@@ -928,7 +928,7 @@ def plot_composition_overview(yearly: pd.DataFrame, panel: pd.DataFrame) -> plt.
     x = 100 * frame["multimodal_share_dm"].to_numpy()
     grid = np.linspace(x.min(), x.max(), 50)
     for axis, column, title in [
-        (axes[1], "human_pct_dm", "(b) Official cohort %max"),
+        (axes[1], "human_pct_dm", "(b) Human mean score (%max)"),
         (axes[2], ensemble + "_dm", "(c) Ensemble %max"),
     ]:
         y = frame[column].to_numpy()

@@ -65,9 +65,9 @@
     "released_rows": 3886,
     "subtype_counts": {
       "Image answers only": 119,
-      "No separate visual element": 2140,
       "Question diagram and image answers": 274,
-      "Question diagram only": 1353
+      "Question diagram only": 1353,
+      "Text-only": 2140
     }
   },
   "form_adjustments": {
@@ -94,11 +94,6 @@
       "decline_rate": 0.01680672268907563,
       "items": 119
     },
-    "Claude Sonnet 4.5 / No separate visual element": {
-      "accuracy": 0.9261682242990654,
-      "decline_rate": 0.005607476635514018,
-      "items": 2140
-    },
     "Claude Sonnet 4.5 / Question diagram and image answers": {
       "accuracy": 0.3175182481751825,
       "decline_rate": 0.0072992700729927005,
@@ -109,15 +104,15 @@
       "decline_rate": 0.009608277900960829,
       "items": 1353
     },
+    "Claude Sonnet 4.5 / Text-only": {
+      "accuracy": 0.9261682242990654,
+      "decline_rate": 0.005607476635514018,
+      "items": 2140
+    },
     "GPT-5 / Image answers only": {
       "accuracy": 0.6218487394957983,
       "decline_rate": 0.1092436974789916,
       "items": 119
-    },
-    "GPT-5 / No separate visual element": {
-      "accuracy": 0.9887850467289719,
-      "decline_rate": 0.004672897196261682,
-      "items": 2140
     },
     "GPT-5 / Question diagram and image answers": {
       "accuracy": 0.5474452554744526,
@@ -129,15 +124,15 @@
       "decline_rate": 0.04434589800443459,
       "items": 1353
     },
+    "GPT-5 / Text-only": {
+      "accuracy": 0.9887850467289719,
+      "decline_rate": 0.004672897196261682,
+      "items": 2140
+    },
     "Grok 4 Fast / Image answers only": {
       "accuracy": 0.42016806722689076,
       "decline_rate": 0.3445378151260504,
       "items": 119
-    },
-    "Grok 4 Fast / No separate visual element": {
-      "accuracy": 0.9766355140186916,
-      "decline_rate": 0.012616822429906542,
-      "items": 2140
     },
     "Grok 4 Fast / Question diagram and image answers": {
       "accuracy": 0.16423357664233576,
@@ -149,15 +144,15 @@
       "decline_rate": 0.18994826311899482,
       "items": 1353
     },
+    "Grok 4 Fast / Text-only": {
+      "accuracy": 0.9766355140186916,
+      "decline_rate": 0.012616822429906542,
+      "items": 2140
+    },
     "Qwen3-VL / Image answers only": {
       "accuracy": 0.5630252100840336,
       "decline_rate": 0.0,
       "items": 119
-    },
-    "Qwen3-VL / No separate visual element": {
-      "accuracy": 0.9841121495327103,
-      "decline_rate": 0.0,
-      "items": 2140
     },
     "Qwen3-VL / Question diagram and image answers": {
       "accuracy": 0.4635036496350365,
@@ -168,6 +163,11 @@
       "accuracy": 0.779009608277901,
       "decline_rate": 0.0,
       "items": 1353
+    },
+    "Qwen3-VL / Text-only": {
+      "accuracy": 0.9841121495327103,
+      "decline_rate": 0.0,
+      "items": 2140
     }
   },
   "model_correlations": [
@@ -318,7 +318,7 @@
       ],
       "pearson_r": -0.2957436566393137
     },
-    "No separate visual element": {
+    "Text-only": {
       "grade_fe_accuracy_pp_per_10pp_human": 0.15316940193956527,
       "pearson_ci_95": [
         0.0169994036311648,
