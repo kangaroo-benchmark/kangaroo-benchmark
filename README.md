@@ -28,8 +28,8 @@ four October 2025 runs (GPT-5, Qwen3-VL 235B Thinking, Grok 4 Fast, Claude Sonne
 nine August 2026 comparison runs (GPT-5, Qwen3-VL, Claude Sonnet 4.5 in a German-control, an
 English-translation, and a blind arm), next to each run's `config.json`. The blind arm covers
 the 1,353 items with a separately extracted question diagram and textual answer options,
-evaluated without images. The language arms cover the 200 items of `kangaroo_english.parquet`, once with the German
-text and once with the English text. `artifacts/form_adjustments.csv`
+evaluated without images. The language arms cover the 200 items of `kangaroo_english.parquet`,
+once with the German text and once with the English text. `artifacts/form_adjustments.csv`
 records the two official exam slots that cannot be evaluated.
 
 ## Analysis
@@ -44,7 +44,6 @@ Both commands score the archived outputs against the dataset keys and write ever
 figure of the paper to `reproduced/`, which is included. They also read the 23 official cohort
 summaries (`artifacts/human_results/human_baseline_<year>.json`), which are available to
 reviewers on request and are not redistributed.
-
 
 ## Terms
 
