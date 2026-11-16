@@ -127,7 +127,46 @@
       "supports_json_response_format": true,
       "supports_internal_reasoning": false,
       "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "openai/gpt-6.1-sol",
+      "label": "OpenAI GPT 6.1 Sol",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "openai/gpt-6-luna",
+      "label": "OpenAI GPT 6 Luna",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "anthropic/claude-haiku-5.5",
+      "label": "Anthropic Claude Haiku 5.5",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "qwen/qwen3.8-flash",
+      "label": "Qwen 3.8 Flash",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": true,
+      "supports_disabling_internal_reasoning": false
+    },
+    {
+      "id": "mistralai/ministral-8b-2512",
+      "label": "Mistral Ministral 3 8B",
+      "supports_vision": true,
+      "supports_json_response_format": true,
+      "supports_internal_reasoning": false,
+      "supports_disabling_internal_reasoning": false
     }
   ]
 }
-

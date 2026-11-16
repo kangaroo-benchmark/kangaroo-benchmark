@@ -1,0 +1,14 @@
+{
+  "human_r2_grade": 0.17669007980741547,
+  "human_r2_grade_year": 0.7096064374646696,
+  "human_sd_within_grade": 4.302643656860782,
+  "ministral_capped_rows": 152,
+  "ministral_fallback_first_letter_accuracy": 0.33111480865224624,
+  "ministral_fallback_or_capped_rows": 679,
+  "ministral_fallback_rows": 601,
+  "ministral_fallback_rows_with_stated_answer": 390,
+  "ministral_fallback_stated_answer_accuracy": 0.7974358974358975,
+  "option_order_key_moved_items": 2759,
+  "option_order_reordered_items": 3409,
+  "within_grade_visual_share_year_correlation": 0.8171269675687873
+}

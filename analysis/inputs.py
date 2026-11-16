@@ -52,6 +52,29 @@ COMPARISON_RUNS = {
         "blind",
     ),
 }
+# Later full evaluations (November 2026): (model, arm). The repeat reruns the October
+# protocol; the option-order arm shows the options in a random order without the crop.
+LATER_RUNS = {
+    "20261110_144726_openai-gpt-6.1-sol": ("openai-gpt-6.1-sol", "full"),
+    "20261110_144726_anthropic-claude-haiku-5.5": (
+        "anthropic-claude-haiku-5.5",
+        "full",
+    ),
+    "20261110_144726_openai-gpt-6-luna": ("openai-gpt-6-luna", "full"),
+    "20261110_144726_qwen-qwen3.8-flash": ("qwen-qwen3.8-flash", "full"),
+    "20261113_135750_mistralai-ministral-8b-2512": (
+        "mistralai-ministral-8b-2512",
+        "full",
+    ),
+    "20261110_144726_anthropic-claude-sonnet-4.5": (
+        "anthropic-claude-sonnet-4.5",
+        "repeat",
+    ),
+    "20261113_154447_anthropic-claude-sonnet-4.5": (
+        "anthropic-claude-sonnet-4.5",
+        "option_order",
+    ),
+}
 REFERENCE_MODEL = "openai-gpt-5"
 GRADE_MEMBERS = {
     "3-4": (3, 4),

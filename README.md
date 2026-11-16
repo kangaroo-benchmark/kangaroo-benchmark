@@ -25,23 +25,30 @@ under the same settings.
 ## Archived outputs
 
 `artifacts/runs/<run>/results.parquet` holds the final predicted letter of every item for the
-four October 2025 runs (GPT-5, Qwen3-VL 235B Thinking, Grok 4 Fast, Claude Sonnet 4.5) and the
+four October 2025 runs (GPT-5, Qwen3-VL 235B Thinking, Grok 4 Fast, Claude Sonnet 4.5), the
 nine August 2026 comparison runs (GPT-5, Qwen3-VL, Claude Sonnet 4.5 in a German, an English,
-and a no-image arm), next to each run's `config.json`. The no-image arm covers
+and a no-image arm), and the seven November 2026 runs, next to each run's `config.json`. The no-image arm covers
 the 1,353 items with a separately extracted question diagram and textual answer options,
 evaluated without images. The language arms cover the 200 items of `kangaroo_english.parquet`,
-once with the German text and once with the English text. `artifacts/form_adjustments.csv`
-records the two official exam slots that cannot be evaluated.
+once with the German text and once with the English text. The November runs are full
+evaluations of GPT-6.1 Sol, GPT-6 Luna, Claude Haiku 5.5, Qwen3.8 Flash, and Ministral 3 8B,
+a repeat of Claude Sonnet 4.5, and a Claude Sonnet 4.5 run with shuffled answer options.
+Their tables also mark the responses that the first-letter fallback parsed or the output
+limit cut off. `tools/shuffle_options.py` builds the dataset of the shuffled run, and
+`option_shuffle_mapping.csv` in its folder maps every new option position to the original
+letter. `artifacts/form_adjustments.csv` records the two official exam slots that cannot be
+evaluated.
 
 ## Analysis
 
 ```bash
 uv run reproduce-diagnostics   # item-level diagnostics and cohort comparisons, about 30 s
 uv run reproduce-surrogate     # regressions, predictions of later years, sensitivity checks, paired comparisons, about 7 min
+uv run reproduce-robustness    # later runs, recent-mean test, ceiling, non-linear, and exposure checks, about 90 s
 uv run pytest
 ```
 
-Both commands score the archived outputs against the dataset keys and write every table and
+The commands score the archived outputs against the dataset keys and write every table and
 figure of the paper to `reproduced/`, which is included. They also read the 23 official
 summaries (`artifacts/human_results/human_baseline_<year>.json`), which are available to
 reviewers on request and are not redistributed.

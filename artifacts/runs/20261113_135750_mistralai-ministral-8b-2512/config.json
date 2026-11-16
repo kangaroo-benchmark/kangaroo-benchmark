@@ -1,0 +1,49 @@
+{
+  "args": {
+    "api_base": "https://openrouter.ai/api/v1",
+    "dataset": "kangaroo.parquet",
+    "events_jsonl": "auto",
+    "fail_fast": false,
+    "group": null,
+    "image_detail": "auto",
+    "image_jpeg_quality": 85,
+    "image_max_dim": 1024,
+    "internal_effort": null,
+    "language": null,
+    "limit": null,
+    "max_tokens": 16384,
+    "model": "mistralai/ministral-8b-2512",
+    "no_images": false,
+    "output_dir": "runs",
+    "points_range": null,
+    "reasoning": "self-directed",
+    "request_timeout": 120.0,
+    "seed": null,
+    "sequential": false,
+    "temperature": 0.0,
+    "text_only": false,
+    "top_p": 1.0,
+    "vision_only": false,
+    "worker_count": 16,
+    "workers": 16,
+    "year": null,
+    "year_range": null
+  },
+  "model": {
+    "id": "mistralai/ministral-8b-2512",
+    "label": "Mistral Ministral 3 8B",
+    "min_request_interval": null,
+    "supports_json_response_format": true,
+    "supports_vision": true
+  },
+  "multimodal_policy": {
+    "cli_filtered_out_rows": 0,
+    "effective_text_only": false,
+    "model_filtered_out_rows": 0,
+    "model_supports_vision": true,
+    "rows_after_filter": 3886,
+    "text_only_cli": false,
+    "total_rows_loaded": 3886
+  },
+  "timestamp_utc": "20261113_135750"
+}

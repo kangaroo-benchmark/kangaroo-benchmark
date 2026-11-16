@@ -17,6 +17,7 @@ dependencies = [
 [project.scripts]
 reproduce-diagnostics = "analysis.diagnostics:main"
 reproduce-surrogate = "analysis.surrogate_analysis:main"
+reproduce-robustness = "analysis.robustness:main"
 
 [build-system]
 requires = ["setuptools>=80.0"]

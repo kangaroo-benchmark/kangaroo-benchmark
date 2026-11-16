@@ -1563,7 +1563,7 @@ async def evaluate_rows_async(
         max_connections=max(4, worker_count * 2),
         max_keepalive_connections=max(2, worker_count),
     )
-    timeout = httpx.Timeout(120.0)
+    timeout = httpx.Timeout(args.request_timeout)
 
     try:
         async with httpx.AsyncClient(timeout=timeout, limits=limits) as client:
@@ -1606,6 +1606,23 @@ def main():
         "--sequential",
         action="store_true",
         help="Process rows sequentially instead of using the default concurrent worker pool.",
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=None,
+        help="Number of concurrent requests (default: min(8, CPU count)).",
+    )
+    parser.add_argument(
+        "--api_base",
+        default="https://openrouter.ai/api/v1",
+        help="OpenAI-compatible API base URL, e.g. a local server (default: OpenRouter).",
+    )
+    parser.add_argument(
+        "--request_timeout",
+        type=float,
+        default=120.0,
+        help="Seconds to wait for each response (default: 120).",
     )
     parser.add_argument("--output_dir", default="runs")
     parser.add_argument("--fail_fast", action="store_true")
@@ -1807,11 +1824,13 @@ def main():
         "Content-Type": "application/json",
         "X-Title": "kaenguru-benchmark-eval",
     }
-    url = "https://openrouter.ai/api/v1/chat/completions"
+    url = f"{args.api_base.rstrip('/')}/chat/completions"
 
     rows_data = df.to_dict(orient="records")
 
-    worker_count = 1 if args.sequential else default_worker_count()
+    worker_count = (
+        1 if args.sequential else (args.workers or default_worker_count())
+    )
     if not rows_data:
         worker_count = 1
 

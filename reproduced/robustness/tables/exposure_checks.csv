@@ -1,0 +1,13 @@
+check,series,series_label,units,estimate,ci_low,ci_high,unit
+"Accuracy per later decade, at equal composition",openai-gpt-5,GPT-5,3886,1.1235694386603867,-0.3011656670793191,2.4470624945974415,pp
+"Accuracy on 2025 minus 2013-2024 items, at equal composition (item bootstrap)",openai-gpt-5,GPT-5,1794,3.867209622655466,-1.894195909931554,9.256829645736994,pp
+"Accuracy per later decade, at equal composition",qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,3886,1.0497876710865188,-0.4559812895789145,2.4275507515816326,pp
+"Accuracy per later decade, at equal composition",x-ai-grok-4-fast,Grok 4 Fast,3886,0.8818373842620868,-0.3765431827830778,2.3537792361017322,pp
+"Accuracy per later decade, at equal composition",anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,3886,-0.5204652541378666,-2.1224387510368703,0.9475010185047369,pp
+Image-removal effect per later decade,openai-gpt-5,GPT-5,1353,-1.2925430594289733,-4.929929714343266,2.3096271656187333,pp
+Image-removal effect per later decade,qwen-qwen3-vl-235b-a22b-thinking,Qwen3-VL,1353,0.07585082353327856,-2.3059993815919384,1.9353871308060808,pp
+Image-removal effect per later decade,anthropic-claude-sonnet-4.5,Claude Sonnet 4.5,1353,-0.9921298924269243,-4.237509566273454,2.059781099762263,pp
+"Grade-FE association, contests before 2013",ensemble,Equal-weight ensemble,60,-2.8803120775804754,-4.935641666891255,-0.9500311152902797,per 10 pp model %max
+"Grade-FE association, contests 2013 onward",ensemble,Equal-weight ensemble,55,-0.968808264974797,-3.5606695918627063,1.582057503378772,per 10 pp model %max
+"Grade + year FE association, all contests",ensemble,Equal-weight ensemble,115,-0.323922794366793,-2.094797560183727,1.3936936802114228,per 10 pp model %max
+Change in grade-FE association from 2013 on (interaction),ensemble,Equal-weight ensemble,115,2.8839881400270655,0.913718718148953,4.886847675207158,per 10 pp model %max

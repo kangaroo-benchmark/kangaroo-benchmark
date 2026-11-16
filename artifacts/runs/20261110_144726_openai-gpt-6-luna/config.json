@@ -1,0 +1,59 @@
+{
+  "args": {
+    "dataset": "kangaroo.parquet",
+    "events_jsonl": "auto",
+    "fail_fast": false,
+    "group": null,
+    "image_detail": "auto",
+    "image_jpeg_quality": 85,
+    "image_max_dim": 1024,
+    "internal_effort": null,
+    "language": null,
+    "limit": null,
+    "max_tokens": null,
+    "model": "openai/gpt-6-luna",
+    "no_images": false,
+    "output_dir": "runs",
+    "points_range": null,
+    "reasoning": "self-directed",
+    "seed": null,
+    "sequential": false,
+    "temperature": 0.0,
+    "text_only": false,
+    "top_p": 1.0,
+    "vision_only": false,
+    "worker_count": 8,
+    "year": null,
+    "year_range": null
+  },
+  "model": {
+    "id": "openai/gpt-6-luna",
+    "label": "OpenAI GPT 6 Luna",
+    "min_request_interval": null,
+    "supports_json_response_format": true,
+    "supports_vision": true
+  },
+  "multimodal_policy": {
+    "cli_filtered_out_rows": 0,
+    "effective_text_only": false,
+    "model_filtered_out_rows": 0,
+    "model_supports_vision": true,
+    "rows_after_filter": 3886,
+    "text_only_cli": false,
+    "total_rows_loaded": 3886
+  },
+  "resumed": {
+    "first_part": {
+      "items": 3207,
+      "timestamp_utc": "20261110_144726"
+    },
+    "reason": "paused on 2026-11-10 because the machine lost its internet connection",
+    "second_part": {
+      "folder": "resume_20261110_190331_openai-gpt-6-luna",
+      "items": 679,
+      "timestamp_utc": "20261110_190331"
+    },
+    "settings": "identical runner, model, decoding and image settings; the second part ran on a dataset of the missing items only"
+  },
+  "timestamp_utc": "20261110_144726"
+}
